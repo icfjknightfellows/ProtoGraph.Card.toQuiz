@@ -1,0 +1,32 @@
+{
+  "name": "gender-react",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "axios": "^0.16.1",
+    "jsx-to-html": "^1.1.0",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  },
+  "devDependencies": {
+    "browserify": "^11.2.0",
+    "browserify-shim": "^3.8.10",
+    "babel-cli": "^6.22.2",
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-preset-es2015": "^6.22.0",
+    "css-loader": "^0.26.1",
+    "node-sass": "^4.2.0",
+    "sass-loader": "^4.1.1",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server"
+  },
+  "author": "",
+  "license": "ISC"
+}
