@@ -3,6 +3,7 @@ const webpack = require('webpack')
 module.exports = {
     entry: './main.js',
     output: {
+        library: 'Quiz',
         path: './',
         filename: 'index.js',
     },

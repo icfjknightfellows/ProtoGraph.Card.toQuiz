@@ -1,0 +1,26 @@
+{
+  "cards":[
+    { "id": "question-card-1" },
+    { "id": "question-card-2" },
+    { "id": "question-card-3" },
+    { "id": "question-card-4" },
+    { "id": "question-card-5" }
+  ],
+  "configurations":{
+
+  },
+  "platforms": {
+    "mobile" : {
+      "width" : "300px",
+      "height" : "150px"
+    },
+    "tablet": {
+      "width" : "300px",
+      "height" : "150px"
+      },
+    "desktop" : {
+      "width" : "300px",
+      "height" : "150px"
+    }
+  }
+}
