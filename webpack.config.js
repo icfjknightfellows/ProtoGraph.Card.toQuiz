@@ -7,8 +7,13 @@ module.exports = {
         filename: 'index.js',
     },
     // plugins: [
-	   // new webpack.optimize.UglifyJsPlugin()
+       // new webpack.optimize.UglifyJsPlugin()
     // ],
+    node: {
+        net: 'empty',
+        tls: 'empty',
+        fs: 'empty'
+    },
     module: {
         loaders: [
             {
@@ -23,6 +28,10 @@ module.exports = {
             {
                 test: /\.scss$/,
                 loaders: ["style-loader", "css-loader", "sass-loader"]
+            },
+            {
+                test: /\.json$/,
+                loader: 'json-loader'
             }
         ]
     }
