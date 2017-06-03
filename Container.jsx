@@ -106,15 +106,18 @@ export class Container extends React.Component {
     console.log(e, this, "Option Clicked");
     let q_card = e.target.closest(".question-card"),
       parent = e.target.closest(".content"),
-      back_div;
+      back_div,
+      card_data = this.state.card_data[+q_card.getAttribute('data-order')],
+      option = card_data.options[+e.target.getAttribute('data-option-id')];
 
     back_div = parent.querySelector(".back");
 
     q_card.classList.add("clicked");
+
     parent.querySelector(".front").style.display = "none";
+    document.querySelector("#next").style.display = "block";
 
     back_div.style.display = "block";
-    //onClickOfOption
     back_div.querySelector('.correct-answer').innerHTML = option.option;
 
     if(option.answer_description) {
@@ -152,6 +155,39 @@ export class Container extends React.Component {
 
   nextCard(e) {
     console.log(e, this, "nextCard Clicked");
+    let q_card = document.querySelector(".question-card.active"),
+      order_id = +q_card.getAttribute("data-order"),
+      main_container_width = document.querySelector(".main-container").offsetWidth,
+      back_div,
+      total_questions = 10;
+
+    e.target.style.display = "none";
+
+    q_card.classList.remove("active");
+    q_card.style.left = (main_container_width + 500) + "px";
+
+    let next_card = document.querySelector(".question-card[data-order='" + (order_id + 1) + "']");
+    if(next_card) {
+      next_card.classList.add("active");
+      // if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
+        back_div = next_card.querySelector(".back");
+        back_div.style.display = "none";
+      // }
+    }
+    // else if(config.quiz_type === "scoring") {
+    //   document.querySelector("#reset").style.display = "block";
+    // }
+
+    for(let i = (order_id + 1); i < total_questions; i++) {
+      let card = document.querySelector(".question-card[data-order='" + i + "']"),
+        position = (card.getAttribute("data-order") - order_id - 1);
+      card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_questions) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
+    }
+    // if(config.quiz_type === "scoring") {
+    //   let conclusion_card = document.querySelector(".conclusion-card"),
+    //     position = total_questions - order_id - 1;
+    //   conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_questions) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
+    // }
   }
 
   resetQuiz(e) {
@@ -221,6 +257,11 @@ export class Container extends React.Component {
       <div className='main-container'>
         <div id="card_stack" className="card-stack">
           {cards}
+          <div id="next" className="next" onClick={(e) => this.nextCard(e)}>Next Question ➜</div>
+          <div id="reset" className="reset" >Good Job! Take the quiz again?</div>
+          <div id="credits" className="credits" >
+            <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ &amp; Pykih</a>
+          </div>
         </div>
       </div>
     )

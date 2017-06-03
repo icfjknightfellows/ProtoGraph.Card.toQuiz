@@ -10,7 +10,14 @@ export function render (props, state) {
         <div id={"question_container_" + props.cardOrderId} className='option-container'>
           {
             props.cardData.options.map((d, i) => {
-              return <div key={i} id={`${props.cardOrderId}_option_${props.cardOrderId}`} className="option-div" onClick={props.cardEvents.optionClick}>{d.option}</div>
+              return <div
+                key={i}
+                data-option-id={i}
+                id={`${props.cardOrderId}_option_${props.cardOrderId}`}
+                className="option-div"
+                onClick={props.cardEvents.optionClick}>
+                  {d.option}
+              </div>
             })
           }
         </div>
