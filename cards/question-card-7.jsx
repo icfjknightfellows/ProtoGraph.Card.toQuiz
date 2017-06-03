@@ -25,7 +25,7 @@ export function render (props, state) {
         <div className="clear-both"></div>
         <div id={`answer_${props.cardOrderId}`} className="answer"></div>
         <div id={`fact_${props.cardOrderId}`} className="fact"></div>
-        <div id={`back_question_${props.cardOrderId}`} class="question-number">{`${props.cardOrderId} of 8`}</div>
+        <div id={`back_question_${props.cardOrderId}`} className="question-number">{`${props.cardOrderId} of 8`}</div>
       </div>
     </div>
   )
