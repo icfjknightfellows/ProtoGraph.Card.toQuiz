@@ -1,0 +1,32 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+export function render (props, state) {
+  return (
+    <div className="content" id={ 'content_' + props.cardOrderId }>
+      <div className="front" id={ 'front_' + props.cardOrderId } >
+        <div id={"title_" + props.cardOrderId} className='title'>{"Question " + props.cardOrderId}</div>
+        <div id={"question_" + props.cardOrderId} className='question'>{props.cardData.question}</div>
+        <div id={"question_container_" + props.cardOrderId} className='option-container'>
+          {
+            props.cardData.options.map((d, i) => {
+              return <div key={i} id={`${props.cardOrderId}_option_${props.cardOrderId}`} className="option-div">{d.option}</div>
+            })
+          }
+        </div>
+        <div id={`front_question_${props.cardOrderId}`} className="question-number">{`${props.cardOrderId} of 8`}</div>
+      </div>
+      <div className="back" id={ 'back_' + props.cardOrderId } >
+        <div id={`title_${props.cardOrderId}`} className="title">Answer</div>
+        <div id={`correct_answer${props.cardOrderId}`} className="correct-answer"></div>
+        <div id={`gif_${props.cardOrderId}`} className="gif-div">
+          <img className="gif" />
+        </div>
+        <div className="clear-both"></div>
+        <div id={`answer_${props.cardOrderId}`} className="answer"></div>
+        <div id={`fact_${props.cardOrderId}`} className="fact"></div>
+        <div id={`back_question_${props.cardOrderId}`} class="question-number">{`${props.cardOrderId} of 8`}</div>
+      </div>
+    </div>
+  )
+}

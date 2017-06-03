@@ -1,30 +1,42 @@
 {
   "cards":[
-    { 
+    {
       "id": "quiz-introduction",
       "card_type": "intro"
     },
-    { 
+    {
       "id": "question-card-1",
       "card_type": "qa"
     },
-    { 
+    {
       "id": "question-card-2",
-      "card_type": "qa" 
-    },
-    { 
-      "id": "question-card-3", 
       "card_type": "qa"
     },
-    { 
+    {
+      "id": "question-card-3",
+      "card_type": "qa"
+    },
+    {
       "id": "question-card-4",
       "card_type": "qa"
     },
-    { 
+    {
       "id": "question-card-5",
       "card_type": "qa"
     },
-    { 
+    {
+      "id": "question-card-6",
+      "card_type": "qa"
+    },
+    {
+      "id": "question-card-7",
+      "card_type": "qa"
+    },
+    {
+      "id": "question-card-8",
+      "card_type": "qa"
+    },
+    {
       "id": "quiz-score",
       "card_type": "score"
     }
