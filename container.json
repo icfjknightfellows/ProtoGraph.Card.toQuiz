@@ -42,14 +42,60 @@
     }
   ],
   "configurations":{
-    "language":"english",
-    "quiz_type":"scoring",
-    "flip_card":"yes",
-    "revisit_answers":"",
-    "share":"",
-    "next_button_text":"",
-    "replay_button_text":"",
-    "swipe_hint_text":""
+    "intro_card_configs": {
+      "quiz_title":"How well do you really know what happens when you visit a doctor?",
+      "title_font_size":"",
+      "introduction":"",
+      "introduction_font_size":"",
+      "start_button_text":"Take our quiz",
+      "start_button_color":"",
+      "start_button_text_color":"",
+      "start_button_font_size":""
+    },
+    "common_configs": {
+      "language":"english",
+      "quiz_type":"scoring",
+      "timer":"yes",
+      "time_per_question":30,
+      "flip_card":"yes",
+      "revisit_answers":"",
+      "share":"",
+      "next_button_text":"",
+      "replay_button_text":"",
+      "swipe_hint_text":""
+    },
+    "result_card": [
+      {
+        "score_range_higher_mark":4,
+        "message":"Still a scope to improve",
+        "related_article_links":"https://www.google.com"
+      },
+      {
+        "score_range_higher_mark":4,
+        "message":"Still a scope to improve",
+        "related_article_links":"http://indianexpress.com/article/sports/cricket/india-vs-bangladesh-live-cr…c-champions-trophy-2017-warm-up-online-video-streaming-highlights-4680687/"
+      },
+      {
+        "score_range_higher_mark":6,
+        "message":"Good job!",
+        "related_article_links":"https://pykih.com/open-tools/quizjs"
+      },
+      {
+        "score_range_higher_mark":6,
+        "message":"Good job!",
+        "related_article_links":"https://pykih.com/open-tools/dotmat"
+      },
+      {
+        "score_range_higher_mark":8,
+        "message":"Fantastic!",
+        "related_article_links":"https://pykih.com"
+      },
+      {
+        "score_range_higher_mark":8,
+        "message":"Fantastic!",
+        "related_article_links":"https://www.instagram.com/"
+      }
+    ]
   },
   "platforms": {
     "mobile" : {

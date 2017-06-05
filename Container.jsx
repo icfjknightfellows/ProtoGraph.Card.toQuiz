@@ -9,13 +9,15 @@ export class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      right_counter: 0,
       config: {},
       card_meta_data: [],
       card_data: [],
       device_data: undefined,
       total_questions: 0,
       card_height: 300,
-      language_texts: {}
+      language_texts: {},
+      is_mobile: window.innerWidth <= 500
     };
   }
 
@@ -80,64 +82,11 @@ export class Container extends React.Component {
     return n > 9 ? "" + n : "0" + n;
   }
 
-  getCardHeight(config, card_height, questions, total_questions) {
-    let max_height = card_height,
-      intro_header_bcr = document.querySelector(".intro-header").offsetHeight,
-      intro_desc_bcr = document.querySelector(".intro-description").offsetHeight,
-      intro_button_bcr = document.querySelector(".intro-button").offsetHeight,
-      intro_height = (intro_header_bcr + intro_desc_bcr + intro_button_bcr + 50);
-
-    if(intro_height > max_height) {
-      max_height = intro_height;
-    }
-
-    // if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-    //   let max_back = document.querySelector(".max-content"),
-    //     b_title = max_back.querySelector(".title").offsetHeight,
-    //     b_ans = max_back.querySelector(".correct-answer").offsetHeight,
-    //     b_gif = max_back.querySelector(".gif-div").offsetHeight,
-    //     b_desc = max_back.querySelector(".answer").offsetHeight,
-    //     b_fact = max_back.querySelector(".fact").offsetHeight,
-    //     b_num = max_back.querySelector(".question-number").offsetHeight,
-    //     back_height = b_title + Math.max(b_ans, 100) + b_desc + b_fact + b_num + 25;
-
-    //   if(back_height > max_height) {
-    //     max_height = back_height;
-    //   }
-    // }
-
-    for(let i = 0; i < questions.length; i++) {
-      let q_title = questions[i].querySelector(".title").offsetHeight,
-        q_options = questions[i].querySelectorAll(".option-div"),
-        q_num = questions[i].querySelector(".question-number").offsetHeight,
-        q_que = questions[i].querySelector(".question").offsetHeight,
-        q_height,
-        order_id = +questions[i].getAttribute("data-order");
-
-      q_height = q_title + q_que + q_num + 45;
-
-      for(let j = 0; j < q_options.length; j++) {
-        q_height += (q_options[j].offsetHeight + 15);
-      }
-
-      if(q_height > max_height) {
-        max_height = q_height;
-      }
-      questions[i].style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + ((total_questions - order_id) * 24) + ", " + ((order_id + 1) * 320 * -1) + ", " + (1 + 0.16 * (order_id + 1)) + ")";
-    }
-
-    if(max_height > card_height) {
-      card_height = max_height;
-    }
-    return card_height;
-  }
-
   startQuiz(e) {
     let q_card = document.querySelector(".question-card.active"),
       order_id = +q_card.getAttribute("data-order"),
       main_container_width = document.querySelector(".main-container").offsetWidth,
-      back_div,
-      total_questions = 10;
+      back_div;
 
     e.target.style.display = "none";
 
@@ -169,54 +118,195 @@ export class Container extends React.Component {
   }
 
   optionClicked(e) {
-    console.log(e, this, "Option Clicked");
     let q_card = e.target.closest(".question-card"),
+      order_id = +q_card.getAttribute('data-order'),
       parent = e.target.closest(".content"),
       back_div,
-      card_data = this.state.card_data[+q_card.getAttribute('data-order')],
+      config = this.state.config,
+      total_questions = this.state.total_questions,
+      card_data = this.state.card_data[order_id],
       option = card_data.options[+e.target.getAttribute('data-option-id')];
 
-    back_div = parent.querySelector(".back");
+    if(config.quiz_type === "scoring") {
+      if(option.right_or_wrong === "right") {
+        this.setState({right_counter: this.state.right_counter + 1})
+        // right_counter++;
+        this.flashCorrectIndicator();
+      } else {
+        this.flashWrongIndicator();
+      }
+      if(order_id === (total_questions - 1)) {
+        document.querySelector(".question-card[data-card-type='score'] .result-score").innerHTML = this.state.right_counter + " / " + total_questions;
+        for(let j = 0; j < result_card_data.length; j++) {
+          // console.log("----", right_counter, result_card_data[j].score_range_higher_mark);
+          if(this.state.right_counter <= result_card_data[j].score_range_higher_mark) {
+            let links_container = document.querySelector(".question-card[data-card-type='score'] .links-container");
+            links_container.innerHTML = "";
 
-    q_card.classList.add("clicked");
+            document.querySelector(".question-card[data-card-type='score'] .result-text").innerHTML = result_card_data[j].message;
+            result_card_data[j].related_article_links.forEach(function(d) {
+              let p = link_preview.addLinkData(d);
+              p.then(function(link_details) {
+                let link = createLink(link_details);
+                // console.log("link_details", link_details);
 
-    parent.querySelector(".front").style.display = "none";
-    document.querySelector("#next").style.display = "block";
-
-    back_div.style.display = "block";
-    back_div.querySelector('.correct-answer').innerHTML = option.option;
-
-    if(option.answer_description) {
-      back_div.querySelector(".answer").style.display = "block";
-      back_div.querySelector(".answer").innerHTML = "";
-      back_div.querySelector(".answer").appendChild(document.createTextNode(option.answer_description));
-    } else {
-      back_div.querySelector(".answer").style.display = "none";
-    }
-
-    if(option.gif_image) {
-      back_div.querySelector(".gif-div").style.display = "block";
-      back_div.querySelector(".gif").onload = function (e) {
-        let img_client_rect = e.target.offsetWidth,
-          img_container_client_rect = back_div.querySelector(".gif-div").offsetWidth,
-          ideal_img_width = img_container_client_rect - 20;
-
-        if(img_client_rect >= ideal_img_width) {
-          e.target.style.width = ideal_img_width + "px";
+                links_container.appendChild(link);
+                setTimeout(function() {
+                  utility.multiLineTruncate(link.querySelector(".link-title"));
+                }, 0);
+              });
+            });
+            break;
+          }
         }
-      };
-      back_div.querySelector(".gif").setAttribute("src", option.gif_image);
-    } else {
-      back_div.querySelector(".gif-div").style.display = "none";
+      }
     }
 
-    if(option.fact) {
-      back_div.querySelector(".fact").style.display = "block";
-      back_div.querySelector(".fact").innerHTML = "";
-      back_div.querySelector(".fact").appendChild(document.createTextNode(option.fact));
+    if((order_id < (total_questions - 1)) || (config.quiz_type === "scoring" && order_id < total_questions)) {
+      if(this.state.is_mobile) {
+        // document.querySelector("#help_text").style.display = "block";
+      } else {
+        document.querySelector("#next").style.display = "block";
+      }
     } else {
-      back_div.querySelector(".fact").style.display = "none";
+      // document.querySelector("#reset").style.display = "block";
     }
+
+    if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
+      back_div = parent.querySelector(".back");
+      back_div.style.display = "block";
+
+      if(config.quiz_type === "scoring") {
+        setTimeout(function() {
+          q_card.classList.add("clicked");
+          if(option.right_or_wrong === "right") {
+            back_div.querySelector(".wrong-answer").style.display = "none";
+            back_div.querySelector(".correct-answer").classList.remove("deselected");
+            // back_div.querySelector('.correct-answer .option-text').innerHTML = option.option;
+          } else {
+            back_div.querySelector(".wrong-answer").style.display = "block";
+            back_div.querySelector('.wrong-answer .option-text').innerHTML = option.option;
+            back_div.querySelector(".correct-answer").classList.add("deselected");
+            // for(let i = 0; i < q_obj.options.length; i++) {
+            //  if(q_obj.options[i].right_or_wrong === "right") {
+            //    back_div.querySelector('.correct-answer .option-text').innerHTML = q_obj.options[i].option;
+            //  }
+            // }
+          }
+          parent.querySelector(".front").style.display = "none";
+        }, 1100);
+      } else {
+        q_card.classList.add("clicked");
+        parent.querySelector(".front").style.display = "none";
+        back_div.querySelector('.correct-answer').innerHTML = option.option;
+      }
+
+
+      if(option.answer_description) {
+        back_div.querySelector(".answer").style.display = "block";
+        back_div.querySelector(".answer").innerHTML = "";
+        back_div.querySelector(".answer").appendChild(document.createTextNode(option.answer_description));
+      } else {
+        back_div.querySelector(".answer").style.display = "none";
+      }
+
+      if(option.gif_image) {
+        back_div.querySelector(".gif-div").style.display = "block";
+        back_div.querySelector(".gif").onload = function (e) {
+          let img_client_rect = e.target.offsetWidth,
+            img_container_client_rect = back_div.querySelector(".gif-div").offsetWidth,
+            ideal_img_width = img_container_client_rect - 20;
+
+          if(img_client_rect >= ideal_img_width) {
+            e.target.style.width = ideal_img_width + "px";
+          }
+        };
+        back_div.querySelector(".gif").setAttribute("src", option.gif_image);
+      } else {
+        back_div.querySelector(".gif-div").style.display = "none";
+      }
+
+      if(option.fact) {
+        back_div.querySelector(".fact").style.display = "block";
+        back_div.querySelector(".fact").innerHTML = "";
+        back_div.querySelector(".fact").appendChild(document.createTextNode(option.fact));
+      } else {
+        back_div.querySelector(".fact").style.display = "none";
+      }
+    } else {
+      if(config.quiz_type === "scoring") {
+        let all_options = parent.querySelectorAll(".option-div"),
+          front_div = parent.querySelector(".front");
+
+        // addTouchEvents(front_div, config, total_questions);
+
+        for(let j = 0; j < all_options.length; j++) {
+          // all_options[j].style.pointerEvents = "none";
+          all_options[j].style.display = "none";
+        }
+        front_div.querySelector(".question").style.color = "grey";
+        front_div.querySelector(".title").style.display = "block";
+        front_div.querySelector(".answers-container").style.display = "block";
+        front_div.querySelector(".swipe-hint-container").style.display = "block";
+        if(option.right_or_wrong === "right") {
+          front_div.querySelector(".wrong-answer").style.display = "none";
+          front_div.querySelector(".correct-answer").classList.remove("deselected");
+        } else {
+          front_div.querySelector(".wrong-answer").style.display = "block";
+          front_div.querySelector('.wrong-answer .option-text').innerHTML = option.option;
+          front_div.querySelector(".correct-answer").classList.add("deselected");
+        }
+      }
+    }
+
+
+    // let q_card = e.target.closest(".question-card"),
+    //   parent = e.target.closest(".content"),
+    //   back_div,
+    //   card_data = this.state.card_data[+q_card.getAttribute('data-order')],
+    //   option = card_data.options[+e.target.getAttribute('data-option-id')];
+
+    // back_div = parent.querySelector(".back");
+
+    // q_card.classList.add("clicked");
+
+    // parent.querySelector(".front").style.display = "none";
+    // document.querySelector("#next").style.display = "block";
+
+    // back_div.style.display = "block";
+    // back_div.querySelector('.correct-answer').innerHTML = option.option;
+
+    // if(option.answer_description) {
+    //   back_div.querySelector(".answer").style.display = "block";
+    //   back_div.querySelector(".answer").innerHTML = "";
+    //   back_div.querySelector(".answer").appendChild(document.createTextNode(option.answer_description));
+    // } else {
+    //   back_div.querySelector(".answer").style.display = "none";
+    // }
+
+    // if(option.gif_image) {
+    //   back_div.querySelector(".gif-div").style.display = "block";
+    //   back_div.querySelector(".gif").onload = function (e) {
+    //     let img_client_rect = e.target.offsetWidth,
+    //       img_container_client_rect = back_div.querySelector(".gif-div").offsetWidth,
+    //       ideal_img_width = img_container_client_rect - 20;
+
+    //     if(img_client_rect >= ideal_img_width) {
+    //       e.target.style.width = ideal_img_width + "px";
+    //     }
+    //   };
+    //   back_div.querySelector(".gif").setAttribute("src", option.gif_image);
+    // } else {
+    //   back_div.querySelector(".gif-div").style.display = "none";
+    // }
+
+    // if(option.fact) {
+    //   back_div.querySelector(".fact").style.display = "block";
+    //   back_div.querySelector(".fact").innerHTML = "";
+    //   back_div.querySelector(".fact").appendChild(document.createTextNode(option.fact));
+    // } else {
+    //   back_div.querySelector(".fact").style.display = "none";
+    // }
   }
 
   nextCard(e) {
@@ -224,8 +314,7 @@ export class Container extends React.Component {
     let q_card = document.querySelector(".question-card.active"),
       order_id = +q_card.getAttribute("data-order"),
       main_container_width = document.querySelector(".main-container").offsetWidth,
-      back_div,
-      total_questions = 10;
+      back_div;
 
     e.target.style.display = "none";
 
@@ -260,12 +349,27 @@ export class Container extends React.Component {
     console.log(e, this, "resetQuiz Clicked");
   }
 
+  flashCorrectIndicator() {
+    document.querySelector("#correct_indicator").style.display = "block";
+    setTimeout(function() {
+      document.querySelector("#correct_indicator").style.display = "none";
+    }, 1000);
+  }
+
+  flashWrongIndicator() {
+    document.querySelector("#wrong_indicator").style.display = "block";
+    setTimeout(function() {
+      document.querySelector("#wrong_indicator").style.display = "none";
+    }, 1000);
+  }
+
   render() {
     let styles = {},
       x = this.state.card_meta_data.length * 24,
       y = 0,
       z = 1,
-      cards;
+      cards,
+      question_card_count = 0;
 
     // if (this.state.device_data !== undefined) {
     //   let dimension = this.getScreenSize();
@@ -298,6 +402,8 @@ export class Container extends React.Component {
           events.startQuiz = ((e) => this.startQuiz(e));
           break;
         case 'qa':
+          //Updating the count of question cards.
+          question_card_count += 1;
           events.optionClick = ((e) => this.optionClicked(e));
           events.nextCard = ((e) => this.nextCard(e));
           break;
@@ -306,7 +412,6 @@ export class Container extends React.Component {
           break;
       }
 
-      console.log(this.state.total_questions, this.formatNumber(this.state.total_questions));
       return (
         <Card
           key={card.id}
@@ -316,6 +421,7 @@ export class Container extends React.Component {
           cardStyle={style}
           cardData={this.state.card_data[i]}
           cardEvents={events}
+          questionNumber={question_card_count}
           languageTexts={this.state.language_texts}
           currentCardNumber={this.formatNumber(i)}
           totalQuestionCards={this.formatNumber(this.state.total_questions)} />
@@ -325,13 +431,25 @@ export class Container extends React.Component {
 
     return (
       <div className='main-container'>
+        <div id="correct_indicator" className="correct-wrong-indicator correct-background">
+          <div className="tick-background">
+            <span className="correct-tick">&#10004;</span>
+          </div>
+          <div className="correct-wrong-text">Correct</div>
+        </div>
+        <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
+          <div className="tick-background wrong-tick">
+            <span>&#10007;</span>
+          </div>
+          <div className="correct-wrong-text wrong">Wrong</div>
+        </div>
         <div id="card_stack" className="card-stack">
           {cards}
           <div id="next" className="next" onClick={(e) => this.nextCard(e)}>{this.state.language_texts.next}</div>
           <div id="reset" className="reset" >{this.state.language_texts.restart}</div>
-          <div id="credits" className="credits" >
-            <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ &amp; Pykih</a>
-          </div>
+          {
+            window.innerWidth <= 500 ? <div className='help-text' id="help_text">{this.state.language_texts.swipe}</div> : undefined
+          }
         </div>
       </div>
     )
