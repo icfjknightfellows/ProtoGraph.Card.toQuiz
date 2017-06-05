@@ -42,7 +42,14 @@
     }
   ],
   "configurations":{
-
+    "language":"english",
+    "quiz_type":"scoring",
+    "flip_card":"yes",
+    "revisit_answers":"",
+    "share":"",
+    "next_button_text":"",
+    "replay_button_text":"",
+    "swipe_hint_text":""
   },
   "platforms": {
     "mobile" : {

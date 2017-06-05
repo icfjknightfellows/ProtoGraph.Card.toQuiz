@@ -9,79 +9,75 @@ export class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      config: {},
       card_meta_data: [],
       card_data: [],
       device_data: undefined,
       total_questions: 0,
-      card_height: 300
+      card_height: 300,
+      language_texts: {}
     };
   }
 
   componentDidMount() {
-
     axios.all([axios.get(this.props.containerURL), axios.get(this.props.dataURL)])
       .then(axios.spread((cont, card) => {
+
         this.setState({
+          config: cont.data.configurations,
           card_meta_data: cont.data.cards,
           card_data: card.data.root.row,
           device_data : cont.data.platforms,
-          total_questions: card.data.root.row.length
+          total_questions: cont.data.cards.reduce((prev, curr) => {
+            console.log(prev, curr)
+            if (curr.card_type === 'qa') {
+              return prev + 1;
+            } else {
+              return prev
+            }
+          }, 0),
+          language_texts: this.getLanguageTexts(cont.data.configurations)
         });
-
-        // const main_container = document.querySelector(".main-container");
-        // const card_stack = document.querySelector(".card-stack"),
-        //   intro_card = document.querySelector(".question-card[data-card-type='intro']"),
-        //   conclusion_card = document.querySelector(".question-card[data-card-type='score']"),
-        //   questions = document.querySelectorAll(".question-card"),
-        //   next = document.querySelector('#next'),
-        //   reset = document.querySelector('#reset'),
-        //   credits = document.querySelector('#credits'),
-        //   question_cards = document.querySelectorAll(".question-card:not([data-order='" + (this.state.card_data.length - 1) + "']) .back"),
-        //   question_cards_length = question_cards.length,
-        //   config = {},
-        //   width = (window.innerWidth - 20),
-        //   margin_left = (-(window.innerWidth - 20) / 2);
-
-        // let card_height = this.state.card_height;
-        // main_container.style.width = (window.innerWidth - 14) + "px";
-        // card_stack.style.width = width + "px";
-        // card_stack.style.marginLeft = margin_left + "px";
-        // intro_card.style.width = width + "px";
-        // intro_card.style.marginLeft = margin_left + "px";
-
-        // card_height = this.getCardHeight(config, card_height, questions, this.total_questions);
-        // main_height = ((this.total_questions + 1) * 24) + card_height + 70;
-
-        // if(window.innerWidth <= 500) {
-        //   main_height -= 140;
-        // } else {
-        //   main_height -= 75;
-        // }
-
-        // card_stack.style.height = card_height + "px";
-        // intro_card.style.height = card_height + "px";
-
-        // if(config.quiz_type === "scoring") {
-        //   conclusion_card.style.height = card_height + "px";
-        //   conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, " + ((total_questions + 1) * 320 * -1) + ", " + (1 + 0.16 * (total_questions + 1)) + ")";
-        // }
-
-        // main_container.style.height = main_height + "px";
-        // for(let i = 0; i < questions.length; i++) {
-        //   questions[i].style.height = card_height + "px";
-        // }
-
-        // if(window.innerWidth <= 500) {
-        //   let help_text = generateHelpText(config, total_questions, language_texts);
-
-        //   help_text.style.top = reset.style.top = next.style.top = card_height + (total_questions * 24) + 15 + "px";
-        //   credits.style.top = card_height + (total_questions * 24) + 65 + "px";
-        // } else {
-          // reset.style.top = next.style.top = card_height + (this.total_questions * 24) + 15 + "px";//(total_questions * 24) + 300 + 15 + "px";
-          // credits.style.top = card_height + (this.total_questions * 24) + 65 + "px";
-        // }
-
       }));
+  }
+
+  getLanguageTexts(config) {
+    let language = config ? config.language : "english",
+      text_obj;
+
+    switch(language.toLowerCase()) {
+      case "hindi":
+        text_obj = {
+          question_title: "प्रश्न ",
+          ans_title: "उत्तर",
+          restart: 'फिर से शुरू करें ↺',
+          next: 'अगला प्रश्न ➜',
+          // swipe: 'अगले प्रश्न के लिए दाईं ओर स्वाइप करें ➜'हाँ या ना
+          swipe: 'अगले प्रश्न के लिए दाईं या बाईं ओर स्वाइप करें ➜'
+        }
+        break;
+      default:
+        text_obj = {
+          question_title: "Question ",
+          ans_title: "ANSWER",
+          restart: 'Good Job! Take the quiz again?',
+          next: 'Next Question ➜',
+          swipe: 'Swipe on the card to continue ➜'
+        }
+        break;
+    }
+
+    if(typeof text_obj === "object") {
+      text_obj.next = config.next_button_text || text_obj.next;
+      text_obj.restart = config.replay_button_text || text_obj.restart;
+      text_obj.swipe = config.swipe_hint_text || text_obj.swipe;
+    }
+
+    return text_obj;
+  }
+
+  formatNumber(n) {
+    return n > 9 ? "" + n : "0" + n;
   }
 
   getCardHeight(config, card_height, questions, total_questions) {
@@ -174,7 +170,6 @@ export class Container extends React.Component {
 
   optionClicked(e) {
     console.log(e, this, "Option Clicked");
-    this.setState({total_questions: 110});
     let q_card = e.target.closest(".question-card"),
       parent = e.target.closest(".content"),
       back_div,
@@ -311,6 +306,7 @@ export class Container extends React.Component {
           break;
       }
 
+      console.log(this.state.total_questions, this.formatNumber(this.state.total_questions));
       return (
         <Card
           key={card.id}
@@ -319,7 +315,10 @@ export class Container extends React.Component {
           cardType={card.card_type}
           cardStyle={style}
           cardData={this.state.card_data[i]}
-          cardEvents={events} />
+          cardEvents={events}
+          languageTexts={this.state.language_texts}
+          currentCardNumber={this.formatNumber(i)}
+          totalQuestionCards={this.formatNumber(this.state.total_questions)} />
       )
 
     });
@@ -328,8 +327,8 @@ export class Container extends React.Component {
       <div className='main-container'>
         <div id="card_stack" className="card-stack">
           {cards}
-          <div id="next" className="next" onClick={(e) => this.nextCard(e)}>Next Question ➜</div>
-          <div id="reset" className="reset" >Good Job! Take the quiz again?</div>
+          <div id="next" className="next" onClick={(e) => this.nextCard(e)}>{this.state.language_texts.next}</div>
+          <div id="reset" className="reset" >{this.state.language_texts.restart}</div>
           <div id="credits" className="credits" >
             <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ &amp; Pykih</a>
           </div>
