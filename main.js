@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Container from './Container.jsx';
+import Container from './src/js/Container.jsx';
 
 export function HaikuContainer (options) {
   var root_element = options.selector.constructor === String ? document.querySelector(options.selector) : options.selector;
