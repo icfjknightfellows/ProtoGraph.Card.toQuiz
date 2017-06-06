@@ -3,19 +3,18 @@ import ReactDOM from 'react-dom';
 
 export function render (props, state) {
   return (
-    <div className="content" id={ 'content_' + props.cardOrderId }>
-      <div className="front" id={ 'front_' + props.cardOrderId } >
-        <div id={`front_question_${props.cardOrderId}`} className='question-number'>
-          <span className="current-question">{props.currentCardNumber}</span>{`/${props.totalQuestionCards}`}
+    <div className="content" >
+      <div className="front" >
+        <div className='question-number'>
+          <span className="current-question">{props.questionNo}</span>{`/${props.totalQuestionCards}`}
         </div>
-        <div id={"question_" + props.cardOrderId} className='question'>{props.cardData.question}</div>
-        <div id={"question_container_" + props.cardOrderId} className='option-container'>
+        <div className='question'>{props.cardData.question}</div>
+        <div className='option-container'>
           {
             props.cardData.options.map((d, i) => {
               return <div
                 key={i}
                 data-option-id={i}
-                id={`${props.cardOrderId}_option_${props.cardOrderId}`}
                 className="option-div"
                 onClick={props.cardEvents.optionClick}>
                   {d.option}
@@ -23,19 +22,40 @@ export function render (props, state) {
             })
           }
         </div>
-      </div>
-      <div className="back" id={ 'back_' + props.cardOrderId } >
-        <div id={`back_question_${props.cardOrderId}`} className='question-number'>
-          <span className="current-question">{props.currentCardNumber}</span>{`/${props.totalQuestionCards}`}
+        <div className="progress-bar">
+          <div className="progress-indicator" style={{width: (+props.questionNo * 100 / +props.totalQuestionCards) + "%"  }}></div>
         </div>
-        <div id={`title_${props.cardOrderId}`} className="title">Answer</div>
-        <div id={`correct_answer${props.cardOrderId}`} className="correct-answer"></div>
-        <div id={`gif_${props.cardOrderId}`} className="gif-div">
+        <div id="credits" className="credits" >
+          <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+        </div>
+      </div>
+      <div className="back" >
+        <div className='question-number'>
+          <span className="current-question">{props.questionNo}</span>{`/${props.totalQuestionCards}`}
+        </div>
+        <div className="title">Answer</div>
+        <div className="answers-container">
+          <div className="wrong-answer">
+            <span className="option-text"></span>
+            <span className="cross-marker">✕</span>
+          </div>
+          <div className="correct-answer">
+            <span className="option-text">{props.cardData.options.filter((e) => { return e.right_or_wrong === "right" })[0].option}</span>
+            <span className="tick-marker">✓</span>
+          </div>
+        </div>
+        <div className="gif-div">
           <img className="gif" />
         </div>
         <div className="clear-both"></div>
-        <div id={`answer_${props.cardOrderId}`} className="answer"></div>
-        <div id={`fact_${props.cardOrderId}`} className="fact"></div>
+        <div className="answer"></div>
+        <div className="fact"></div>
+        <div className="progress-bar">
+          <div className="progress-indicator" style={{width: (+props.questionNo * 100 / +props.totalQuestionCards) + "%"  }}></div>
+        </div>
+        <div id="credits" className="credits" >
+          <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+        </div>
       </div>
     </div>
   )
