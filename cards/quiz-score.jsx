@@ -9,7 +9,7 @@ export function render (props, state) {
         <div className="result-text">Thank you!</div>
         <div className="result-score">{`${props.rightCounter} / ${+props.totalQuestionCards}`}</div>
       </div>
-      <div id="buttons_container" className="buttons-container">
+      <div id="buttons_container" className="buttons-container" onClick={props.cardEvents.revisitAnswers}>
         <div id="revisit" className="revisit card-button">
           <img className="card-button-img" src="./src/images/revisit.png" />
           <div className="card-button-text">Revisit Answers</div>

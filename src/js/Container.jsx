@@ -20,6 +20,7 @@ class Container extends React.Component {
       total_questions: 0,
       right_counter: 0,
       card_height: 300,
+      sliderValue: 0,
       is_mobile: window.innerWidth <= 500
     };
   }
@@ -43,6 +44,7 @@ class Container extends React.Component {
               return prev
             }
           }, 0),
+          sliderValue: 0
         });
 
       }));
@@ -459,7 +461,7 @@ class Container extends React.Component {
       progress_bars[i].style.display = "block";
     }
 
-    // this.hideSlider();
+    this.hideSlider();
 
     // if(config.quiz_type === "scoring") {
     //   right_counter = 0;
@@ -471,6 +473,58 @@ class Container extends React.Component {
     //   }
     // }
   // }
+  }
+
+  revisitAnswers(e) {
+    this.showSlider();
+    // this.setState({sliderValue: 0});
+    // document.querySelector(".card-slider").value = 0;
+    this.slideCallback(0);
+  }
+
+  slideCallback(value) {
+    this.setState({sliderValue: value});
+    let total_questions = this.state.total_questions,
+      slider = document.querySelector(".card-slider"),
+      percent = value / total_questions * 100,
+      conclusion_card = document.querySelector(".question-card[data-card-type='score']");
+
+    slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 " + percent + "%, #EEE " + percent + "%)";
+
+    for(let i = 1; i < total_questions; i++) {
+      let q_card = document.querySelector(`.question-card[data-question-no='${i}']`);
+      if(i < value) {
+        q_card.style.top = "-1000px";
+      } else {
+        let order_no = i - value;
+
+        q_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_questions) - order_no) * 24)}, ${(order_no * 320 * -1)}, ${(1 + 0.16 * order_no)})`
+        // q_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + ((total_questions - order_no) * 16) + ", " + (i * 320 * -1) + ", " + (1 + 0.08 * order_no) + ")";
+        q_card.style.display = "block";
+        q_card.style.left = "50%";
+        q_card.style.top = "0px";
+        // if((i - value) < 3) {
+        //   setTimeout(function() {
+        //     q_card.style.opacity = 1;
+        //   }, 300);
+        // } else {
+        //   setTimeout(function() {
+        //     q_card.style.opacity = 0;
+        //   }, 300);
+        // }
+      }
+    }
+    conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(value * 16)}, ${(total_questions * 320 * -1)}, ${(1 + 0.08 * (total_questions - value))})`
+    // conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (value * 16) + ", " + (total_questions * 320 * -1) + ", " + (1 + 0.08 * (total_questions - value)) + ")";
+    if((total_questions - value) < 3) {
+      setTimeout(function() {
+        conclusion_card.style.opacity = 1;
+      }, 300);
+    } else {
+      setTimeout(function() {
+        conclusion_card.style.opacity = 0;
+      }, 300);
+    }
   }
 
   initialiseSlider(total_questions) {
@@ -548,6 +602,7 @@ class Container extends React.Component {
           break;
         case 'score':
           events.resetQuiz = ((e) => this.resetQuiz(e));
+          events.revisitAnswers = ((e) => this.revisitAnswers(e));
           break;
       }
 
@@ -590,6 +645,7 @@ class Container extends React.Component {
             window.innerWidth <= 500 ? <div className='help-text' id="help_text">{this.state.language_texts.swipe}</div> : undefined
           }
         </div>
+        <input className="card-slider" name="card_slider" type="range" step="1" min="0" max={this.state.total_questions} value={this.state.sliderValue} onInput={((e) => { this.slideCallback(e.target.value); })}/>
       </div>
     )
   }

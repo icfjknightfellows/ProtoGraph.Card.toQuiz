@@ -22,12 +22,12 @@
     "node-sass": "^4.2.0",
     "sass-loader": "^4.1.1",
     "style-loader": "^0.13.1",
-    "webpack": "^1.14.0",
+    "webpack": "^1.15.0",
     "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --public --host 0.0.0.0"
   },
   "author": "",
   "license": "ISC"

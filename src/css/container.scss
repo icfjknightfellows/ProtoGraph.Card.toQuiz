@@ -538,3 +538,38 @@ html {
     // right: auto;
   }
 }
+
+
+// CARD SLIDER
+.card-slider {
+    /*removes default webkit styles*/
+    -webkit-appearance: none;
+
+    /*fix for FF unable to apply focus style bug */
+    border: 1px solid white;
+
+    /*required for proper track sizing in FF*/
+    width: 300px;
+    background: linear-gradient(to right, #D6EDFF 0%, #168BE5 0%, #EEE 0%);
+    height: 3px;
+    margin: 0px;
+}
+.card-slider::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    border: none;
+    border-radius: 3px;
+    margin: 0px;
+}
+.card-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: #168BE5;
+    margin-top: -5px;
+}
+.card-slider:focus {
+    outline: none;
+}
