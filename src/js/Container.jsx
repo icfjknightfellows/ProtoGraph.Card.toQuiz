@@ -27,7 +27,7 @@ class Container extends React.Component {
   componentDidMount() {
     axios.all([axios.get(this.props.containerURL), axios.get(this.props.dataURL)])
       .then(axios.spread((cont, card) => {
-
+        //Note this call is async.
         this.setState({
           card_meta_data: cont.data.cards,
           card_data: card.data.root.row,
@@ -37,7 +37,6 @@ class Container extends React.Component {
           language_texts: this.getLanguageTexts(cont.data.configurations.common_configs),
           total_cards: cont.data.cards.length,
           total_questions: cont.data.cards.reduce((prev, curr) => {
-            console.log(prev, curr)
             if (curr.card_type === 'qa') {
               return prev + 1;
             } else {
@@ -166,39 +165,45 @@ class Container extends React.Component {
 
     if(config.quiz_type === "scoring") {
       if(option.right_or_wrong === "right") {
-        this.setState({right_counter: this.state.right_counter + 1})
+        //Note this call is async.
+        this.setState((prevState, props) => {
+          return { right_counter: prevState.right_counter + 1 };
+        });
         // right_counter++;
         this.flashCorrectIndicator();
       } else {
         this.flashWrongIndicator();
       }
-      if(question_no === (total_questions - 1)) {
-        document.querySelector(".question-card[data-card-type='score'] .result-score").innerHTML = this.state.right_counter + " / " + total_questions;
-        for(let j = 0; j < result_card_data.length; j++) {
-          // console.log("----", right_counter, result_card_data[j].score_range_higher_mark);
-          if(this.state.right_counter <= result_card_data[j].score_range_higher_mark) {
-            let links_container = document.querySelector(".question-card[data-card-type='score'] .links-container");
-            links_container.innerHTML = "";
 
-            document.querySelector(".question-card[data-card-type='score'] .result-text").innerHTML = result_card_data[j].message;
-            // result_card_data[j].related_article_links.forEach(function(d) {
-            //   let p = link_preview.addLinkData(d);
-            //   p.then(function(link_details) {
-            //     let link = createLink(link_details);
-            //     // console.log("link_details", link_details);
+      // if(question_no === total_questions) {
+      //   setTimeout(() => {
+      //     document.querySelector(".question-card[data-card-type='score'] .result-score").innerHTML = this.state.right_counter + " / " + total_questions;
+      //     for(let j = 0; j < result_card_data.length; j++) {
+      //       // console.log("----", right_counter, result_card_data[j].score_range_higher_mark);
+      //       if(this.state.right_counter <= result_card_data[j].score_range_higher_mark) {
+      //         let links_container = document.querySelector(".question-card[data-card-type='score'] .links-container");
+      //         links_container.innerHTML = "";
 
-            //     links_container.appendChild(link);
-            //     setTimeout(function() {
-            //       utility.multiLineTruncate(link.querySelector(".link-title"));
-            //     }, 0);
-            //   });
-            // });
-            break;
-          }
-        }
-      }
+      //         document.querySelector(".question-card[data-card-type='score'] .result-text").innerHTML = result_card_data[j].message;
+      //         // result_card_data[j].related_article_links.forEach(function(d) {
+      //         //   let p = link_preview.addLinkData(d);
+      //         //   p.then(function(link_details) {
+      //         //     let link = createLink(link_details);
+      //         //     // console.log("link_details", link_details);
+
+      //         //     links_container.appendChild(link);
+      //         //     setTimeout(function() {
+      //         //       utility.multiLineTruncate(link.querySelector(".link-title"));
+      //         //     }, 0);
+      //         //   });
+      //         // });
+      //         break;
+      //       }
+      //     }
+      //   },1000)
+      // }
+
     }
-
     if((card_no < (total_cards - 1)) || (config.quiz_type === "scoring" && card_no < total_cards)) {
       if(this.state.is_mobile) {
         // document.querySelector("#help_text").style.display = "block";
@@ -382,7 +387,113 @@ class Container extends React.Component {
   }
 
   resetQuiz(e) {
-    console.log(e, this, "resetQuiz Clicked");
+    this.setState({right_counter: 0});
+
+    let q_card = document.querySelector(".question-card.active"),
+      all_questions = document.querySelectorAll(".question-card:not([data-card-type='intro']):not([data-card-type='score'])"), // instead can do data-card-type='qa' but its not done as we can have cards in between the question card stack that we want users to revisit.
+      total_cards = this.state.total_cards,
+      total_questions = this.state.total_questions,
+      config = this.state.configs,
+      i;
+
+    if(q_card) {
+      q_card.classList.remove("active");
+    }
+
+    for (i = 0;  i < all_questions.length; i++) {
+      let question_element = all_questions[i],
+        front_element = question_element.querySelector(".front"),
+        all_options;
+
+      question_element.classList.remove("clicked");
+      question_element.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + ((total_cards - i) * 16) + ", " + (i * 320 * -1) + ", " + (1 + 0.08 * i) + ")";
+      question_element.style.display = "block";
+      front_element.style.display = "block";
+      question_element.style.left = "50%";
+      question_element.style.top = "0px";
+      // if(i < 3) {
+      //   question_element.style.opacity = 1;
+      // } else {
+      //   question_element.style.opacity = 0;
+      // }
+      if(config.quiz_type === "scoring") {
+        if(config.flip_card === "no") {
+          // removeTouchEvents(front_element);
+          all_options = front_element.querySelectorAll(".option-div");
+          for(let j = 0; j < all_options.length; j++) {
+            // all_options[j].style.pointerEvents = "auto";
+            all_options[j].style.display = "block";
+          }
+          front_element.querySelector(".question").style.color = "black";
+          front_element.querySelector(".title").style.display = "none";
+          front_element.querySelector(".answers-container").style.display = "none";
+          front_element.querySelector(".swipe-hint-container").style.display = "none";
+        } else {
+          let back_element = question_element.querySelector(".back"),
+            swipe_hint = back_element.querySelector(".swipe-hint-container");
+          // addTouchEvents(back_element, config, total_cards);
+          if (swipe_hint) {
+            swipe_hint.style.display = "block";
+          }
+        }
+      }
+    }
+
+    document.querySelector(".question-card[data-question-no='1']").classList.add('active');
+
+  // if(config.quiz_type === "scoring") {
+    let conclusion_card = document.querySelector(".question-card[data-card-type='score']"),
+      progress_bars = document.querySelectorAll(".progress-bar");
+
+    // conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, " + (total_cards * 320 * -1) + ", " + (1 + 0.08 * total_cards) + ")";
+
+    conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (total_cards * 24) + ", " + (320 * -1) + ", " + (1 + 0.16) + ")";
+
+    // if(total_cards < 3) {
+    //   conclusion_card.style.opacity = 1;
+    // } else {
+    //   conclusion_card.style.opacity = 0;
+    // }
+
+    for(let i = 0; i < progress_bars.length; i++) {
+      progress_bars[i].style.display = "block";
+    }
+
+    // this.hideSlider();
+
+    // if(config.quiz_type === "scoring") {
+    //   right_counter = 0;
+    //   if(config.timer === "yes") {
+    //     score = 0;
+    //     setTimeout(function() {
+    //       setTimer(config.time_per_question || 30);
+    //     }, 0);
+    //   }
+    // }
+  // }
+  }
+
+  initialiseSlider(total_questions) {
+    let slider = document.querySelector(".card-slider");
+    slider.setAttribute("max", total_questions);
+    slider.setAttribute("value", 0);
+    slider.addEventListener("input", function() {
+      slideCallback(this.value, total_questions);
+    });
+  }
+
+  resetSlider(total_questions) {
+    let slider = document.querySelector(".card-slider");
+    slider.setAttribute("value", total_questions);
+    slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 100%, #EEE 100%)";
+  }
+
+  showSlider() {
+    document.querySelector(".card-slider").style.display = "block";
+  }
+
+  hideSlider() {
+    document.querySelector(".card-slider").style.display = "none";
   }
 
   flashCorrectIndicator() {
@@ -415,6 +526,12 @@ class Container extends React.Component {
       style.zIndex = this.state.card_meta_data.length - i;
       style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
 
+      // if(i < 3) {
+      //   style.opacity = 1;
+      // } else {
+      //   style.opacity = 0;
+      // }
+
       x = x - 24;
       y = y - 320;
       z = z + 0.16;
@@ -446,7 +563,8 @@ class Container extends React.Component {
           cardNo={i}
           questionNo={card.card_type === 'qa' ? this.formatNumber(question_card_count) : undefined}
           totalCards={this.formatNumber(this.state.total_cards)}
-          totalQuestionCards={this.formatNumber(this.state.total_questions)} />
+          totalQuestionCards={this.formatNumber(this.state.total_questions)}
+          rightCounter={this.state.right_counter} />
       )
     });
 
