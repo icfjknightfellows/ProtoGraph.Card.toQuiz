@@ -19,6 +19,7 @@ class Container extends React.Component {
       language_texts: {},
       total_cards: 0,
       total_questions: 0,
+      score: 0,
       right_counter: 0,
       card_height: 300,
       sliderValue: 0,
@@ -178,42 +179,16 @@ class Container extends React.Component {
       if(option.right_or_wrong === "right") {
         //Note this call is async.
         this.setState((prevState, props) => {
-          return { right_counter: prevState.right_counter + 1 };
+          return {
+            right_counter: prevState.right_counter + 1,
+            score: prevState.score + 1
+          };
         });
         // right_counter++;
         this.flashCorrectIndicator();
       } else {
         this.flashWrongIndicator();
       }
-
-      // if(question_no === total_questions) {
-      //   setTimeout(() => {
-      //     document.querySelector(".question-card[data-card-type='score'] .result-score").innerHTML = this.state.right_counter + " / " + total_questions;
-      //     for(let j = 0; j < result_card_data.length; j++) {
-      //       // console.log("----", right_counter, result_card_data[j].score_range_higher_mark);
-      //       if(this.state.right_counter <= result_card_data[j].score_range_higher_mark) {
-      //         let links_container = document.querySelector(".question-card[data-card-type='score'] .links-container");
-      //         links_container.innerHTML = "";
-
-      //         document.querySelector(".question-card[data-card-type='score'] .result-text").innerHTML = result_card_data[j].message;
-      //         // result_card_data[j].related_article_links.forEach(function(d) {
-      //         //   let p = link_preview.addLinkData(d);
-      //         //   p.then(function(link_details) {
-      //         //     let link = createLink(link_details);
-      //         //     // console.log("link_details", link_details);
-
-      //         //     links_container.appendChild(link);
-      //         //     setTimeout(function() {
-      //         //       utility.multiLineTruncate(link.querySelector(".link-title"));
-      //         //     }, 0);
-      //         //   });
-      //         // });
-      //         break;
-      //       }
-      //     }
-      //   },1000)
-      // }
-
     }
     if((card_no < (total_cards - 1)) || (config.quiz_type === "scoring" && card_no < total_cards)) {
       if(this.state.is_mobile) {
@@ -405,7 +380,10 @@ class Container extends React.Component {
   }
 
   resetQuiz(e) {
-    this.setState({right_counter: 0});
+    this.setState({
+      right_counter: 0,
+      score: 0
+    });
 
     let q_card = document.querySelector(".question-card.active"),
       all_questions = document.querySelectorAll(".question-card:not([data-card-type='intro']):not([data-card-type='score'])"), // instead can do data-card-type='qa' but its not done as we can have cards in between the question card stack that we want users to revisit.
@@ -462,13 +440,10 @@ class Container extends React.Component {
 
     document.querySelector(".question-card[data-question-no='1']").classList.add('active');
 
-  // if(config.quiz_type === "scoring") {
     let conclusion_card = document.querySelector(".question-card[data-card-type='score']"),
       progress_bars = document.querySelectorAll(".progress-bar");
 
-    // conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, " + (total_cards * 320 * -1) + ", " + (1 + 0.08 * total_cards) + ")";
     conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(total_cards * 320 * -1)}, ${(1 + 0.08 * total_cards)})`;
-    // conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(total_cards * 24)}, ${(320 * -1)}, ${(1 + 0.16)})`;
 
     for(let i = 0; i < progress_bars.length; i++) {
       progress_bars[i].style.display = "block";
@@ -485,13 +460,10 @@ class Container extends React.Component {
     //     }, 0);
     //   }
     // }
-  // }
   }
 
   revisitAnswers(e) {
     this.showSlider();
-    // this.setState({sliderValue: 0});
-    // document.querySelector(".card-slider").value = 0;
     this.slideCallback(0);
   }
 
@@ -540,92 +512,52 @@ class Container extends React.Component {
     }
   }
 
-  swipeCallback(config, result_card_data, total_questions, direction) {
+  swipeCallback(direction) {
     let q_card = document.querySelector(".question-card.active"),
-      order_id = +q_card.getAttribute("data-order"),
-      back_div,
+      card_no = +q_card.getAttribute("data-card-no"),
+      question_no = +q_card.getAttribute("data-question-no"),
       main_container_width = document.querySelector(".main-container").offsetWidth,
-      next_card = document.querySelector(".question-card[data-order='" + (order_id + 1) + "']");
+      next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']"),
+      config = this.state.configs,
+      total_cards = this.state.total_cards,
+      back_div;
 
-    if(next_card) {
+    if(next_card && card_no + 1 < total_cards - 1) {
       next_card.classList.add("active");
       if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
         back_div = next_card.querySelector(".back");
         back_div.style.display = "none";
       }
       if(config.quiz_type === "scoring" && config.timer === "yes") {
-        setTimeout(function() {
-          setTimer(config.time_per_question || 30);
-        }, 0);
+        // setTimeout(function() {
+        //   setTimer(config.time_per_question || 30);
+        // }, 0);
       }
     } else {
       if(config.quiz_type === "scoring") {
         let progress_bars = document.querySelectorAll(".progress-bar");
-
-        if(config.timer === "yes") {
-          document.querySelector(".conclusion-card .result-score").innerHTML = score + " / " + (total_questions * config.time_per_question);
-        } else {
-          document.querySelector(".conclusion-card .result-score").innerHTML = right_counter + " / " + total_questions;
-        }
 
         for(let i = 0; i < progress_bars.length; i++) {
           progress_bars[i].style.display = "none";
         }
 
         if(config.flip_card === "yes") {
-          let backs = document.querySelectorAll(".question-card .back"),
-            backs_length = backs.length;
-
-          for (let i = 0; i < backs_length; i++ ) {
-            let element = backs[i],
-              swipe_hint = element.querySelector(".swipe-hint-container");
-            swipe_hint.style.display = "none";
-            removeTouchEvents(element, config, total_questions);
-          }
-        } else {
-          let fronts = document.querySelectorAll(".question-card .front"),
-            fronts_length = fronts.length;
-
-          for (let i = 0; i < fronts_length; i++ ) {
-            let element = fronts[i],
-              swipe_hint = element.querySelector(".swipe-hint-container");
-            swipe_hint.style.display = "none";
-            removeTouchEvents(element, config, total_questions);
-          }
-          // let swipe_hints = document.querySelectorAll(".front .swipe-hint-container");
-          // for(let i = 0; i < swipe_hints.length; i++) {
-          //  swipe_hints[i].style.display = "none";
-          // }
-        }
-      }
-
-      for(let j = 0; j < result_card_data.length; j++) {
-        console.log("----", right_counter, result_card_data[j].score_range_higher_mark);
-        if(right_counter <= result_card_data[j].score_range_higher_mark) {
-          let links_container = document.querySelector(".conclusion-card .links-container");
-          links_container.innerHTML = "";
-
-          document.querySelector(".conclusion-card .result-text").innerHTML = result_card_data[j].message;
-          result_card_data[j].related_article_links.forEach(function(d) {
-            let p = link_preview.addLinkData(d);
-            p.then(function(link_details) {
-              let link = createLink(link_details);
-              console.log("link_details", link_details);
-
-              links_container.appendChild(link);
-              setTimeout(function() {
-                utility.multiLineTruncate(link.querySelector(".link-title"));
-              }, 0);
-            });
+          let swipe_container = document.querySelectorAll(".question-card[data-card-type='qa'] .back .swipe-hint-container");
+          swipe_container.forEach((e) => {
+            e.style.display = 'none';
           });
-          break;
+        } else {
+          let swipe_container = document.querySelectorAll(".question-card[data-card-type='qa'] .front .swipe-hint-container");
+          swipe_container.forEach((e) => {
+            e.style.display = 'none';
+          });
         }
       }
     }
 
     document.getElementById('next').style.display = "none";
-    // document.querySelector("#help_text").style.display = "none";
     q_card.classList.remove("active");
+
     switch(direction) {
       case "left":
         q_card.style.left = "-1000px";
@@ -638,44 +570,33 @@ class Container extends React.Component {
         break;
     }
 
-    for(let i = (order_id + 1); i < total_questions; i++) {
-      let card = document.querySelector(".question-card[data-order='" + i + "']"),
-        position = (card.getAttribute("data-order") - order_id - 1);
+    for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
+      let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
+        position = (i - card_no - 1);
 
-      card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_questions) - position) * 16) + ", " + (position * 320 * -1) + ", " + (1 + 0.08 * position) + ")";
-      if((i - order_id) < 4) {
-        card.style.opacity = 1;
-      }
+      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+      count > 2 ? card.style.opacity = 0 : card.style.opacity = 1;
     }
 
     // if(config.quiz_type === "scoring") {
-      let conclusion_card = document.querySelector(".conclusion-card"),
-        position = total_questions - order_id - 1;
-      conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_questions) - position) * 16) + ", " + (position * 320 * -1) + ", " + (1 + 0.08 * position) + ")";
-      if((total_questions - order_id) < 4) {
-        conclusion_card.style.opacity = 1;
-      }
+      // let conclusion_card = document.querySelector(".conclusion-card"),
+      //   position = total_cards - card_no - 1;
+      // conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 16) + ", " + (position * 320 * -1) + ", " + (1 + 0.08 * position) + ")";
+      // if((total_cards - card_no) < 4) {
+      //   conclusion_card.style.opacity = 1;
+      // }
     // }
 
-    if (ga) {
-      ga('pyktracker.send', 'event', {
-        eventCategory: 'onSwipeLeft',
-        eventAction: 'swipe',
-        eventLabel: order_id + 1,
-        eventValue: order_id + 1
-      });
-    }
+
   }
 
-
-
-  initialiseSlider(total_questions) {
-    let slider = document.querySelector(".card-slider");
-    slider.setAttribute("max", total_questions);
-    slider.setAttribute("value", 0);
-    slider.addEventListener("input", function() {
-      slideCallback(this.value, total_questions);
-    });
+  touchEndHandler(event) {
+    Touch.swipeEnd(event,
+      ((e) => { console.log("swipeLeft"); }),
+      ((e) => { console.log("swipeRight"); }),
+      ((e) => { this.swipeCallback("up"); }),
+      ((e) => { console.log("swipeRight"); })
+    );
   }
 
   resetSlider(total_questions) {
@@ -741,6 +662,11 @@ class Container extends React.Component {
           question_card_count += 1;
           events.optionClick = ((e) => this.optionClicked(e));
           events.nextCard = ((e) => this.nextCard(e));
+          if (this.state.is_mobile) {
+            events.onTouchStart = ((e) => Touch.swipeStart(e));
+            events.onTouchMove = ((e) => Touch.swipeMove(e));
+            events.onTouchEnd = ((e) => this.touchEndHandler(e));
+          }
           break;
         case 'score':
           events.resetQuiz = ((e) => this.resetQuiz(e));
@@ -758,10 +684,13 @@ class Container extends React.Component {
           cardEvents={events}
           languageTexts={this.state.language_texts}
           cardNo={i}
+          cardConfigs = {this.state.configs}
+          resultCardConfigs = {this.state.result_card_configs}
           questionNo={card.card_type === 'qa' ? this.formatNumber(question_card_count) : undefined}
           totalCards={this.formatNumber(this.state.total_cards)}
           totalQuestionCards={this.formatNumber(this.state.total_questions)}
-          rightCounter={this.state.right_counter} />
+          score={this.state.score}
+          isMobile={this.state.is_mobile} />
       )
     });
 

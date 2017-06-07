@@ -28,7 +28,7 @@ function swipeEnd(e, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown) {
   elapsedTime = new Date().getTime() - startTime;
   if (elapsedTime <= maxAllowedTime){
     if (Math.abs(touchEndCoords.x) >= minDistanceXAxis && Math.abs(touchEndCoords.y) <= maxDistanceYAxis){
-      direction = (touchEndCoords.x < 0)? 'left' : 'right';
+      direction = (touchEndCoords.x < 0) ? 'left' : 'right';
       switch(direction){
         case 'left':
           onSwipeLeft(e);
@@ -38,7 +38,7 @@ function swipeEnd(e, onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown) {
           break;
       }
     } else if (Math.abs(touchEndCoords.y) >= minDistanceYAxis && Math.abs(touchEndCoords.x) <= maxDistanceXAxis) {
-      direction = (touchEndCoords.y < 0)? 'up' : 'down';
+      direction = (touchEndCoords.y < 0) ? 'up' : 'down';
       switch(direction){
         case 'up':
           onSwipeUp(e);

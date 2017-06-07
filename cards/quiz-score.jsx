@@ -7,7 +7,13 @@ export function render (props, state) {
       <div id="result_container" className="result-container">
         <img className="result-img" src="./src/images/cup.png" />
         <div className="result-text">Thank you!</div>
-        <div className="result-score">{`${props.rightCounter} / ${+props.totalQuestionCards}`}</div>
+        <div className="result-score">
+          {
+            props.cardConfigs.timer === 'yes' ?
+              `${props.score} / ${props.totalQuestionCards * props.cardConfigs.time_per_question}` :
+              `${props.score} / ${+props.totalQuestionCards}`
+          }
+        </div>
       </div>
       <div id="buttons_container" className="buttons-container" onClick={props.cardEvents.revisitAnswers}>
         <div id="revisit" className="revisit card-button">
