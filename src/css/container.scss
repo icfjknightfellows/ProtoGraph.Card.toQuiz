@@ -50,8 +50,8 @@ html {
   left: 50%;
   top: 0px;
   margin-left: -250px;
-  transition: left 0.5s, opacity 0.5s;
-  -webkit-transition: left 0.5s, opacity 0.5s;
+  transition: left 0.5s, opacity 0.5s, top 1s;
+  -webkit-transition: left 0.5s, opacity 0.5s, top 1s;
 }
 .intro-card {
   display: none;
@@ -61,8 +61,11 @@ html {
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   left: 50%;
   margin-left: -250px;
-  padding: 0px 20px;
+  // padding: 0px 20px;
   box-sizing: border-box;
+  z-index: 400;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 .question-card {
   background: transparent;
@@ -79,15 +82,12 @@ html {
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   left: 50%;
   margin-left: -250px;
-  padding: 0px 20px;
+  // padding: 0px 20px;
   box-sizing: border-box;
   transition: transform 1s, left 1s;
   -webkit-transition: -webkit-transform 1s, left 1s;
   transform-style: preserve-3d;
   -webkit-transform-style: preserve-3d;
-}
-.intro-card {
-  z-index: 400;
 }
 .intro-button, .intro-header, .intro-description {
   /*padding: 10px;*/
@@ -147,13 +147,14 @@ html {
   // -webkit-perspective: 1000px;
   // perspective: 1000px;
 }
-.question-card.clicked .content {
+.question-card.clicked .content, .intro-card.clicked .content, .conclusion-card.clicked .content {
   transform: rotateY( 180deg ) ;
   transition: transform 0.5s;
   -webkit-transition: -webkit-transform 0.5s;
 }
-.front,
-.back {
+.front, .back,
+.intro-front, .intro-back,
+.conclusion-front, .conclusion-back {
   position: absolute;
   height: 100%;
   width: 100%;
@@ -165,6 +166,9 @@ html {
 .front .title {
   display: none;
 }
+.conclusion-front {
+  padding: 0px 20px;
+}
 .back .title,.front .title {
   padding: 20px 25px 0px;
   margin-bottom: 10px;
@@ -172,8 +176,11 @@ html {
   color: #a8a8a8;
   font-family: sans-serif;
 }
-.back {
+.back, .intro-back, .conclusion-back {
   transform: rotateY( 180deg );
+}
+.conclusion-back {
+  padding: 15px;
 }
 .question-number{
   // position: absolute;
@@ -299,19 +306,32 @@ html {
   background: -moz-linear-gradient(right, #D6EDFF, #168BE5); /* For Firefox 3.6 to 15 */
   background: linear-gradient(to right, #D6EDFF , #168BE5); /* Standard syntax (must be last) */
 }
+.intro-front {
+  background-size: cover;
+}
+.intro-content.with-image {
+  position: absolute;
+  bottom: 27px;
+}
 .intro-header {
   padding: 70px 5%;
-  text-align: center;
+  // text-align: center;
   font-size: 1.5em;
   font-weight: bold;
   line-height: 1.5em;
   padding-bottom: 15px;
+}
+.intro-header.with-image {
+  padding-bottom: 0px;
 }
 .intro-description {
   padding: 10px 25px 0px;
   margin-bottom: 35px;
   line-height: 1.5em;
   font-size: 1em;
+}
+.intro-description.with-image {
+  margin-bottom: 10px;
 }
 .intro-button-div {
   text-align: center;
@@ -405,12 +425,17 @@ html {
   width: 100px;
 }
 .card-button {
-  cursor: pointer;
   float: left;
   width: 33.33%;
   text-align: center;
   font-size: 12px;
   box-sizing: border-box;
+}
+.card-button.half-size {
+  width: 50%
+}
+.card-button.full-size {
+  width: 100%
 }
 .card-button ~ .card-button {
   border-left: 1px solid lightgray;
@@ -445,6 +470,75 @@ html {
 }
 .card-slider {
   display: none;
+}
+.timer {
+  position: absolute;
+  left: 25px;
+  right: 25px;
+  text-align: center;
+  margin-top: 25px;
+}
+.time-out-indicator {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 700;
+  background: white;
+  opacity: 0.9;
+}
+.time-out-content, .countdown-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+}
+.time-value {
+  font-size: 50px;
+  font-weight: bold;
+}
+.times-up-msg {
+  font-size: 25px;
+  margin-top: 25px;
+}
+.danger {
+  color: red;
+}
+.countdown {
+  // display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 700;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+  -webkit-transition: opacity 0.5s;
+}
+.countdown-counter {
+  font-size: 80px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+.share-card {
+  height: 75%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+.share-image-div {
+  width: 100%;
+  height: 80%;
+  position: relative;
+  background-size: cover;
+}
+.share-title {
+  bottom: 0px;
+  padding: 10px;
+  position: absolute;
+}
+.share-msg {
+  padding: 10px;
 }
 @keyframes jiggle {
   45%, 65% {
@@ -537,39 +631,4 @@ html {
     white-space: nowrap;
     // right: auto;
   }
-}
-
-
-// CARD SLIDER
-.card-slider {
-    /*removes default webkit styles*/
-    -webkit-appearance: none;
-
-    /*fix for FF unable to apply focus style bug */
-    border: 1px solid white;
-
-    /*required for proper track sizing in FF*/
-    width: 300px;
-    background: linear-gradient(to right, #D6EDFF 0%, #168BE5 0%, #EEE 0%);
-    height: 3px;
-    margin: 0px;
-}
-.card-slider::-webkit-slider-runnable-track {
-    width: 300px;
-    height: 5px;
-    border: none;
-    border-radius: 3px;
-    margin: 0px;
-}
-.card-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    border: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background: #168BE5;
-    margin-top: -5px;
-}
-.card-slider:focus {
-    outline: none;
 }

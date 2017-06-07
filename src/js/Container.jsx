@@ -11,6 +11,7 @@ class Container extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      fetching_questions: true,
       card_meta_data: [],
       card_data: [],
       configs: {},
@@ -32,6 +33,7 @@ class Container extends React.Component {
       .then(axios.spread((cont, card) => {
         //Note this call is async.
         this.setState({
+          fetching_questions: false,
           card_meta_data: cont.data.cards,
           card_data: card.data.root.row,
           configs: cont.data.configurations.common_configs,
@@ -117,6 +119,23 @@ class Container extends React.Component {
     return processed_data;
   }
 
+  startCountdown() {
+    let countdown_value = document.querySelector('.question-card[data-card-type="intro"] .countdown-counter'),
+      countdown_interval,
+      counter = 3;
+
+    countdown_interval = setInterval(function() {
+      counter--;
+      if(counter > 0) {
+        countdown_value.innerHTML = counter;
+      } else if(counter === 0) {
+        countdown_value.innerHTML = "GO";
+      } else {
+        clearInterval(countdown_interval);
+      }
+    }, 1000);
+  }
+
   // EVENTS
   startQuiz(e) {
     let q_card = document.querySelector(".question-card.active"),
@@ -126,34 +145,35 @@ class Container extends React.Component {
       total_cards = this.state.total_cards;
 
     e.target.style.display = "none";
-
+    q_card.classList.add("clicked");
     q_card.classList.remove("active");
-    q_card.style.left = (main_container_width + 500) + "px";
 
-    let next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']");
-    if(next_card) {
-      next_card.classList.add("active");
+    this.startCountdown();
+
+    setTimeout(function() {
+      q_card.style.top = "-1000px";
       // if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-      //   back_div = next_card.querySelector(".back");
-      //   back_div.style.display = "none";
+      //   first_q_card.querySelector(".back").style.display = "none";
       // }
-    }
-    //  else if(config.quiz_type === "scoring") {
-    //   document.querySelector("#reset").style.display = "block";
-    // }
-
-    for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
-      let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
-        position = (i - card_no - 1);
-
-      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)},  ${(position * 320 * -1)} , ${(1 + 0.08 * position)})`;
-      // card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
-      if(count > 2) {
-        card.style.opacity = 0;
-      } else {
-        card.style.opacity = 1;
+      let next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']");
+      if(next_card) {
+        next_card.classList.add("active");
       }
-    }
+
+      for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
+        let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
+          position = (i - card_no - 1);
+
+        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)},  ${(position * 320 * -1)} , ${(1 + 0.08 * position)})`;
+        // card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
+        if(count > 2) {
+          card.style.opacity = 0;
+        } else {
+          card.style.opacity = 1;
+        }
+      }
+
+    }, 4000);
 
     // if(config.quiz_type === "scoring") {
     //   let conclusion_card = document.querySelector(".conclusion-card"),
@@ -586,8 +606,6 @@ class Container extends React.Component {
       //   conclusion_card.style.opacity = 1;
       // }
     // }
-
-
   }
 
   touchEndHandler(event) {
@@ -625,6 +643,46 @@ class Container extends React.Component {
     setTimeout(function() {
       document.querySelector("#wrong_indicator").style.display = "none";
     }, 1000);
+  }
+
+  renderMainContainerContent(cards) {
+    if (this.state.fetching_questions) {
+      return (
+        <div className='main-container'>
+          <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
+            <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
+              Fetching Questions ...
+            </span>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className='main-container'>
+          <div id="correct_indicator" className="correct-wrong-indicator correct-background">
+            <div className="tick-background">
+              <span className="correct-tick">&#10004;</span>
+            </div>
+            <div className="correct-wrong-text">Correct</div>
+          </div>
+          <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
+            <div className="tick-background wrong-tick">
+              <span>&#10007;</span>
+            </div>
+            <div className="correct-wrong-text wrong">Wrong</div>
+          </div>
+          <div id="card_stack" className="card-stack">
+            {cards}
+            <div id="next" className="next" onClick={(e) => this.nextCard(e)}>{this.state.language_texts.next}</div>
+            <div id="reset" className="reset" >{this.state.language_texts.restart}</div>
+            {
+              window.innerWidth <= 500 ? <div className='help-text' id="help_text">{this.state.language_texts.swipe}</div> : undefined
+            }
+          </div>
+          <input className="card-slider" name="card_slider" type="range" step="1" min="0" max={this.state.total_questions} value={this.state.sliderValue} onInput={((e) => { this.slideCallback(e.target.value); })}/>
+        </div>
+      )
+    }
   }
 
   render() {
@@ -694,31 +752,7 @@ class Container extends React.Component {
       )
     });
 
-    return (
-      <div className='main-container'>
-        <div id="correct_indicator" className="correct-wrong-indicator correct-background">
-          <div className="tick-background">
-            <span className="correct-tick">&#10004;</span>
-          </div>
-          <div className="correct-wrong-text">Correct</div>
-        </div>
-        <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
-          <div className="tick-background wrong-tick">
-            <span>&#10007;</span>
-          </div>
-          <div className="correct-wrong-text wrong">Wrong</div>
-        </div>
-        <div id="card_stack" className="card-stack">
-          {cards}
-          <div id="next" className="next" onClick={(e) => this.nextCard(e)}>{this.state.language_texts.next}</div>
-          <div id="reset" className="reset" >{this.state.language_texts.restart}</div>
-          {
-            window.innerWidth <= 500 ? <div className='help-text' id="help_text">{this.state.language_texts.swipe}</div> : undefined
-          }
-        </div>
-        <input className="card-slider" name="card_slider" type="range" step="1" min="0" max={this.state.total_questions} value={this.state.sliderValue} onInput={((e) => { this.slideCallback(e.target.value); })}/>
-      </div>
-    )
+    return this.renderMainContainerContent(cards)
   }
 }
 
