@@ -4,6 +4,7 @@ import axios from 'axios';
 import Card from './Card.jsx';
 import Scss from '../css/container.scss'
 import Utility from './utility.js';
+import Touch from "./touch.js";
 
 class Container extends React.Component {
 
@@ -140,11 +141,19 @@ class Container extends React.Component {
     //   document.querySelector("#reset").style.display = "block";
     // }
 
-    for(let i = (card_no + 1); i < total_cards; i++) {
+    for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
       let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
         position = (i - card_no - 1);
-      card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
+
+      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)},  ${(position * 320 * -1)} , ${(1 + 0.08 * position)})`;
+      // card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
+      if(count > 2) {
+        card.style.opacity = 0;
+      } else {
+        card.style.opacity = 1;
+      }
     }
+
     // if(config.quiz_type === "scoring") {
     //   let conclusion_card = document.querySelector(".conclusion-card"),
     //     position = total_cards - card_no - 1;
@@ -376,10 +385,17 @@ class Container extends React.Component {
     //   document.querySelector("#reset").style.display = "block";
     // }
 
-    for(let i = (card_no + 1); i < total_cards; i++) {
+    for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
       let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
         position = (i - card_no - 1);
-      card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
+      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)},  ${(position * 320 * -1)} , ${(1 + 0.08 * position)})`;
+      // card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
+      if(count > 2) {
+        card.style.opacity = 0;
+      } else {
+        card.style.opacity = 1;
+      }
+
     }
     // if(config.quiz_type === "scoring") {
     //   let conclusion_card = document.querySelector(".conclusion-card"),
@@ -408,16 +424,19 @@ class Container extends React.Component {
         all_options;
 
       question_element.classList.remove("clicked");
-      question_element.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + ((total_cards - i) * 16) + ", " + (i * 320 * -1) + ", " + (1 + 0.08 * i) + ")";
+      question_element.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - i) * 16)},  ${(i * 320 * -1)} , ${(1 + 0.08 * i)})`;
+      // question_element.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + ((total_cards - i) * 16) + ", " + (i * 320 * -1) + ", " + (1 + 0.08 * i) + ")";
       question_element.style.display = "block";
       front_element.style.display = "block";
       question_element.style.left = "50%";
       question_element.style.top = "0px";
-      // if(i < 3) {
-      //   question_element.style.opacity = 1;
-      // } else {
-      //   question_element.style.opacity = 0;
-      // }
+
+      if(i < 3) {
+        question_element.style.opacity = 1;
+      } else {
+        question_element.style.opacity = 0;
+      }
+
       if(config.quiz_type === "scoring") {
         if(config.flip_card === "no") {
           // removeTouchEvents(front_element);
@@ -448,14 +467,8 @@ class Container extends React.Component {
       progress_bars = document.querySelectorAll(".progress-bar");
 
     // conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, " + (total_cards * 320 * -1) + ", " + (1 + 0.08 * total_cards) + ")";
-
-    conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (total_cards * 24) + ", " + (320 * -1) + ", " + (1 + 0.16) + ")";
-
-    // if(total_cards < 3) {
-    //   conclusion_card.style.opacity = 1;
-    // } else {
-    //   conclusion_card.style.opacity = 0;
-    // }
+    conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(total_cards * 320 * -1)}, ${(1 + 0.08 * total_cards)})`;
+    // conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(total_cards * 24)}, ${(320 * -1)}, ${(1 + 0.16)})`;
 
     for(let i = 0; i < progress_bars.length; i++) {
       progress_bars[i].style.display = "block";
@@ -527,6 +540,135 @@ class Container extends React.Component {
     }
   }
 
+  swipeCallback(config, result_card_data, total_questions, direction) {
+    let q_card = document.querySelector(".question-card.active"),
+      order_id = +q_card.getAttribute("data-order"),
+      back_div,
+      main_container_width = document.querySelector(".main-container").offsetWidth,
+      next_card = document.querySelector(".question-card[data-order='" + (order_id + 1) + "']");
+
+    if(next_card) {
+      next_card.classList.add("active");
+      if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
+        back_div = next_card.querySelector(".back");
+        back_div.style.display = "none";
+      }
+      if(config.quiz_type === "scoring" && config.timer === "yes") {
+        setTimeout(function() {
+          setTimer(config.time_per_question || 30);
+        }, 0);
+      }
+    } else {
+      if(config.quiz_type === "scoring") {
+        let progress_bars = document.querySelectorAll(".progress-bar");
+
+        if(config.timer === "yes") {
+          document.querySelector(".conclusion-card .result-score").innerHTML = score + " / " + (total_questions * config.time_per_question);
+        } else {
+          document.querySelector(".conclusion-card .result-score").innerHTML = right_counter + " / " + total_questions;
+        }
+
+        for(let i = 0; i < progress_bars.length; i++) {
+          progress_bars[i].style.display = "none";
+        }
+
+        if(config.flip_card === "yes") {
+          let backs = document.querySelectorAll(".question-card .back"),
+            backs_length = backs.length;
+
+          for (let i = 0; i < backs_length; i++ ) {
+            let element = backs[i],
+              swipe_hint = element.querySelector(".swipe-hint-container");
+            swipe_hint.style.display = "none";
+            removeTouchEvents(element, config, total_questions);
+          }
+        } else {
+          let fronts = document.querySelectorAll(".question-card .front"),
+            fronts_length = fronts.length;
+
+          for (let i = 0; i < fronts_length; i++ ) {
+            let element = fronts[i],
+              swipe_hint = element.querySelector(".swipe-hint-container");
+            swipe_hint.style.display = "none";
+            removeTouchEvents(element, config, total_questions);
+          }
+          // let swipe_hints = document.querySelectorAll(".front .swipe-hint-container");
+          // for(let i = 0; i < swipe_hints.length; i++) {
+          //  swipe_hints[i].style.display = "none";
+          // }
+        }
+      }
+
+      for(let j = 0; j < result_card_data.length; j++) {
+        console.log("----", right_counter, result_card_data[j].score_range_higher_mark);
+        if(right_counter <= result_card_data[j].score_range_higher_mark) {
+          let links_container = document.querySelector(".conclusion-card .links-container");
+          links_container.innerHTML = "";
+
+          document.querySelector(".conclusion-card .result-text").innerHTML = result_card_data[j].message;
+          result_card_data[j].related_article_links.forEach(function(d) {
+            let p = link_preview.addLinkData(d);
+            p.then(function(link_details) {
+              let link = createLink(link_details);
+              console.log("link_details", link_details);
+
+              links_container.appendChild(link);
+              setTimeout(function() {
+                utility.multiLineTruncate(link.querySelector(".link-title"));
+              }, 0);
+            });
+          });
+          break;
+        }
+      }
+    }
+
+    document.getElementById('next').style.display = "none";
+    // document.querySelector("#help_text").style.display = "none";
+    q_card.classList.remove("active");
+    switch(direction) {
+      case "left":
+        q_card.style.left = "-1000px";
+        break;
+      case "right":
+        q_card.style.left = (main_container_width + 500) + "px";
+        break;
+      case "up":
+        q_card.style.top = "-1000px";
+        break;
+    }
+
+    for(let i = (order_id + 1); i < total_questions; i++) {
+      let card = document.querySelector(".question-card[data-order='" + i + "']"),
+        position = (card.getAttribute("data-order") - order_id - 1);
+
+      card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_questions) - position) * 16) + ", " + (position * 320 * -1) + ", " + (1 + 0.08 * position) + ")";
+      if((i - order_id) < 4) {
+        card.style.opacity = 1;
+      }
+    }
+
+    // if(config.quiz_type === "scoring") {
+      let conclusion_card = document.querySelector(".conclusion-card"),
+        position = total_questions - order_id - 1;
+      conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_questions) - position) * 16) + ", " + (position * 320 * -1) + ", " + (1 + 0.08 * position) + ")";
+      if((total_questions - order_id) < 4) {
+        conclusion_card.style.opacity = 1;
+      }
+    // }
+
+    if (ga) {
+      ga('pyktracker.send', 'event', {
+        eventCategory: 'onSwipeLeft',
+        eventAction: 'swipe',
+        eventLabel: order_id + 1,
+        eventValue: order_id + 1
+      });
+    }
+  }
+
+
+
   initialiseSlider(total_questions) {
     let slider = document.querySelector(".card-slider");
     slider.setAttribute("max", total_questions);
@@ -566,7 +708,7 @@ class Container extends React.Component {
 
   render() {
     let styles = {},
-      x = this.state.card_meta_data.length * 24,
+      x = this.state.card_meta_data.length * 16,
       y = 0,
       z = 1,
       cards,
@@ -580,15 +722,15 @@ class Container extends React.Component {
       style.zIndex = this.state.card_meta_data.length - i;
       style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
 
-      // if(i < 3) {
-      //   style.opacity = 1;
-      // } else {
-      //   style.opacity = 0;
-      // }
+      if(i < 3) {
+        style.opacity = 1;
+      } else {
+        style.opacity = 0;
+      }
 
-      x = x - 24;
+      x = x - 16;
       y = y - 320;
-      z = z + 0.16;
+      z = z + 0.08;
 
       switch (card.card_type) {
         case 'intro':
