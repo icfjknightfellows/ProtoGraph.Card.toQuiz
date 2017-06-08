@@ -15,13 +15,13 @@ export function render (props, state) {
           }
         </div>
       </div>
-      <div id="buttons_container" className="buttons-container" onClick={props.cardEvents.revisitAnswers}>
-        <div id="revisit" className="revisit card-button">
+      <div id="buttons_container" className="buttons-container">
+        <div id="revisit" className="revisit card-button" onClick={props.cardEvents.revisitAnswers} >
           <img className="card-button-img" src="./src/images/revisit.png" />
           <div className="card-button-text">Revisit Answers</div>
         </div>
 
-        <div id="replay" className="replay card-button"  onClick={props.cardEvents.resetQuiz}>
+        <div id="replay" className="replay card-button"  onClick={props.cardEvents.resetQuiz} >
           <img className="card-button-img" src="./src/images/replay.png" />
           <div className="card-button-text">Play Again</div>
         </div>

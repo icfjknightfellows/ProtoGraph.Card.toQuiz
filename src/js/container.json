@@ -55,7 +55,7 @@
     "common_configs": {
       "language":"english",
       "quiz_type":"scoring",
-      "timer":"no",
+      "timer":"yes",
       "time_per_question":30,
       "flip_card":"yes",
       "revisit_answers":"",
