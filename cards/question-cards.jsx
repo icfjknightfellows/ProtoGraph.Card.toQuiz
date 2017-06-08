@@ -1,6 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+function renderTimer(props, state) {
+  return (
+    <div className="timer">
+      <span className="timer-count">
+        {`${props.timerValue.min}`}:{
+          +props.timerValue.sec < 11 ? <span className='danger'>{`${props.timerValue.sec}`}</span> : `${props.timerValue.sec}`
+        }
+      </span>
+    </div>
+  )
+}
+
+
 export function render (props, state) {
   return (
     <div className="content" >
@@ -10,6 +23,7 @@ export function render (props, state) {
         onTouchMove={ props.isMobile && props.cardConfigs.flip_card !== "yes" ? props.cardEvents.onTouchMove : undefined }
         onTouchEnd={ props.isMobile && props.cardConfigs.flip_card !== "yes" ? props.cardEvents.onTouchEnd : undefined }
         >
+        { props.cardConfigs.quiz_type === "scoring" && props.cardConfigs.timer === "yes" ? renderTimer(props, state) : undefined }
         <div className='question-number'>
           <span className="current-question">{props.questionNo}</span>{`/${props.totalQuestionCards}`}
         </div>
