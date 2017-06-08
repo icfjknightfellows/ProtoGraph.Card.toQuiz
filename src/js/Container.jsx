@@ -63,6 +63,18 @@ class Container extends React.Component {
 
         this.setState(state_vars);
 
+        if (this.state.is_mobile) {
+          let main_container = document.querySelector('.main-container'),
+            card_stack = document.querySelector(".card-stack"),
+            width = (window.innerWidth - 20),
+            margin_left = (-(window.innerWidth - 20) / 2);
+
+          main_container.style.width = (window.innerWidth - 14) + "px";
+          card_stack.style.width = width + "px";
+          card_stack.style.marginLeft = margin_left + "px";
+        }
+
+
       }));
   }
 
@@ -367,23 +379,12 @@ class Container extends React.Component {
         let order_no = i - value;
 
         q_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_questions) - order_no) * 24)}, ${(order_no * 320 * -1)}, ${(1 + 0.16 * order_no)})`
-        // q_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + ((total_questions - order_no) * 16) + ", " + (i * 320 * -1) + ", " + (1 + 0.08 * order_no) + ")";
         q_card.style.display = "block";
         q_card.style.left = "50%";
         q_card.style.top = "0px";
-        // if((i - value) < 3) {
-        //   setTimeout(function() {
-        //     q_card.style.opacity = 1;
-        //   }, 300);
-        // } else {
-        //   setTimeout(function() {
-        //     q_card.style.opacity = 0;
-        //   }, 300);
-        // }
       }
     }
     conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(value * 16)}, ${(total_questions * 320 * -1)}, ${(1 + 0.08 * (total_questions - value))})`
-    // conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (value * 16) + ", " + (total_questions * 320 * -1) + ", " + (1 + 0.08 * (total_questions - value)) + ")";
     if((total_questions - value) < 3) {
       setTimeout(function() {
         conclusion_card.style.opacity = 1;
@@ -412,9 +413,7 @@ class Container extends React.Component {
         back_div.style.display = "none";
       }
       if(config.quiz_type === "scoring" && config.timer === "yes") {
-        // setTimeout(function() {
-          this.setTimer();
-        // }, 0);
+        this.setTimer();
       }
     } else {
       if(config.quiz_type === "scoring") {
@@ -460,15 +459,6 @@ class Container extends React.Component {
       card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
       count > 2 ? card.style.opacity = 0 : card.style.opacity = 1;
     }
-
-    // if(config.quiz_type === "scoring") {
-      // let conclusion_card = document.querySelector(".conclusion-card"),
-      //   position = total_cards - card_no - 1;
-      // conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 16) + ", " + (position * 320 * -1) + ", " + (1 + 0.08 * position) + ")";
-      // if((total_cards - card_no) < 4) {
-      //   conclusion_card.style.opacity = 1;
-      // }
-    // }
   }
 
   touchEndHandler(event) {
@@ -500,20 +490,13 @@ class Container extends React.Component {
         question_score: counter
       })
 
-      // question_score = counter;
       if(counter === 0) {
-        // let order_id = active_question.getAttribute("data-card-no"),
-        //   options = data[order_id].options;
         this.clearTimer();
         this.flashTimeUpIndicator();
         this.addOptionBasedContent(options.filter((e) => { return e.right_or_wrong === 'right'; })[0]);
-        // for(let i = 0; i < options.length; i++) {
-        //   if(options[i].right_or_wrong === "right") {
-        //     break;
-        //   }
-        // }
       }
     }, 1000);
+
     this.setState({
       timer: timeInterval
     });
@@ -560,16 +543,10 @@ class Container extends React.Component {
           if(option.right_or_wrong === "right") {
             back_div.querySelector(".wrong-answer").style.display = "none";
             back_div.querySelector(".correct-answer").classList.remove("deselected");
-            // back_div.querySelector('.correct-answer .option-text').innerHTML = option.option;
           } else {
             back_div.querySelector(".wrong-answer").style.display = "block";
             back_div.querySelector('.wrong-answer .option-text').innerHTML = option.option;
             back_div.querySelector(".correct-answer").classList.add("deselected");
-            // for(let i = 0; i < q_obj.options.length; i++) {
-            //  if(q_obj.options[i].right_or_wrong === "right") {
-            //    back_div.querySelector('.correct-answer .option-text').innerHTML = q_obj.options[i].option;
-            //  }
-            // }
           }
           parent.querySelector(".front").style.display = "none";
         }, 1100);
@@ -578,7 +555,6 @@ class Container extends React.Component {
         parent.querySelector(".front").style.display = "none";
         back_div.querySelector('.correct-answer').innerHTML = option.option;
       }
-
 
       if(option.answer_description) {
         back_div.querySelector(".answer").style.display = "block";
@@ -616,12 +592,10 @@ class Container extends React.Component {
         let all_options = parent.querySelectorAll(".option-div"),
           front_div = parent.querySelector(".front");
 
-        // addTouchEvents(front_div, config, total_questions);
-
         for(let j = 0; j < all_options.length; j++) {
-          // all_options[j].style.pointerEvents = "none";
           all_options[j].style.display = "none";
         }
+
         front_div.querySelector(".question").style.color = "grey";
         front_div.querySelector(".title").style.display = "block";
         front_div.querySelector(".answers-container").style.display = "block";
@@ -724,6 +698,9 @@ class Container extends React.Component {
       cards,
       question_card_count = 0;
 
+    if(this.state.configs.font_family) {
+      document.querySelector('.main-container').style.fontFamily = this.state.configs.font_family;
+    }
 
     cards = this.state.card_meta_data.map((card, i) => {
       const style = {},
@@ -736,6 +713,11 @@ class Container extends React.Component {
         style.opacity = 1;
       } else {
         style.opacity = 0;
+      }
+
+      if (this.state.is_mobile) {
+        style.width = (window.innerWidth - 20) + "px";
+        style.marginLeft = (-(window.innerWidth - 20) / 2) + "px";
       }
 
       x = x - 16;
@@ -766,14 +748,15 @@ class Container extends React.Component {
       return (
         <Card
           key={card.id}
+          cardNo={i}
           cardId={card.id}
           cardType={card.card_type}
           cardStyle={style}
           cardData={this.state.card_data[i]}
           cardEvents={events}
-          languageTexts={this.state.language_texts}
-          cardNo={i}
           cardConfigs = {this.state.configs}
+          introCardConfigs={this.state.intro_card_configs}
+          languageTexts={this.state.language_texts}
           resultCardConfigs = {this.state.result_card_configs}
           questionNo={card.card_type === 'qa' ? this.formatNumber(question_card_count) : undefined}
           totalCards={this.formatNumber(this.state.total_cards)}

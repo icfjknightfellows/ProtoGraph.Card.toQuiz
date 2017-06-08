@@ -43,10 +43,12 @@
   ],
   "configurations":{
     "intro_card_configs": {
+      "background_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/BloodPressure.jpg",
       "quiz_title":"How well do you really know what happens when you visit a doctor?",
       "title_font_size":"",
-      "introduction":"",
+      "introduction":"This is an introduction",
       "introduction_font_size":"",
+      "text_color":"white",
       "start_button_text":"Take our quiz",
       "start_button_color":"",
       "start_button_text_color":"",
@@ -55,11 +57,13 @@
     "common_configs": {
       "language":"english",
       "quiz_type":"scoring",
-      "timer":"yes",
+      "timer":"no",
       "time_per_question":30,
       "flip_card":"yes",
-      "revisit_answers":"",
-      "share":"",
+      "revisit_answers":"no",
+      "social_share":"no",
+      "share_link":"https://pykih.com",
+      "share_msg":"I just played this quiz and got {score} points. Do you think you can beat me?",
       "next_button_text":"",
       "replay_button_text":"",
       "swipe_hint_text":""

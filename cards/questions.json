@@ -2,8 +2,7 @@
   "root": {
     "row": [
       {
-        "quiz_title": "How well do you really know what happens when you visit a doctor?",
-        "start_button_text": "Take our quiz"
+        "title": "Intro Card"
       },
       {
         "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",

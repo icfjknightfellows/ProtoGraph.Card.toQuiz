@@ -5,10 +5,13 @@ export function render (props, state) {
   return (
     <div className="content" style={{background: 'white'}}>
       <div className='intro-front'>
-        <div className="intro-header">{props.cardData.quiz_title}</div>
+        <div className="intro-header">{props.introCardConfigs.quiz_title}</div>
         <div className="intro-description"></div>
         <div className="intro-button-div">
-          <button className="intro-button" onClick={props.cardEvents.startQuiz}>{props.cardData.start_button_text}</button>
+          <button className="intro-button" onClick={props.cardEvents.startQuiz}>{props.introCardConfigs.start_button_text}</button>
+        </div>
+        <div id="credits" className="credits" >
+          <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
         </div>
       </div>
       <div className='intro-back'>
