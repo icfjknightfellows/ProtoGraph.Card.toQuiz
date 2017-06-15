@@ -1,81 +1,172 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
-import Card from './Card.jsx';
-import Scss from '../css/container.scss'
-import Utility from './utility.js';
-import Touch from "./touch.js";
+import React      from 'react';
+import ReactDOM   from 'react-dom';
+import axios      from 'axios';
+import Card       from './Card.jsx';
+import Scss       from '../css/container.scss'
+import Utility    from './utility.js';
+import Touch      from './touch.js';
+import LoadData   from './load_data.js';
+import IntroductionCard  from '../cards/quiz-introduction.jsx';
+import ResultCard from '../cards/quiz-conclusion.jsx';
 
 class Container extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      fetching_questions: true,
-      card_meta_data: [],
-      card_data: [],
-      configs: {},
-      intro_card_configs: {},
-      result_card_configs: {},
-      language_texts: {},
-      total_cards: 0,
-      total_questions: 0,
+      fetchingQuestions: true,
+      questionsData: [],
+      commonConfigs: {},
+      introCardConfigs: {},
+      resultCardConfigs: undefined,
+      languageTexts: {},
+      totalQuestions: 0,
       score: 0,
-      right_counter: 0,
-      card_height: 300,
+      rightCounter: 0,
+      cardHeight: 300,
+      backHeightWithoutFact: undefined,
       sliderValue: 0,
-      timer_count_value: 30,
-      time_per_question: 30,
-      question_score: 1,
+      timerCountValue: 10,
+      timePerQuestion: 30,
+      questionScore: 1,
       timer: undefined,
-      is_mobile: window.innerWidth <= 500
+      isMobile: window.innerWidth <= 500
     };
   }
 
-  componentDidMount() {
-    axios.all([axios.get(this.props.containerURL), axios.get(this.props.dataURL)])
-      .then(axios.spread((cont, card) => {
-        //Note this call is async.
+  processQuestionsData(questionsData) {
+    let groupedData = Utility.groupBy(questionsData, 'question_no'),
+      keys = Object.keys(groupedData),
+      processedData = [];
 
-        let state_vars = {
-          fetching_questions: false,
-          card_meta_data: cont.data.cards,
-          card_data: card.data.root.row,
-          configs: cont.data.configurations.common_configs,
-          intro_card_configs: cont.data.configurations.intro_card_configs,
-          result_card_configs: this.processResultData(cont.data.configurations.result_card),
-          language_texts: this.getLanguageTexts(cont.data.configurations.common_configs),
-          total_cards: cont.data.cards.length,
-          total_questions: cont.data.cards.reduce((prev, curr) => {
-            if (curr.card_type === 'qa') {
-              return prev + 1;
-            } else {
-              return prev
-            }
-          }, 0),
+    keys.forEach(key => {
+      let tempObj = {};
+      groupedData[key].forEach(datum => {
+        if(Object.keys(tempObj).length) {
+          tempObj.options.push({
+            option: datum.options,
+            correct_answer: datum.correct_answer,
+            gif_image: datum.gif_image,
+            fact: datum.description,
+            right_or_wrong: datum.right_or_wrong ? (datum.right_or_wrong.toLowerCase() === 'right' ? true : false) : false
+          });
+        } else {
+          tempObj = {
+            "question": datum.question,
+            "question_no": datum.question_no,
+            "options": [{
+              option: datum.options,
+              correct_answer: datum.correct_answer,
+              gif_image: datum.gif_image,
+              fact: datum.description,
+              right_or_wrong: datum.right_or_wrong ? (datum.right_or_wrong.toLowerCase() === 'right' ? true : false) : false
+            }]
+          };
+        }
+      });
+      processedData.push(tempObj);
+    });
+    return processedData;
+  }
+
+  processCommonConfigs(commonConfigs) {
+    return {
+      language: commonConfigs.language,
+      quiz_type: commonConfigs.quiz_type,
+      timer: commonConfigs.timer ? (commonConfigs.timer.toLowerCase() === 'yes' ? true : false ) : false,
+      time_per_question: commonConfigs.time_per_question,
+      flip_card: commonConfigs.flip_card ? (commonConfigs.flip_card.toLowerCase() === 'yes' ? true : false ) : false,
+      revisit_answers: commonConfigs.revisit_answers ? (commonConfigs.revisit_answers.toLowerCase() === 'yes' ? true : false ) : false,
+      social_share: commonConfigs.social_share ? (commonConfigs.social_share.toLowerCase() === 'yes' ? true : false ) : false,
+      share_link: commonConfigs.share_link,
+      share_msg: commonConfigs.share_msg
+    }
+  }
+
+  processResultData(resultCardData, config) {
+    let processedData = [];
+    if(config.quiz_type === "scoring" && resultCardData[0].upper_limit_of_score_range) {
+      let groupedData = Utility.groupBy(resultCardData, "upper_limit_of_score_range"),
+        keys = Object.keys(groupedData);
+
+      keys.forEach(key => {
+        let tempObj = {};
+        groupedData[key].forEach(datum => {
+          if(Object.keys(tempObj).length) {
+            tempObj.related_articles.push({
+              "related_article_links": datum.related_article_links,
+              "link_description": datum.link_description,
+              "link_image": datum.link_image
+            });
+          } else {
+            tempObj = {
+              "upper_limit_of_score_range": datum.upper_limit_of_score_range,
+              "message": datum.message,
+              "related_articles": [{
+                "related_article_links": datum.related_article_links,
+                "link_description": datum.link_description,
+                "link_image": datum.link_image
+              }]
+            };
+          }
+        });
+        processedData.push(tempObj);
+      });
+
+      processedData.sort(function(a, b) {
+        return a.upper_limit_of_score_range - b.upper_limit_of_score_range;
+      });
+
+      return processedData;
+    } else {
+      processedData.push({
+        "message": resultCardData[0].message,
+        "related_articles": resultCardData.map(function(datum) {
+          return {
+            "related_article_links": datum.related_article_links,
+            "link_description": datum.link_description,
+            "link_image": datum.link_image
+          };
+        })
+      });
+      return processedData;
+    }
+  }
+
+  componentDidMount() {
+    const sheet = Utility.getURLParam('sheet'),
+      json = Utility.getURLParam('json');
+
+    if (sheet) {
+      LoadData.loadSheetData(sheet, sheetData => {
+        let stateVar = {
+          fetchingQuestions: false,
+          questionsData: this.processQuestionsData(sheetData.quiz.elements),
+          commonConfigs: this.processCommonConfigs(sheetData.common_configs.elements[0]),
+          introCardConfigs: sheetData.intro_card_configs.elements[0],
+          totalCards: (sheetData.quiz.elements.length + 2),
+          totalQuestions: sheetData.quiz.elements.length,
           sliderValue: 0
         };
 
-        if (state_vars.configs.time_per_question) {
-          state_vars.time_per_question = state_vars.configs.time_per_question;
-          state_vars.timer_count_value = state_vars.configs.time_per_question;
+        stateVar.languageTexts = this.getLanguageTexts(stateVar.commonConfigs);
+        stateVar.resultCardConfigs = sheetData.result_card.elements ? this.processResultData(sheetData.result_card.elements, stateVar.commonConfigs) : undefined;
+
+        if (stateVar.commonConfigs.time_per_question) {
+          stateVar.time_per_question = stateVar.commonConfigs.time_per_question;
+          stateVar.timer_count_value = stateVar.commonConfigs.time_per_question;
         }
 
-        this.setState(state_vars);
+        // console.log({
+        //   questionsData: stateVar.questionsData,
+        //   commonConfigs: stateVar.commonConfigs,
+        //   introCardConfigs: stateVar.introCardConfigs,
+        //   resultCardConfigs: stateVar.resultCardConfigs })
+        this.setState(stateVar);
+      });
+    } else if (json) {
 
-        if (this.state.is_mobile) {
-          let main_container = document.querySelector('.main-container'),
-            card_stack = document.querySelector(".card-stack"),
-            width = (window.innerWidth - 20),
-            margin_left = (-(window.innerWidth - 20) / 2);
-
-          main_container.style.width = (window.innerWidth - 14) + "px";
-          card_stack.style.width = width + "px";
-          card_stack.style.marginLeft = margin_left + "px";
-        }
-
-
-      }));
+    }
   }
 
   getLanguageTexts(config) {
@@ -117,32 +208,6 @@ class Container extends React.Component {
     return n > 9 ? "" + n : "0" + n;
   }
 
-  processResultData(result_card_data) {
-    let grouped_data = Utility.groupBy(result_card_data, "score_range_higher_mark"),
-      keys = Object.keys(grouped_data),
-      processed_data = [];
-
-    keys.forEach(key => {
-      let temp_obj = {};
-      grouped_data[key].forEach(datum => {
-        if(Object.keys(temp_obj).length) {
-          temp_obj.related_article_links.push(datum.related_article_links);
-        } else {
-          temp_obj = {
-            "score_range_higher_mark": datum.score_range_higher_mark,
-            "message": datum.message,
-            "related_article_links": [datum.related_article_links]
-          };
-        }
-      });
-      processed_data.push(temp_obj);
-    });
-    processed_data.sort(function(a, b) {
-      return a.score_range_higher_mark - b.score_range_higher_mark;
-    })
-    return processed_data;
-  }
-
   startCountdown() {
     let countdown_value = document.querySelector('.question-card[data-card-type="intro"] .countdown-counter'),
       countdown_interval,
@@ -166,8 +231,7 @@ class Container extends React.Component {
       card_no = +q_card.getAttribute("data-card-no"),
       main_container_width = document.querySelector(".main-container").offsetWidth,
       back_div,
-      total_cards = this.state.total_cards,
-      config = this.state.configs;
+      config = this.state.commonConfigs;
 
     e.target.style.display = "none";
     q_card.classList.add("clicked");
@@ -217,12 +281,11 @@ class Container extends React.Component {
       card_no = +q_card.getAttribute('data-card-no'),
       parent = e.target.closest(".content"),
       back_div,
-      config = this.state.configs,
-      total_questions = this.state.total_questions,
-      total_cards = this.state.total_cards,
+      config = this.state.commonConfigs,
+      total_questions = this.state.totalQuestions,
       card_data = this.state.card_data[card_no],
       option = card_data.options[+e.target.getAttribute('data-option-id')],
-      result_card_data = this.state.result_card_configs;
+      result_card_data = this.state.resultCardConfigs;
 
     if(config.quiz_type === "scoring") {
       if(config.timer === "yes") {
@@ -232,7 +295,7 @@ class Container extends React.Component {
         this.setState((prevState, props) => {
           return {
             right_counter: prevState.right_counter + 1,
-            score: prevState.score + this.state.question_score
+            score: prevState.score + this.state.questionScore
           };
         });
         this.flashCorrectIndicator();
@@ -248,8 +311,7 @@ class Container extends React.Component {
     let q_card = document.querySelector(".question-card.active"),
       card_no = +q_card.getAttribute("data-card-no"),
       main_container_width = document.querySelector(".main-container").offsetWidth,
-      back_div,
-      total_cards = this.state.total_cards;
+      back_div;
 
     e.target.style.display = "none";
 
@@ -286,10 +348,9 @@ class Container extends React.Component {
     });
 
     let q_card = document.querySelector(".question-card.active"),
-      all_questions = document.querySelectorAll(".question-card:not([data-card-type='intro']):not([data-card-type='score'])"), // instead can do data-card-type='qa' but its not done as we can have cards in between the question card stack that we want users to revisit.
-      total_cards = this.state.total_cards,
-      total_questions = this.state.total_questions,
-      config = this.state.configs,
+      all_questions = document.querySelectorAll(".question-card:not([data-card-type='intro'])"), // instead can do data-card-type='qa' but its not done as we can have cards in between the question card stack that we want users to revisit.
+      total_questions = this.state.totalQuestions,
+      config = this.state.commonConfigs,
       i;
 
     if(q_card) {
@@ -305,7 +366,7 @@ class Container extends React.Component {
       question_element.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - i) * 16)},  ${(i * 320 * -1)} , ${(1 + 0.08 * i)})`;
       question_element.style.display = "block";
       front_element.style.display = "block";
-      question_element.style.left = "50%";
+      // question_element.style.left = "50%";
       question_element.style.top = "0px";
 
       if(i < 3) {
@@ -342,7 +403,7 @@ class Container extends React.Component {
     let conclusion_card = document.querySelector(".question-card[data-card-type='score']"),
       progress_bars = document.querySelectorAll(".progress-bar");
 
-    conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(total_cards * 320 * -1)}, ${(1 + 0.08 * total_cards)})`;
+    // conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(total_cards * 320 * -1)}, ${(1 + 0.08 * total_cards)})`;
 
     for(let i = 0; i < progress_bars.length; i++) {
       progress_bars[i].style.display = "block";
@@ -364,7 +425,7 @@ class Container extends React.Component {
 
   slideCallback(value) {
     this.setState({sliderValue: value});
-    let total_questions = this.state.total_questions,
+    let total_questions = this.state.totalQuestions,
       slider = document.querySelector(".card-slider"),
       percent = value / total_questions * 100,
       conclusion_card = document.querySelector(".question-card[data-card-type='score']");
@@ -380,7 +441,7 @@ class Container extends React.Component {
 
         q_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_questions) - order_no) * 24)}, ${(order_no * 320 * -1)}, ${(1 + 0.16 * order_no)})`
         q_card.style.display = "block";
-        q_card.style.left = "50%";
+        // q_card.style.left = "50%";
         q_card.style.top = "0px";
       }
     }
@@ -402,8 +463,7 @@ class Container extends React.Component {
       question_no = +q_card.getAttribute("data-question-no"),
       main_container_width = document.querySelector(".main-container").offsetWidth,
       next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']"),
-      config = this.state.configs,
-      total_cards = this.state.total_cards,
+      config = this.state.commonConfigs,
       back_div;
 
     if(next_card && card_no + 1 < total_cards - 1) {
@@ -474,7 +534,7 @@ class Container extends React.Component {
     if(this.state.timer) {
       this.clearTimer();
     }
-    let counter = this.state.time_per_question,
+    let counter = this.state.timePerQuestion,
       active_question = document.querySelector(".question-card.active"),
       card_no = +active_question.getAttribute('data-card-no'),
       question_no = +active_question.getAttribute('data-question-no'),
@@ -525,13 +585,12 @@ class Container extends React.Component {
     slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 100%, #EEE 100%)";
   }
 
-
   addOptionBasedContent(option) {
     let q_card = document.querySelector(".question-card.active"),
       parent = q_card.querySelector(".content"),
       card_no = q_card.getAttribute("data-card-no"),
       question_no = q_card.getAttribute('data-question-no'),
-      config = this.state.configs;
+      config = this.state.commonConfigs;
 
     if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
       let back_div = parent.querySelector(".back");
@@ -612,7 +671,6 @@ class Container extends React.Component {
     }
   }
 
-
   showSlider() {
     document.querySelector(".card-slider").style.display = "block";
   }
@@ -642,10 +700,36 @@ class Container extends React.Component {
     }, 1000);
   }
 
+  // getMaxContentCardDataIndexes() {
+  //   let q_index = 0,
+  //     o_index = 0,
+  //     max_length = 0;
+
+  //   this.card_data.forEach((q, i) => {
+  //     q.options.forEach((o, j) => {
+  //       let length = 0;
+
+  //       if(o.fact) {
+  //         length += o.fact.length;
+  //       }
+  //       if(length > max_length) {
+  //         max_length = length;
+  //         q_index = i;
+  //         o_index = j;
+  //       }
+  //     });
+  //   });
+
+  //   return {
+  //     q_index: q_index,
+  //     o_index: o_index
+  //   }
+  // }
+
   renderMainContainerContent(cards) {
-    if (this.state.fetching_questions) {
+    if (this.state.fetchingQuestions) {
       return (
-        <div className='main-container'>
+        <div className='quiz-container'>
           <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
               Fetching Questions ...
@@ -655,58 +739,180 @@ class Container extends React.Component {
       )
     } else {
       return (
-        <div className='main-container'>
-          <div id="correct_indicator" className="correct-wrong-indicator correct-background">
-            <div className="tick-background">
-              <span className="correct-tick">&#10004;</span>
-            </div>
-            <div className="correct-wrong-text">Correct</div>
-          </div>
-          <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
-            <div className="tick-background wrong-tick">
-              <span>&#10007;</span>
-            </div>
-            <div className="correct-wrong-text wrong">Wrong</div>
-          </div>
-          <div id="time_out_indicator" className="time-out-indicator">
-            <div className="time-out-content">
-              <div className="clock-icon"></div>
-              <div className="time-value">00:00</div>
-              <div className="oops-msg">Oops!</div>
-              <div className="times-up-msg">Time's up</div>
-            </div>
-          </div>
-          <div id="card_stack" className="card-stack">
-            {cards}
-            <div id="next" className="next" onClick={(e) => this.nextCard(e)}>{this.state.language_texts.next}</div>
-            <div id="reset" className="reset" >{this.state.language_texts.restart}</div>
+        <div className="quiz-container">
+          <div className="quiz-content">
             {
-              window.innerWidth <= 500 ? <div className='help-text' id="help_text">{this.state.language_texts.swipe}</div> : undefined
+              !this.state.isMobile ?
+                <div className="intro-container">
+                  <div className="intro-content">
+                    <div className="intro-header"></div>
+                    <div className="intro-description"></div>
+                    <div className="intro-button-div">
+                      <button className="intro-button"></button>
+                    </div>
+                  </div>
+                  <div className="intro-cover"></div>
+                </div>
+              :
+                undefined
             }
+            <div id="main_container" className="main-container">
+              <div id="fb-root"></div>
+              <div id="correct_indicator" className="correct-wrong-indicator correct-background">
+                <div className="tick-background">
+                  <span className="correct-tick">&#10004;&#xFE0E;</span>
+                </div>
+                <div className="correct-wrong-text">Correct</div>
+              </div>
+              <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
+                <div className="tick-background wrong-tick">
+                  <span>&#10007;&#xFE0E;</span>
+                </div>
+                <div className="correct-wrong-text wrong">Wrong</div>
+              </div>
+              <div id="time_out_indicator" className="time-out-indicator">
+                <div className="time-out-content">
+                  <div className="clock-icon">
+                    <img src="src/images/clock-large.png" />
+                  </div>
+                  <div className="time-value">00:00</div>
+                  <div className="oops-msg">Oops!</div>
+                  <div className="times-up-msg">Time's up</div>
+                </div>
+              </div>
+
+              <IntroductionCard
+                introCardConfigs={this.state.introCardConfigs}
+                startQuiz={((e) => this.startQuiz(e))}
+              />
+
+              <div id="card_stack" className="card-stack">
+                {cards}
+                {
+                  this.state.isMobile ? <div className='help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
+                }
+              </div>
+
+              <ResultCard
+                introCardConfigs={this.state.introCardConfigs}
+                cardConfigs={this.state.commonConfigs}
+                resultCardConfigs={this.state.resultCardConfigs}
+                totalQuestions={this.state.totalQuestions}
+                score={this.state.score}
+              />
+
+              <div className="slider-container">
+                <div className="slider-hint">use slider to move between questions</div>
+                <span className="slider-card-no">5</span>
+                <input
+                  className="card-slider"
+                  name="card_slider"
+                  type="range"
+                  step="1"
+                  min="0"
+                  max={this.state.totalQuestions}
+                  value={this.state.sliderValue}
+                  onInput={((e) => { this.slideCallback(e.target.value); })}
+                />
+              </div>
+            </div>
           </div>
-          <input className="card-slider" name="card_slider" type="range" step="1" min="0" max={this.state.total_questions} value={this.state.sliderValue} onInput={((e) => { this.slideCallback(e.target.value); })}/>
         </div>
       )
     }
   }
 
+  // getCardHeight() {
+  //   let max_height = this.state.card_height,
+  //     total_cards = this.state.total_cards,
+  //     total_questions = this.state.total_questions,
+  //     intro_header_bcr = document.querySelector(".intro-header").offsetHeight,
+  //     intro_desc_bcr = document.querySelector(".intro-description").offsetHeight,
+  //     intro_button_bcr = document.querySelector(".intro-button").offsetHeight,
+  //     intro_height = (intro_header_bcr + intro_desc_bcr + intro_button_bcr + 50),
+  //     dimension_obj = {};
+
+  //   if(intro_height > max_height) {
+  //     max_height = intro_height;
+  //   }
+
+  //   if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
+  //     let max_back = document.querySelector(".max-content"),
+  //       b_title = max_back.querySelector(".title").offsetHeight,
+  //       b_ans = max_back.querySelector(".answers-container").offsetHeight,
+  //       b_gif = 150,
+  //       b_fact = max_back.querySelector(".fact").offsetHeight,
+  //       b_num = max_back.querySelector(".question-number").offsetHeight,
+  //       b_swipe = max_back.querySelector(".swipe-hint-container").offsetHeight,
+  //       back_height = b_title + b_ans + b_gif + b_fact + b_num + b_swipe + 85;
+
+  //     dimension_obj.back_height_without_fact = back_height - b_fact;
+
+  //     if(back_height > max_height) {
+  //       max_height = back_height;
+  //     }
+  //   }
+
+  //   for(let i = 0; i < questions.length; i++) {
+  //     let q_title = 0,
+  //       q_options = questions[i].querySelectorAll(".option-div"),
+  //       q_num = questions[i].querySelector(".question-number").offsetHeight,
+  //       q_que = questions[i].querySelector(".question").offsetHeight,
+  //       q_height,
+  //       order_id = +questions[i].getAttribute("data-order");
+
+  //     q_height = q_title + q_que + q_num + 100;
+
+  //     for(let j = 0; j < q_options.length; j++) {
+  //       q_height += (q_options[j].offsetHeight + 15);
+  //     }
+
+  //     if(q_height > max_height) {
+  //       max_height = q_height;
+  //     }
+  //     questions[i].style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + ((total_questions - 1 - order_id) * 20) + ", " + ((order_id + 1) * 320 * -1) + ", " + (1 + 0.08 * (order_id + 1)) + ")";
+  //     if(i > 1) {
+  //       questions[i].style.opacity = 0;
+  //     }
+  //   }
+
+  //   let conclu_result = document.querySelector(".conclusion-card .result-container").offsetHeight,
+  //     conclu_buttons = document.querySelector(".conclusion-card .buttons-container").offsetHeight,
+  //     conclu_links = document.querySelector(".conclusion-card .links-container").offsetHeight,
+  //     slider_height = document.querySelector(".slider-container").offsetHeight,
+  //     conclu_height = (conclu_result + conclu_buttons + conclu_links + slider_height + 235); //45 + 20 + 70 *2 + 50
+  //   console.log("conclu_result", conclu_result);
+  //   console.log("conclu_buttons", conclu_buttons);
+  //   console.log("conclu_links", conclu_links);
+  //   console.log("conclu_height", conclu_height);
+  //   if(conclu_height > max_height) {
+  //     max_height = conclu_height;
+  //   }
+
+  //   if(max_height > card_height) {
+  //     card_height = max_height;
+  //   }
+  //   dimension_obj.card_height = card_height;
+  //   return dimension_obj;
+  // }
+
   render() {
     let styles = {},
-      x = this.state.card_meta_data.length * 16,
+      x = this.state.totalQuestions * 16,
       y = 0,
       z = 1,
       cards,
       question_card_count = 0;
 
-    if(this.state.configs.font_family) {
-      document.querySelector('.main-container').style.fontFamily = this.state.configs.font_family;
+    if(this.state.commonConfigs.font_family) {
+      document.querySelector('.main-container').style.fontFamily = this.state.commonConfigs.font_family;
     }
 
-    cards = this.state.card_meta_data.map((card, i) => {
+    cards = this.state.questionsData.map((card, i) => {
       const style = {},
         events = {};
 
-      style.zIndex = this.state.card_meta_data.length - i;
+      style.zIndex = this.state.totalQuestions - i;
       style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
 
       if(i < 3) {
@@ -715,64 +921,41 @@ class Container extends React.Component {
         style.opacity = 0;
       }
 
-      if (this.state.is_mobile) {
-        style.width = (window.innerWidth - 20) + "px";
-        style.marginLeft = (-(window.innerWidth - 20) / 2) + "px";
-      }
-
       x = x - 16;
       y = y - 320;
       z = z + 0.08;
 
-      switch (card.card_type) {
-        case 'intro':
-          events.startQuiz = ((e) => this.startQuiz(e));
-          break;
-        case 'qa':
-          //Updating the count of question cards.
-          question_card_count += 1;
-          events.optionClick = ((e) => this.optionClicked(e));
-          events.nextCard = ((e) => this.nextCard(e));
-          if (this.state.is_mobile) {
-            events.onTouchStart = ((e) => Touch.swipeStart(e));
-            events.onTouchMove = ((e) => Touch.swipeMove(e));
-            events.onTouchEnd = ((e) => this.touchEndHandler(e));
-          }
-          break;
-        case 'score':
-          events.resetQuiz = ((e) => this.resetQuiz(e));
-          events.revisitAnswers = ((e) => this.revisitAnswers(e));
-          break;
+      // events.startQuiz = ((e) => this.startQuiz(e));
+      events.optionClick = ((e) => this.optionClicked(e));
+      events.nextCard = ((e) => this.nextCard(e));
+
+      if (this.state.isMobile) {
+        events.onTouchStart = ((e) => Touch.swipeStart(e));
+        events.onTouchMove = ((e) => Touch.swipeMove(e));
+        events.onTouchEnd = ((e) => this.touchEndHandler(e));
       }
+
+      // events.resetQuiz = ((e) => this.resetQuiz(e));
+      // events.revisitAnswers = ((e) => this.revisitAnswers(e));
 
       return (
         <Card
-          key={card.id}
+          key={i}
           cardNo={i}
-          cardId={card.id}
-          cardType={card.card_type}
+          questionNo={this.formatNumber(i + 1)}
           cardStyle={style}
-          cardData={this.state.card_data[i]}
+          cardData={this.state.questionsData[i]}
           cardEvents={events}
-          cardConfigs = {this.state.configs}
-          introCardConfigs={this.state.intro_card_configs}
-          languageTexts={this.state.language_texts}
-          resultCardConfigs = {this.state.result_card_configs}
-          questionNo={card.card_type === 'qa' ? this.formatNumber(question_card_count) : undefined}
-          totalCards={this.formatNumber(this.state.total_cards)}
-          totalQuestionCards={this.formatNumber(this.state.total_questions)}
-          score={this.state.score}
-          isMobile={this.state.is_mobile}
-          timerValue={this.calculateTime(this.state.timer_count_value)} />
+          cardConfigs = {this.state.commonConfigs}
+          languageTexts={this.state.languageTexts}
+          totalQuestions={this.formatNumber(this.state.totalQuestions)}
+          isMobile={this.state.isMobile}
+          timerValue={this.calculateTime(this.state.timerCountValue)} />
       )
     });
 
     return this.renderMainContainerContent(cards)
   }
-}
-
-Container.defaultProps = {
-  containerURL: '/src/js/container.json'
 }
 
 export default Container;

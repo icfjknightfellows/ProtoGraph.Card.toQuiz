@@ -9,23 +9,23 @@ function renderTimer(props, state) {
           +props.timerValue.sec < 11 ? <span className='danger'>{`${props.timerValue.sec}`}</span> : `${props.timerValue.sec}`
         }
       </span>
+      <img className='timer-img' src='./src/images/clock-small.png'/>
     </div>
   )
 }
 
-
-export function render (props, state) {
+export default function render (props, state) {
   return (
     <div className="content" >
       <div
         className="front"
-        onTouchStart={ props.isMobile && props.cardConfigs.flip_card !== "yes" ? props.cardEvents.onTouchStart : undefined }
-        onTouchMove={ props.isMobile && props.cardConfigs.flip_card !== "yes" ? props.cardEvents.onTouchMove : undefined }
-        onTouchEnd={ props.isMobile && props.cardConfigs.flip_card !== "yes" ? props.cardEvents.onTouchEnd : undefined }
+        onTouchStart={ props.isMobile && !props.cardConfigs.flip_card ? props.cardEvents.onTouchStart : undefined }
+        onTouchMove={ props.isMobile && !props.cardConfigs.flip_card ? props.cardEvents.onTouchMove : undefined }
+        onTouchEnd={ props.isMobile && !props.cardConfigs.flip_card ? props.cardEvents.onTouchEnd : undefined }
         >
-        { props.cardConfigs.quiz_type === "scoring" && props.cardConfigs.timer === "yes" ? renderTimer(props, state) : undefined }
+        { props.cardConfigs.quiz_type === "scoring" && props.cardConfigs.timer ? renderTimer(props, state) : undefined }
         <div className='question-number'>
-          <span className="current-question">{props.questionNo}</span>{`/${props.totalQuestionCards}`}
+          <span className="current-question">{props.questionNo}</span>{`/${props.totalQuestions}`}
         </div>
         <div className='question'>{props.cardData.question}</div>
         <div className='option-container'>
@@ -49,7 +49,7 @@ export function render (props, state) {
           </div> : undefined
         }
         <div className="progress-bar">
-          <div className="progress-indicator" style={{width: (+props.questionNo * 100 / +props.totalQuestionCards) + "%"  }}></div>
+          <div className="progress-indicator" style={{width: (+props.questionNo * 100 / +props.totalQuestions) + "%"  }}></div>
         </div>
         <div id="credits" className="credits" >
           <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
@@ -57,12 +57,12 @@ export function render (props, state) {
       </div>
       <div
         className="back"
-        onTouchStart={ props.isMobile && props.cardConfigs.flip_card === "yes" ? props.cardEvents.onTouchStart : undefined }
-        onTouchMove={ props.isMobile && props.cardConfigs.flip_card === "yes" ? props.cardEvents.onTouchMove : undefined }
-        onTouchEnd={ props.isMobile && props.cardConfigs.flip_card === "yes" ? props.cardEvents.onTouchEnd : undefined }
+        onTouchStart={ props.isMobile && props.cardConfigs.flip_card ? props.cardEvents.onTouchStart : undefined }
+        onTouchMove={ props.isMobile && props.cardConfigs.flip_card ? props.cardEvents.onTouchMove : undefined }
+        onTouchEnd={ props.isMobile && props.cardConfigs.flip_card ? props.cardEvents.onTouchEnd : undefined }
         >
         <div className='question-number'>
-          <span className="current-question">{props.questionNo}</span>{`/${props.totalQuestionCards}`}
+          <span className="current-question">{props.questionNo}</span>{`/${props.totalQuestions}`}
         </div>
         <div className="title">Answer</div>
         <div className="answers-container">
@@ -71,7 +71,7 @@ export function render (props, state) {
             <span className="cross-marker">✕</span>
           </div>
           <div className="correct-answer">
-            <span className="option-text">{props.cardData.options.filter((e) => { return e.right_or_wrong === "right" })[0].option}</span>
+            <span className="option-text">{props.cardData.options.filter((e) => { return e.right_or_wrong === true })[0].option}</span>
             <span className="tick-marker">✓</span>
           </div>
         </div>
@@ -82,7 +82,7 @@ export function render (props, state) {
         <div className="answer"></div>
         <div className="fact"></div>
         <div className="progress-bar">
-          <div className="progress-indicator" style={{width: (+props.questionNo * 100 / +props.totalQuestionCards) + "%"  }}></div>
+          <div className="progress-indicator" style={{width: (+props.questionNo * 100 / +props.totalQuestions) + "%"  }}></div>
         </div>
         <div id="credits" className="credits" >
           <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
