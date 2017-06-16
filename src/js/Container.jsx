@@ -144,11 +144,11 @@ class Container extends React.Component {
           questionsData: this.processQuestionsData(sheetData.quiz.elements),
           commonConfigs: this.processCommonConfigs(sheetData.common_configs.elements[0]),
           introCardConfigs: sheetData.intro_card_configs.elements[0],
-          totalCards: (sheetData.quiz.elements.length + 2),
-          totalQuestions: sheetData.quiz.elements.length,
           sliderValue: 0
         };
 
+        stateVar.totalQuestions = stateVar.questionsData.length;
+        stateVar.totalCards = (stateVar.questionsData.length + 2);
         stateVar.languageTexts = this.getLanguageTexts(stateVar.commonConfigs);
         stateVar.resultCardConfigs = sheetData.result_card.elements ? this.processResultData(sheetData.result_card.elements, stateVar.commonConfigs) : undefined;
 
@@ -209,7 +209,7 @@ class Container extends React.Component {
   }
 
   startCountdown() {
-    let countdown_value = document.querySelector('.question-card[data-card-type="intro"] .countdown-counter'),
+    let countdown_value = document.querySelector(".intro-card .countdown-counter"),
       countdown_interval,
       counter = 3;
 
@@ -227,68 +227,66 @@ class Container extends React.Component {
 
   // EVENTS
   startQuiz(e) {
-    let q_card = document.querySelector(".question-card.active"),
-      card_no = +q_card.getAttribute("data-card-no"),
-      main_container_width = document.querySelector(".main-container").offsetWidth,
-      back_div,
+    let button = document.querySelector(".intro-button"),
+      introCard = document.querySelector(".intro-card"),
+      introFront = document.querySelector(".intro-front"),
+      firstQCard = document.querySelector(".question-card[data-order='0']"),
+      totalQuestions = this.state.totalQuestions,
       config = this.state.commonConfigs;
 
-    e.target.style.display = "none";
-    q_card.classList.add("clicked");
-    q_card.classList.remove("active");
+    introFront.style.display = "none";
+    document.querySelector(".intro-back").style.display = "block";
+
+    if(!this.state.isMobile) {
+      e.target.style.visibility = "hidden";
+      document.querySelector(".intro-cover").style.display = "block";
+    }
+    introCard.classList.add("clicked");
 
     this.startCountdown();
 
     setTimeout(() => {
-      q_card.style.top = "-1000px";
-      // if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-      //   first_q_card.querySelector(".back").style.display = "none";
-      // }
-      let next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']");
-      if(next_card) {
-        next_card.classList.add("active");
+      introCard.style.top = "-1000px";
+      if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
+        firstQCard.querySelector(".back").style.display = "none";
       }
 
-      for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
-        let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
-          position = (i - card_no - 1);
+      firstQCard.classList.add("active");
+      firstQCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${((totalQuestions) * 20)}, 0, 1)`;
 
-        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)},  ${(position * 320 * -1)} , ${(1 + 0.08 * position)})`;
-        // card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
-        if(count > 2) {
+      for(let i = 1; i < totalQuestions; i++) {
+        let card = document.querySelector(`.question-card[data-order='${i}']`);
+
+        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - i) * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+        if(i > 2) {
           card.style.opacity = 0;
         } else {
           card.style.opacity = 1;
         }
       }
 
-      if(config.quiz_type === "scoring" && config.timer === "yes") {
-        this.setTimer();
+      let conclusionCard = document.querySelector(".conclusion-card");
+      conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+      if(totalQuestions < 3) {
+        conclusionCard.style.opacity = 1;
       }
 
+      if(config.quiz_type === "scoring" && config.timer) {
+        this.setTimer();
+      }
     }, 4000);
-
-    // if(config.quiz_type === "scoring") {
-    //   let conclusion_card = document.querySelector(".conclusion-card"),
-    //     position = total_cards - card_no - 1;
-    //   conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
-    // }
   }
 
   optionClicked(e) {
-    let q_card = e.target.closest(".question-card"),
-      question_no = +q_card.getAttribute('data-question-no'),
-      card_no = +q_card.getAttribute('data-card-no'),
-      parent = e.target.closest(".content"),
-      back_div,
+    let qCard = e.target.closest(".question-card"),
       config = this.state.commonConfigs,
-      total_questions = this.state.totalQuestions,
-      card_data = this.state.card_data[card_no],
-      option = card_data.options[+e.target.getAttribute('data-option-id')],
-      result_card_data = this.state.resultCardConfigs;
+      totalQuestions = this.state.totalQuestions,
+      cardData = this.state.questionsData[+qCard.getAttribute('data-order')],
+      option = cardData.options[+e.target.getAttribute('data-option-id')],
+      resultCardData = this.state.resultCardConfigs;
 
     if(config.quiz_type === "scoring") {
-      if(config.timer === "yes") {
+      if(config.timer) {
         this.clearTimer();
       }
       if(option.right_or_wrong === "right") {
@@ -336,7 +334,7 @@ class Container extends React.Component {
       }
 
     }
-    if(config.quiz_type === "scoring" && config.timer === "yes") {
+    if(config.quiz_type === "scoring" && config.timer) {
       this.setTimer();
     }
   }
@@ -412,7 +410,7 @@ class Container extends React.Component {
     this.hideSlider();
 
     if(config.quiz_type === "scoring") {
-      if(config.timer === "yes") {
+      if(config.timer) {
         this.setTimer();
       }
     }
@@ -458,66 +456,75 @@ class Container extends React.Component {
   }
 
   swipeCallback(direction) {
-    let q_card = document.querySelector(".question-card.active"),
-      card_no = +q_card.getAttribute("data-card-no"),
-      question_no = +q_card.getAttribute("data-question-no"),
-      main_container_width = document.querySelector(".main-container").offsetWidth,
-      next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']"),
+    let qCard = document.querySelector(".question-card.active"),
+      orderId = +qCard.getAttribute("data-order"),
+      mainContainerWidth = document.querySelector(".main-container").offsetWidth,
+      nextCard = document.querySelector(".question-card[data-order='" + (orderId + 1) + "']"),
       config = this.state.commonConfigs,
-      back_div;
+      totalQuestions = this.state.totalQuestions,
+      backDiv;
 
-    if(next_card && card_no + 1 < total_cards - 1) {
-      next_card.classList.add("active");
+    if(nextCard) {
+      nextCard.classList.add("active");
       if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-        back_div = next_card.querySelector(".back");
-        back_div.style.display = "none";
+        backDiv = nextCard.querySelector(".back");
+        backDiv.style.display = "none";
       }
-      if(config.quiz_type === "scoring" && config.timer === "yes") {
+      if(config.quiz_type === "scoring" && config.timer) {
         this.setTimer();
       }
     } else {
-      if(config.quiz_type === "scoring") {
-        let progress_bars = document.querySelectorAll(".progress-bar");
 
-        for(let i = 0; i < progress_bars.length; i++) {
-          progress_bars[i].style.display = "none";
-        }
+      document.querySelectorAll(".progress-bar").forEach((e) => {
+        e.style.display = 'none';
+      });
 
-        if(config.flip_card === "yes") {
-          let swipe_container = document.querySelectorAll(".question-card[data-card-type='qa'] .back .swipe-hint-container");
-          swipe_container.forEach((e) => {
-            e.style.display = 'none';
-          });
-        } else {
-          let swipe_container = document.querySelectorAll(".question-card[data-card-type='qa'] .front .swipe-hint-container");
-          swipe_container.forEach((e) => {
-            e.style.display = 'none';
-          });
-        }
+      if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
+        document.querySelectorAll('.question-card .back .swipe-hint-container').forEach((e) => {
+          e.style.display = 'none';
+        });
+        document.querySelectorAll('.question-card .back .next-container').forEach((e) => {
+          e.style.display = 'none';
+        });
+      } else {
+        document.querySelectorAll('.question-card .front .swipe-hint-container').forEach((e) => {
+          e.style.display = 'none';
+        });
+        document.querySelectorAll('.question-card .front .next-container').forEach((e) => {
+          e.style.display = 'none';
+        });
       }
     }
 
-    document.getElementById('next').style.display = "none";
-    q_card.classList.remove("active");
-
+    qCard.classList.remove("active");
     switch(direction) {
       case "left":
-        q_card.style.left = "-1000px";
+        qCard.style.left = "-1000px";
         break;
       case "right":
-        q_card.style.left = (main_container_width + 500) + "px";
+        qCard.style.left = (mainContainerWidth + 500) + "px";
         break;
       case "up":
-        q_card.style.top = "-1000px";
+        qCard.style.top = "-1000px";
         break;
     }
 
-    for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
-      let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
-        position = (i - card_no - 1);
+    for(let i = (orderId + 1); i < totalQuestions; i++) {
+      let card = document.querySelector(`.question-card[data-order='${i}']`),
+        position = (i - orderId - 1);
 
-      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
-      count > 2 ? card.style.opacity = 0 : card.style.opacity = 1;
+      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - position) * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+      if((i - orderId) < 4) {
+        card.style.opacity = 1;
+      }
+    }
+
+    let conclusionCard = document.querySelector(".conclusion-card"),
+      position = totalQuestions - orderId - 1;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - position) * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+    console.log((totalQuestions - orderId) < 4, totalQuestions, orderId);
+    if((totalQuestions - orderId) < 4) {
+      conclusionCard.style.opacity = 1;
     }
   }
 
@@ -586,86 +593,103 @@ class Container extends React.Component {
   }
 
   addOptionBasedContent(option) {
-    let q_card = document.querySelector(".question-card.active"),
-      parent = q_card.querySelector(".content"),
-      card_no = q_card.getAttribute("data-card-no"),
-      question_no = q_card.getAttribute('data-question-no'),
+
+    let qCard = document.querySelector(".question-card.active"),
+      parent = qCard.querySelector(".content"),
+      orderId = qCard.getAttribute("data-order"),
       config = this.state.commonConfigs;
 
-    if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-      let back_div = parent.querySelector(".back");
-      back_div.style.display = "block";
+    if(!(config.quiz_type === "scoring" && !config.flip_card)) {
+      let backDiv = parent.querySelector(".back");
 
       if(config.quiz_type === "scoring") {
         setTimeout(function() {
-          q_card.classList.add("clicked");
+          qCard.classList.add("clicked");
           if(option.right_or_wrong === "right") {
-            back_div.querySelector(".wrong-answer").style.display = "none";
-            back_div.querySelector(".correct-answer").classList.remove("deselected");
+            backDiv.querySelector(".wrong-answer").style.display = "none";
+            backDiv.querySelector(".correct-answer").classList.remove("deselected");
+            // back_div.querySelector('.correct-answer .option-text').innerHTML = option.option;
           } else {
-            back_div.querySelector(".wrong-answer").style.display = "block";
-            back_div.querySelector('.wrong-answer .option-text').innerHTML = option.option;
-            back_div.querySelector(".correct-answer").classList.add("deselected");
+            backDiv.querySelector(".wrong-answer").style.display = "block";
+            backDiv.querySelector('.wrong-answer .option-text').innerHTML = option.option;
+            backDiv.querySelector(".correct-answer").classList.add("deselected");
+            // for(let i = 0; i < q_obj.options.length; i++) {
+            //  if(q_obj.options[i].right_or_wrong === "right") {
+            //    back_div.querySelector('.correct-answer .option-text').innerHTML = q_obj.options[i].option;
+            //  }
+            // }
           }
-          parent.querySelector(".front").style.display = "none";
+          setTimeout(function() {
+            parent.querySelector(".front").style.display = "none";
+            backDiv.style.display = "block";
+          }, 100);
         }, 1100);
       } else {
-        q_card.classList.add("clicked");
-        parent.querySelector(".front").style.display = "none";
-        back_div.querySelector('.correct-answer').innerHTML = option.option;
+        qCard.classList.add("clicked");
+        setTimeout(function() {
+          parent.querySelector(".front").style.display = "none";
+          backDiv.style.display = "block";
+        }, 100);
+        backDiv.querySelector('.correct-answer').innerHTML = option.option;
       }
 
-      if(option.answer_description) {
-        back_div.querySelector(".answer").style.display = "block";
-        back_div.querySelector(".answer").innerHTML = "";
-        back_div.querySelector(".answer").appendChild(document.createTextNode(option.answer_description));
-      } else {
-        back_div.querySelector(".answer").style.display = "none";
-      }
+      // if(option.answer_description) {
+      //  back_div.querySelector(".answer").style.display = "block";
+      //  back_div.querySelector(".answer").innerHTML = "";
+      //  back_div.querySelector(".answer").appendChild(document.createTextNode(option.answer_description));
+      // } else {
+      //  back_div.querySelector(".answer").style.display = "none";
+      // }
 
       if(option.gif_image) {
-        back_div.querySelector(".gif-div").style.display = "block";
-        back_div.querySelector(".gif").onload = function (e) {
-          let img_client_rect = e.target.offsetWidth,
-            img_container_client_rect = back_div.querySelector(".gif-div").offsetWidth,
-            ideal_img_width = img_container_client_rect - 20;
+        backDiv.querySelector(".gif-div").style.display = "block";
+        backDiv.querySelector(".gif").onload = function (e) {
+          let imgClientRect = e.target.offsetWidth,
+            imgContainerClientRect = backDiv.querySelector(".gif-div").offsetWidth,
+            idealImgWidth = imgContainerClientRect - 20;
 
-          if(img_client_rect >= ideal_img_width) {
-            e.target.style.width = ideal_img_width + "px";
+          if(imgClientRect >= idealImgWidth) {
+            e.target.style.width = idealImgWidth + "px";
           }
         };
-        back_div.querySelector(".gif").setAttribute("src", option.gif_image);
+        backDiv.querySelector(".gif").setAttribute("src", option.gif_image);
       } else {
-        back_div.querySelector(".gif-div").style.display = "none";
+        backDiv.querySelector(".gif-div").style.display = "none";
       }
 
       if(option.fact) {
-        back_div.querySelector(".fact").style.display = "block";
-        back_div.querySelector(".fact").innerHTML = "";
-        back_div.querySelector(".fact").appendChild(document.createTextNode(option.fact));
+        backDiv.querySelector(".fact").style.display = "block";
+        backDiv.querySelector(".fact").innerHTML = "";
+        backDiv.querySelector(".fact").appendChild(document.createTextNode(option.fact));
       } else {
-        back_div.querySelector(".fact").style.display = "none";
+        backDiv.querySelector(".fact").style.display = "none";
       }
     } else {
       if(config.quiz_type === "scoring") {
-        let all_options = parent.querySelectorAll(".option-div"),
-          front_div = parent.querySelector(".front");
+        let allOptions = parent.querySelectorAll(".option-div"),
+          frontDiv = parent.querySelector(".front");
 
-        for(let j = 0; j < all_options.length; j++) {
-          all_options[j].style.display = "none";
+        // addTouchEvents(front_div, config, total_questions);
+
+        for(let j = 0; j < allOptions.length; j++) {
+          // all_options[j].style.pointerEvents = "none";
+          allOptions[j].style.display = "none";
         }
-
-        front_div.querySelector(".question").style.color = "grey";
-        front_div.querySelector(".title").style.display = "block";
-        front_div.querySelector(".answers-container").style.display = "block";
-        front_div.querySelector(".swipe-hint-container").style.display = "block";
-        if(option.right_or_wrong === "right") {
-          front_div.querySelector(".wrong-answer").style.display = "none";
-          front_div.querySelector(".correct-answer").classList.remove("deselected");
+        frontDiv.querySelector(".question").style.color = "#a8a8a8";
+        frontDiv.querySelector(".title").style.display = "block";
+        frontDiv.querySelector(".answers-container").style.display = "block";
+        if(this.state.isMobile) {
+          frontDiv.querySelector(".swipe-hint-container").style.display = "block";
         } else {
-          front_div.querySelector(".wrong-answer").style.display = "block";
-          front_div.querySelector('.wrong-answer .option-text').innerHTML = option.option;
-          front_div.querySelector(".correct-answer").classList.add("deselected");
+          frontDiv.querySelector(".next-container").style.display = "block";
+        }
+        if(option.right_or_wrong) {
+          frontDiv.querySelector(".wrong-answer").style.display = "none";
+          frontDiv.querySelector(".correct-answer").classList.remove("deselected");
+        } else {
+          frontDiv.querySelector(".wrong-answer").style.display = "block";
+          frontDiv.querySelector('.wrong-answer .option-text').innerHTML = option.option;
+          frontDiv.querySelector(".correct-answer").classList.add("deselected");
         }
       }
     }
@@ -784,6 +808,8 @@ class Container extends React.Component {
               <IntroductionCard
                 introCardConfigs={this.state.introCardConfigs}
                 startQuiz={((e) => this.startQuiz(e))}
+                totalQuestions={this.state.totalQuestions}
+                isMobile={this.state.isMobile}
               />
 
               <div id="card_stack" className="card-stack">
@@ -898,9 +924,9 @@ class Container extends React.Component {
 
   render() {
     let styles = {},
-      x = this.state.totalQuestions * 16,
-      y = 0,
-      z = 1,
+      x = (this.state.totalQuestions * 20) - 20,
+      y = 0 - 320,
+      z = 1 + 0.08,
       cards,
       question_card_count = 0;
 
@@ -915,13 +941,13 @@ class Container extends React.Component {
       style.zIndex = this.state.totalQuestions - i;
       style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
 
-      if(i < 3) {
+      if(i < 2) {
         style.opacity = 1;
       } else {
         style.opacity = 0;
       }
 
-      x = x - 16;
+      x = x - 20;
       y = y - 320;
       z = z + 0.08;
 

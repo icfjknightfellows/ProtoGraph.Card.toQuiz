@@ -15,6 +15,7 @@ function renderTimer(props, state) {
 }
 
 export default function render (props, state) {
+  const correctOption = props.cardData.options.filter((e) => { return e.right_or_wrong === true })[0].option
   return (
     <div className="content" >
       <div
@@ -24,10 +25,36 @@ export default function render (props, state) {
         onTouchEnd={ props.isMobile && !props.cardConfigs.flip_card ? props.cardEvents.onTouchEnd : undefined }
         >
         { props.cardConfigs.quiz_type === "scoring" && props.cardConfigs.timer ? renderTimer(props, state) : undefined }
+        { props.cardConfigs.quiz_type === "scoring" && props.cardConfigs.timer && !props.cardConfigs.flip_card ?
+            <div className='timeout-msg'>Timed out!</div>
+          :
+            undefined
+        }
         <div className='question-number'>
           <span className="current-question">{props.questionNo}</span>{`/${props.totalQuestions}`}
         </div>
         <div className='question'>{props.cardData.question}</div>
+        {
+          props.cardConfigs.quiz_type === "scoring" && !props.cardConfigs.flip_card ?
+            <div id={`title_${(props.cardNo + 1)}`} className="title">ANSWER</div>
+          :
+            undefined
+        }
+        {
+          props.cardConfigs.quiz_type === "scoring" && !props.cardConfigs.flip_card ?
+            <div className="answers-container">
+              <div className="wrong-answer">
+                <span className="option-text"></span>
+                <span className="cross-marker">&#10005;</span>
+              </div>
+              <div id={`correct_answer${(props.cardNo + 1)}`} className="correct-answer">
+                <span className="option-text">{correctOption}</span>
+                <span className="tick-marker">&#10003;</span>
+              </div>
+            </div>
+          :
+            undefined
+        }
         <div className='option-container'>
           {
             props.cardData.options.map((d, i) => {
@@ -71,7 +98,7 @@ export default function render (props, state) {
             <span className="cross-marker">✕</span>
           </div>
           <div className="correct-answer">
-            <span className="option-text">{props.cardData.options.filter((e) => { return e.right_or_wrong === true })[0].option}</span>
+            <span className="option-text">{correctOption}</span>
             <span className="tick-marker">✓</span>
           </div>
         </div>

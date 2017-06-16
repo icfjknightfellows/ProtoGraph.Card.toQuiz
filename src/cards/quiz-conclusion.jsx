@@ -3,15 +3,34 @@ import ReactDOM from 'react-dom';
 
 export default class ResultCard extends React.Component {
   render() {
-    let button_size_css = '';
-    if (this.props.cardConfigs.social_share === 'no' && this.props.cardConfigs.revisit_answers === 'no') {
-      button_size_css = 'full-size';
-    }else if (this.props.cardConfigs.social_share === 'no' || this.props.cardConfigs.revisit_answers === 'no') {
-      button_size_css = 'half-size';
+
+    const conclusionCardStyle = {};
+    let replayStyleCss = '',
+      revisitStyleCss = '',
+      shareStyleCss = '';
+
+    conclusionCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${((+this.props.totalQuestions + 1) * 320 * -1)}, ${(1 + 0.08 * (+this.props.totalQuestions + 1))})`;
+    if(+this.props.totalQuestions > 1) {
+      conclusionCardStyle.opacity = 0;
+    }
+    console.log(this.props.cardConfigs.social_share, this.props.cardConfigs.revisit_answers);
+
+    if(!this.props.cardConfigs.social_share) {
+      revisitStyleCss = 'half-size';
+    }
+
+    if(this.props.cardConfigs.revisit_answers === false && this.props.cardConfigs.social_share === false) {
+      replayStyleCss = 'full-size';
+    } else if(this.props.cardConfigs.revisit_answers === false || this.props.cardConfigs.social_share === false) {
+      replayStyleCss = 'half-size';
+    }
+
+    if(!this.props.cardConfigs.revisit_answers) {
+      shareStyleCss = 'half-size';
     }
 
     return (
-      <div className="conclusion-card">
+      <div className="conclusion-card" style={conclusionCardStyle}>
         <div className='content'>
           <div className='front'>
             <div id="result_container" className="result-container">
@@ -19,7 +38,7 @@ export default class ResultCard extends React.Component {
               <div className="result-text">Thank you!</div>
               <div className="result-score">
                 {
-                  this.props.cardConfigs.timer === 'yes' ?
+                  this.props.cardConfigs.timer ?
                     `${this.props.score} / ${this.props.totalQuestions * this.props.cardConfigs.time_per_question}` :
                     `${this.props.score} / ${+this.props.totalQuestions}`
                 }
@@ -27,23 +46,23 @@ export default class ResultCard extends React.Component {
             </div>
             <div id="buttons_container" className="buttons-container">
               {
-                this.props.cardConfigs.revisit_answers === 'yes' ?
-                  <div id="revisit" className="revisit card-button" onClick={((e) => this.revisitAnswers(e))} >
+                this.props.cardConfigs.revisit_answers ?
+                  <div id="revisit" className={`revisit card-button ${revisitStyleCss}`} onClick={((e) => this.revisitAnswers(e))} >
                     <img className="card-button-img" src="./src/images/revisit.png" />
                     <div className="card-button-text">Revisit Answers</div>
                   </div>
                 :
-                 undefined
+                  undefined
               }
 
-              <div id="replay" className={`replay card-button ${button_size_css}`}  onClick={((e) => this.resetQuiz(e))} >
+              <div id="replay" className={`replay card-button ${replayStyleCss}`}  onClick={((e) => this.resetQuiz(e))} >
                 <img className="card-button-img" src="./src/images/replay.png" />
                 <div className="card-button-text">Play Again</div>
               </div>
 
               {
-                this.props.cardConfigs.social_share === 'yes' ?
-                  <div id="share" className="share card-button" onClick={(e) => {e.target.closest('.question-card').classList.add("clicked")}}>
+                this.props.cardConfigs.social_share ?
+                  <div id="share" className={`share card-button ${shareStyleCss}`} onClick={(e) => {e.target.closest('.question-card').classList.add("clicked")}}>
                     <img className="card-button-img" src="./src/images/share.png" />
                     <div className="card-button-text">Share</div>
                   </div>

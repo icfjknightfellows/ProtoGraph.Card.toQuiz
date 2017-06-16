@@ -9,7 +9,7 @@ class Card extends React.Component {
       <div
         id='question_card'
         className={this.props.cardNo === 0 ? 'question-card active' : 'question-card'}
-        data-card-no={this.props.cardNo}
+        data-order={this.props.cardNo}
         style={this.props.cardStyle}
         data-card-type={this.props.cardType}>
         { RenderQuestionCard(this.props, this.state) }
