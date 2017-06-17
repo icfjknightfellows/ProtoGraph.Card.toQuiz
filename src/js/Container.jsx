@@ -289,7 +289,7 @@ class Container extends React.Component {
       if(config.timer) {
         this.clearTimer();
       }
-      if(option.right_or_wrong === "right") {
+      if(option.right_or_wrong) {
         this.setState((prevState, props) => {
           return {
             right_counter: prevState.right_counter + 1,
