@@ -4,11 +4,34 @@ import Utility from '../js/utility.js';
 
 export default class ResultCard extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      resultTextMessage: 'Thank you!'
-    };
+  componentDidMount() {
+    setTimeout(function() {
+      //twitter
+      window.twttr = (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0],
+          t = window.twttr || {};
+        if (d.getElementById(id)) return t;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        t._e = [];
+        t.ready = function(f) {
+          t._e.push(f);
+        };
+
+        return t;
+      }(document, "script", "twitter-wjs"));
+      //fb
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8";
+        fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    }, 500);
   }
 
   renderReadingLinks() {
@@ -131,7 +154,7 @@ export default class ResultCard extends React.Component {
 
               {
                 this.props.cardConfigs.social_share ?
-                  <div id="share" className={`share card-button ${shareStyleCss}`} onClick={(e) => {e.target.closest('.question-card').classList.add("clicked")}}>
+                  <div id="share" className={`share card-button ${shareStyleCss}`} onClick={this.props.cardEvents.socialShare}>
                     <img className="card-button-img" src="./src/images/share.png" />
                     <div className="card-button-text">Share</div>
                   </div>
@@ -166,24 +189,28 @@ export default class ResultCard extends React.Component {
               </div>
             </div>
             <div className="share-buttons-div">
-              <div
-                className="fb-share-button"
-                data-href={`${this.props.cardConfigs.share_link}`}
-                data-layout="button"
-                data-size="large"
-                data-mobile-iframe="true">
+              <div className='fb-div'>
+                <div
+                  className="fb-share-button"
+                  data-href={`${this.props.cardConfigs.share_link}`}
+                  data-layout="button"
+                  data-size="large"
+                  data-mobile-iframe="true">
+                  <a
+                    className="fb-xfbml-parse-ignore"
+                    target="_blank"
+                    href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">
+                    Share
+                  </a>
+                </div>
+              </div>
+              <div className='twitter-div'>
                 <a
-                  className="fb-xfbml-parse-ignore"
-                  target="_blank"
-                  href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">
-                  Share
+                  className="twitter-share-button"
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.props.cardConfigs.share_msg)}&url=${encodeURIComponent(this.props.cardConfigs.share_link)}`}
+                  data-size="large">Tweet
                 </a>
               </div>
-              <a
-                className="twitter-share-button"
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.props.cardConfigs.share_msg)}&url=${encodeURIComponent(this.props.cardConfigs.share_link)}`}
-                data-size="large">Tweet
-              </a>
               <div className="clearfix"></div>
             </div>
             <div className="back-link">Go Back</div>
@@ -194,6 +221,5 @@ export default class ResultCard extends React.Component {
         </div>
       </div>
     )
-
   }
 }

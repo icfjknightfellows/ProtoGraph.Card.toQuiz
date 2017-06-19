@@ -30,6 +30,7 @@ class Container extends React.Component {
       timePerQuestion: 30,
       questionScore: 1,
       timer: undefined,
+      revisitingAnswers: false,
       isMobile: window.innerWidth <= 500
     };
   }
@@ -598,40 +599,75 @@ class Container extends React.Component {
   revisitAnswers(e) {
     this.showSlider();
     this.slideCallback(0);
+    this.setState({revisitAnswers: true});
   }
 
   slideCallback(value) {
     this.setState({sliderValue: value});
-    let total_questions = this.state.totalQuestions,
-      slider = document.querySelector(".card-slider"),
-      percent = value / total_questions * 100,
-      conclusion_card = document.querySelector(".question-card[data-card-type='score']");
+    let slider = document.querySelector(".card-slider"),
+      sliderWidth = parseFloat(slider.style.width),
+      sliderHint = document.querySelector(".slider-hint"),
+      cardNum = document.querySelector(".slider-card-no"),
+      totalQuestions = this.state.totalQuestions,
+      percent = value / totalQuestions * 100,
+      conclusionCard = document.querySelector(".conclusion-card");
 
     slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 " + percent + "%, #EEE " + percent + "%)";
 
-    for(let i = 1; i < total_questions; i++) {
-      let q_card = document.querySelector(`.question-card[data-question-no='${i}']`);
-      if(i < value) {
-        q_card.style.top = "-1000px";
-      } else {
-        let order_no = i - value;
+    if(isNaN(sliderWidth)) {
+      sliderWidth = 270;
+    }
+    cardNum.innerHTML = (+value + 1) > totalQuestions ? "" : (+value + 1);
+    cardNum.style.left = (value / totalQuestions * (sliderWidth - 16) + 4) + "px";
 
-        q_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_questions) - order_no) * 24)}, ${(order_no * 320 * -1)}, ${(1 + 0.16 * order_no)})`
-        q_card.style.display = "block";
+    for(let i = 0; i < totalQuestions; i++) {
+      let qCard = document.querySelector(`.question-card[data-order='${i}']`);
+      if(i < value) {
+        qCard.style.top = "-1000px";
+      } else {
+        let position = i - value;
+        qCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${((totalQuestions - position) * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * position)})`;
+        qCard.style.display = "block";
         // q_card.style.left = "50%";
-        q_card.style.top = "0px";
+        qCard.style.top = "0px";
+        if((i - value) < 3) {
+          setTimeout(function() {
+            qCard.style.opacity = 1;
+          }, 300);
+        } else {
+          setTimeout(function() {
+            qCard.style.opacity = 0;
+          }, 300);
+        }
       }
     }
-    conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(value * 16)}, ${(total_questions * 320 * -1)}, ${(1 + 0.08 * (total_questions - value))})`
-    if((total_questions - value) < 3) {
+
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(value * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * (totalQuestions - value))})`;
+    if((totalQuestions - value) < 3) {
       setTimeout(function() {
-        conclusion_card.style.opacity = 1;
+        conclusionCard.style.opacity = 1;
       }, 300);
     } else {
       setTimeout(function() {
-        conclusion_card.style.opacity = 0;
+        conclusionCard.style.opacity = 0;
       }, 300);
     }
+  }
+
+  socialShare(e) {
+    const conclusionCard = document.querySelector('.conclusion-card'),
+      conclusionFront = document.querySelector('.conclusion-front'),
+      conclusionBack = document.querySelector('.conclusion-back');
+
+    if(this.state.revisitAnswers) {
+      this.hideSlider();
+    }
+    console.log(conclusionCard, conclusionFront, conclusionBack, '..................................')
+    conclusionCard.classList.add("clicked");
+    setTimeout(function() {
+      conclusionFront.style.display = "none";
+    }, 300);
+    conclusionBack.style.display = "block";
   }
 
   setTimer() {
@@ -688,6 +724,12 @@ class Container extends React.Component {
     return out;
   }
 
+  sliderMousedownCallback(e) {
+    e.stopPropagation();
+    document.querySelector(".slider-hint").style.visibility = "hidden";
+    document.querySelector(".slider-card-no").style.display = "block";
+  }
+
   resetSlider(total_questions) {
     let slider = document.querySelector(".card-slider");
     slider.setAttribute("value", total_questions);
@@ -696,10 +738,12 @@ class Container extends React.Component {
 
   showSlider() {
     document.querySelector(".card-slider").style.display = "block";
+    document.querySelector(".slider-container").style.display = "block";
   }
 
   hideSlider() {
     document.querySelector(".card-slider").style.display = "none";
+    document.querySelector(".slider-container").style.display = "none";
   }
 
   flashCorrectIndicator() {
@@ -753,6 +797,7 @@ class Container extends React.Component {
     const events = {};
     events.resetQuiz = ((e) => this.resetQuiz(e));
     events.revisitAnswers = ((e) => this.revisitAnswers(e));
+    events.socialShare = ((e) => this.socialShare(e));
     if (this.state.fetchingQuestions) {
       return (
         <div className='quiz-container'>
@@ -842,6 +887,8 @@ class Container extends React.Component {
                   max={this.state.totalQuestions}
                   value={this.state.sliderValue}
                   onInput={((e) => { this.slideCallback(e.target.value); })}
+                  onMouseDown={!this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
+                  onTouchStart={this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
                 />
               </div>
             </div>

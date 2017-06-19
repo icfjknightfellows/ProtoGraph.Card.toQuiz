@@ -679,9 +679,10 @@ html {
 }
 .slider-container {
   position: absolute;
-  // display: none;
+  display: none;
   z-index: 700;
-  visibility: hidden;
+  bottom: 30px;
+  // visibility: hidden;
   left: 28px;
 }
 .slider-hint {
