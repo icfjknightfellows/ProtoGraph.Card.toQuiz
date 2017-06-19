@@ -6,7 +6,7 @@ function renderTimer(props, state) {
     <div className="timer">
       <span className="timer-count">
         {`${props.timerValue.min}`}:{
-          +props.timerValue.sec < 11 ? <span className='danger'>{`${props.timerValue.sec}`}</span> : `${props.timerValue.sec}`
+          +props.timerValue.sec < 6 ? <span className='danger'>{`${props.timerValue.sec}`}</span> : `${props.timerValue.sec}`
         }
       </span>
       <img className='timer-img' src='./src/images/clock-small.png'/>
@@ -25,6 +25,7 @@ export default function render (props, state) {
         onTouchEnd={ props.isMobile && !props.cardConfigs.flip_card ? props.cardEvents.onTouchEnd : undefined }
         >
         { props.cardConfigs.quiz_type === "scoring" && props.cardConfigs.timer ? renderTimer(props, state) : undefined }
+        <div className="timeout-msg">Timed out!</div>
         { props.cardConfigs.quiz_type === "scoring" && props.cardConfigs.timer && !props.cardConfigs.flip_card ?
             <div className='timeout-msg'>Timed out!</div>
           :
@@ -71,7 +72,9 @@ export default function render (props, state) {
         {
           props.isMobile ?
           <div className="swipe-hint-container" id="swipe_hint_container">
-            <div className="swipe-hint-animation" id="swipe_hint_animation"></div>
+            <div className="swipe-hint-animation" id="swipe_hint_animation">
+              <img src='./src/images/swipe-up.gif' />
+            </div>
             <div className="swipe-hint-msg" id="swipe_hint_msg">Swipe up for next question</div>
           </div> : undefined
         }
@@ -108,6 +111,15 @@ export default function render (props, state) {
         <div className="clear-both"></div>
         <div className="answer"></div>
         <div className="fact"></div>
+        {
+          props.isMobile ?
+          <div className="swipe-hint-container" id="swipe_hint_container">
+            <div className="swipe-hint-animation" id="swipe_hint_animation">
+              <img src='./src/images/swipe-up.gif' />
+            </div>
+            <div className="swipe-hint-msg" id="swipe_hint_msg">Swipe up for next question</div>
+          </div> : undefined
+        }
         <div className="progress-bar">
           <div className="progress-indicator" style={{width: (+props.questionNo * 100 / +props.totalQuestions) + "%"  }}></div>
         </div>
