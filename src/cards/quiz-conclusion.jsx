@@ -19,56 +19,56 @@ export default class ResultCard extends React.Component {
     let links,
       message = 'Thank you!';
 
-   if(config.quiz_type === "scoring" && isScoreSpecific) {
-    const scoreItem = resultCardConfigs.filter((e) => {
-      return this.props.score <= e.upper_limit_of_score_range;
-    })[0];
+     if(config.quiz_type === "scoring" && isScoreSpecific) {
+      const scoreItem = resultCardConfigs.filter((e) => {
+        return this.props.score <= e.upper_limit_of_score_range;
+      })[0];
 
-    if (scoreItem) {
-      message =  scoreItem.message;
+      if (scoreItem) {
+        message =  scoreItem.message;
 
-      const relatedLinks = scoreItem.related_articles.length > 2 ? scoreItem.related_articles.slice(0, 2) : scoreItem.related_articles;
+        const relatedLinks = scoreItem.related_articles.length > 2 ? scoreItem.related_articles.slice(0, 2) : scoreItem.related_articles;
 
-      links = relatedLinks.map(function(d, i) {
-        return (
-          <div key={i} className='single-link-container' >
-            <a className='single-link' href={`${d.related_article_links}`} target='blank'></a>
-            {
-              d.related_article_links ?
-                <img src={`${d.link_image}`} className='link-img' />
-              :
-                undefined
-            }
-            <div className={`link-info ${!d.related_article_links ? 'link-info-full-width' : ''}`} >
-              <div className="link-title">{d.link_description}</div>
+        links = relatedLinks.map(function(d, i) {
+          return (
+            <div key={i} className='single-link-container' >
+              <a className='single-link' href={`${d.related_article_links}`} target='blank'></a>
+              {
+                d.related_article_links ?
+                  <img src={`${d.link_image}`} className='link-img' />
+                :
+                  undefined
+              }
+              <div className={`link-info ${!d.related_article_links ? 'link-info-full-width' : ''}`} >
+                <div className="link-title">{d.link_description}</div>
+              </div>
+              <div className='clearfix'></div>
             </div>
-            <div className='clearfix'></div>
-          </div>
-        )
+          )
+        });
+      }
+    } else {
+      links = resultCardConfigs.map((e) => {
+        const relatedLinks = e.related_articles.length > 2 ? e.related_articles.slice(0, 2) : e.related_articles;
+        relatedLinks.map(function(d, i) {
+          return (
+            <div key={i} className='single-link-container' >
+              <a className='single-link' href={`${d.related_article_links}`} target='blank'></a>
+              {
+                d.related_article_links ?
+                  <img src={`${d.link_image}`} className='link-img' />
+                :
+                  undefined
+              }
+              <div className={`link-info ${!d.related_article_links ? 'link-info-full-width' : ''}`} >
+                <div className="link-title">{d.link_description}</div>
+              </div>
+              <div className='clearfix'></div>
+            </div>
+          )
+        });
       });
     }
-   } else {
-    links = resultCardConfigs.map((e) => {
-      const relatedLinks = e.related_articles.length > 2 ? e.related_articles.slice(0, 2) : e.related_articles;
-      relatedLinks.map(function(d, i) {
-        return (
-          <div key={i} className='single-link-container' >
-            <a className='single-link' href={`${d.related_article_links}`} target='blank'></a>
-            {
-              d.related_article_links ?
-                <img src={`${d.link_image}`} className='link-img' />
-              :
-                undefined
-            }
-            <div className={`link-info ${!d.related_article_links ? 'link-info-full-width' : ''}`} >
-              <div className="link-title">{d.link_description}</div>
-            </div>
-            <div className='clearfix'></div>
-          </div>
-        )
-      });
-    });
-   }
     return {links: links, message: message};
   }
 
