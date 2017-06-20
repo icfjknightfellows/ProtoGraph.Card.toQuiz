@@ -306,6 +306,7 @@ class Container extends React.Component {
       orderId = qCard.getAttribute("data-order"),
       config = this.state.commonConfigs;
 
+    qCard.setAttribute('data-isNavigable', 1);
     if(!(config.quiz_type === "scoring" && !config.flip_card)) {
       let backDiv = parent.querySelector(".back");
 
@@ -386,6 +387,11 @@ class Container extends React.Component {
   }
 
   swipeCallback(direction) {
+
+    if (this.state.revisitAnswers) {
+      return;
+    }
+
     let qCard = document.querySelector(".question-card.active"),
       orderId = +qCard.getAttribute("data-order"),
       mainContainerWidth = document.querySelector(".main-container").offsetWidth,
@@ -393,6 +399,10 @@ class Container extends React.Component {
       config = this.state.commonConfigs,
       totalQuestions = this.state.totalQuestions,
       backDiv;
+
+    if (!+qCard.getAttribute('data-isNavigable')) {
+      return;
+    }
 
     if(nextCard) {
       nextCard.classList.add("active");
@@ -527,6 +537,7 @@ class Container extends React.Component {
       questionElement.style.display = "block";
       frontElement.style.display = "block";
       questionElement.style.top = "0px";
+      questionElement.setAttribute('data-isNavigable', 0);
       if(i < 3) {
         questionElement.style.opacity = 1;
       } else {
@@ -600,6 +611,11 @@ class Container extends React.Component {
     this.showSlider();
     this.slideCallback(0);
     this.setState({revisitAnswers: true});
+
+    //Question-Card
+    document.querySelectorAll('.question-card').forEach((e) => {
+      e.setAttribute('data-isNavigable', 0);
+    });
   }
 
   slideCallback(value) {

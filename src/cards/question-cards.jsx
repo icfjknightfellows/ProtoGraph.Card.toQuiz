@@ -17,7 +17,7 @@ function renderTimer(props, state) {
 export default function render (props, state) {
   const correctOption = props.cardData.options.filter((e) => { return e.right_or_wrong === true })[0].option
   return (
-    <div className="content" >
+    <div className="content">
       <div
         className="front"
         onTouchStart={ props.isMobile && !props.cardConfigs.flip_card ? props.cardEvents.onTouchStart : undefined }

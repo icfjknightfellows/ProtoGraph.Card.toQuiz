@@ -34,6 +34,15 @@ export default class ResultCard extends React.Component {
     }, 500);
   }
 
+  goBack(e) {
+    const conclusionCard = document.querySelector('.conclusion-card'),
+      conclusionFront = document.querySelector('.conclusion-front'),
+      conclusionBack = document.querySelector('.conclusion-back');
+    conclusionFront.style.display = 'block';
+    conclusionBack.style.display = 'none';
+    conclusionCard.classList.remove('clicked');
+  }
+
   renderReadingLinks() {
     const resultCardConfigs = this.props.resultCardConfigs,
       isScoreSpecific = resultCardConfigs[0].upper_limit_of_score_range,
@@ -175,7 +184,7 @@ export default class ResultCard extends React.Component {
           </div>
           <div className='conclusion-back'>
             <div className="share-card">
-              <div className="share-image-div">
+              <div className="share-image-div" style={{backgroundImage: `url('${this.props.introCardConfigs.background_image}')`}}>
                 <div className="share-title" style={{color: 'white'}}>
                   {
                     this.props.introCardConfigs.quiz_title
@@ -213,7 +222,7 @@ export default class ResultCard extends React.Component {
               </div>
               <div className="clearfix"></div>
             </div>
-            <div className="back-link">Go Back</div>
+            <div className="back-link" onClick={(e) => this.goBack(e)}>Go Back</div>
             <div id="credits" className="credits" >
               <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
             </div>
