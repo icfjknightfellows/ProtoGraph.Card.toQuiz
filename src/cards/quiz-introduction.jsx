@@ -23,17 +23,20 @@ export default class IntroductionCard extends React.Component {
         <div className="content">
           <div className="intro-front" style={introFrontStyle}>
             <div className="intro-gradient"></div>
-            <div className={`${this.props.introCardConfigs.background_image ? 'intro-content with-image' : 'intro-content'}`}>
-              <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
-                {this.props.introCardConfigs.quiz_title}
-              </div>
-              <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-description with-image' : 'intro-description'}`}></div>
-              <div className="intro-button-div">
-                <button className="intro-button" onClick={this.props.startQuiz} style={buttonStyle}>
-                  {this.props.introCardConfigs.start_button_text}
-                </button>
-              </div>
-            </div>
+            {
+              this.props.isMobile &&
+                <div className={`${this.props.introCardConfigs.background_image ? 'intro-content with-image' : 'intro-content'}`}>
+                  <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
+                    {this.props.introCardConfigs.quiz_title}
+                  </div>
+                  <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-description with-image' : 'intro-description'}`}></div>
+                  <div className="intro-button-div">
+                    <button className="intro-button" onClick={this.props.startQuiz} style={buttonStyle}>
+                      {this.props.introCardConfigs.start_button_text}
+                    </button>
+                  </div>
+                </div>
+            }
             <div className="credits" id="credits"><a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a></div>
           </div>
           <div className="intro-back">

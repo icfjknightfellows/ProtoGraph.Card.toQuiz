@@ -8,12 +8,15 @@
   </head>
   <body>
     <div id="root"></div>
-    <script src = "index.js"></script>
+    <script src="index.js"></script>
     <script type="text/javascript">
-      var x = new Quiz.HaikuContainer ({
+      var x = new ProtoGraph.Card.toQuiz()
+      x.init({
         selector: document.querySelector('#root'),
-        data_url: '/cards/questions.json'
-      });
+        // data_url: './dist/v0.0.1/sample.json',
+        // schema_url: './dist/v0.0.1/schema.json'
+      })
+      x.renderLaptop();
     </script>
   </body>
 </html>

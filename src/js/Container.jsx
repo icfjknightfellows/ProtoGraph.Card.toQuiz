@@ -1,13 +1,13 @@
 import React      from 'react';
 import ReactDOM   from 'react-dom';
 import axios      from 'axios';
-import Card       from './Card.jsx';
 import Scss       from '../css/container.scss'
 import Utility    from './utility.js';
 import Touch      from './touch.js';
 import LoadData   from './load_data.js';
 import IntroductionCard  from '../cards/quiz-introduction.jsx';
 import ResultCard from '../cards/quiz-conclusion.jsx';
+import QuestionCard from '../cards/question-cards.jsx'
 
 class Container extends React.Component {
 
@@ -31,7 +31,7 @@ class Container extends React.Component {
       questionScore: 1,
       timer: undefined,
       revisitingAnswers: false,
-      isMobile: window.innerWidth <= 500
+      isMobile: this.props.mode === 'mobile' ? true : false
     };
   }
 
@@ -387,7 +387,6 @@ class Container extends React.Component {
   }
 
   swipeCallback(direction) {
-
     if (this.state.revisitAnswers) {
       return;
     }
@@ -476,45 +475,12 @@ class Container extends React.Component {
     );
   }
 
-  // nextCard(e) {
-  //   let q_card = document.querySelector(".question-card.active"),
-  //     card_no = +q_card.getAttribute("data-card-no"),
-  //     main_container_width = document.querySelector(".main-container").offsetWidth,
-  //     back_div;
-
-  //   e.target.style.display = "none";
-
-  //   q_card.classList.remove("active");
-  //   q_card.style.left = (main_container_width + 500) + "px";
-
-  //   let next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']");
-  //   if(next_card && card_no + 1 < total_cards - 1) {
-  //     next_card.classList.add("active");
-  //       back_div = next_card.querySelector(".back");
-  //       back_div.style.display = "none";
-  //   }
-
-  //   for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
-  //     let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
-  //       position = (i - card_no - 1);
-  //     card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)},  ${(position * 320 * -1)} , ${(1 + 0.08 * position)})`;
-  //     if(count > 2) {
-  //       card.style.opacity = 0;
-  //     } else {
-  //       card.style.opacity = 1;
-  //     }
-
-  //   }
-  //   if(config.quiz_type === "scoring" && config.timer) {
-  //     this.setTimer();
-  //   }
-  // }
-
   resetQuiz(e) {
     this.setState({
       right_counter: 0,
       score: 0,
-      timer: undefined
+      timer: undefined,
+      revisitAnswers: false
     });
 
     let qCard = document.querySelector(".question-card.active"),
@@ -675,10 +641,11 @@ class Container extends React.Component {
       conclusionFront = document.querySelector('.conclusion-front'),
       conclusionBack = document.querySelector('.conclusion-back');
 
+    this.setState({revisitAnswers: false});
+
     if(this.state.revisitAnswers) {
       this.hideSlider();
     }
-    console.log(conclusionCard, conclusionFront, conclusionBack, '..................................')
     conclusionCard.classList.add("clicked");
     setTimeout(function() {
       conclusionFront.style.display = "none";
@@ -783,31 +750,71 @@ class Container extends React.Component {
     }, 1000);
   }
 
-  // getMaxContentCardDataIndexes() {
-  //   let q_index = 0,
-  //     o_index = 0,
-  //     max_length = 0;
+  renderIntroCard() {
+    const buttonStyle = {},
+      introFrontStyle = {};
 
-  //   this.card_data.forEach((q, i) => {
-  //     q.options.forEach((o, j) => {
-  //       let length = 0;
+    this.state.introCardConfigs.start_button_color ? buttonStyle.backgroundColor = this.state.introCardConfigs.start_button_color : undefined;
+    this.state.introCardConfigs.start_button_text_color ? buttonStyle.color = this.state.introCardConfigs.start_button_text_color : undefined;
 
-  //       if(o.fact) {
-  //         length += o.fact.length;
-  //       }
-  //       if(length > max_length) {
-  //         max_length = length;
-  //         q_index = i;
-  //         o_index = j;
-  //       }
-  //     });
-  //   });
+    if(this.state.introCardConfigs.background_image) {
+      introFrontStyle.backgroundImage = "url(" + this.state.introCardConfigs.background_image + ")";
+    }
 
-  //   return {
-  //     q_index: q_index,
-  //     o_index: o_index
-  //   }
-  // }
+    return (
+      <div className="intro-container">
+        <div className={`${this.state.introCardConfigs.background_image || this.state.mode === 'laptop' ? 'intro-content with-image' : 'intro-content'}`}>
+          <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
+            {this.state.introCardConfigs.quiz_title}
+          </div>
+          <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-description with-image' : 'intro-description'}`}></div>
+          <div className="intro-button-div">
+            <button className="intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
+              {this.state.introCardConfigs.start_button_text}
+            </button>
+          </div>
+        </div>
+        <div className="intro-cover"></div>
+      </div>
+    );
+  }
+
+  renderCorrectIndicator() {
+    return (
+      <div id="correct_indicator" className="correct-wrong-indicator correct-background">
+        <div className="tick-background">
+          <span className="correct-tick">&#10004;&#xFE0E;</span>
+        </div>
+        <div className="correct-wrong-text">Correct</div>
+      </div>
+    );
+  }
+
+  renderWrongIndicator() {
+    return (
+      <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
+        <div className="tick-background wrong-tick">
+          <span>&#10007;&#xFE0E;</span>
+        </div>
+        <div className="correct-wrong-text wrong">Wrong</div>
+      </div>
+    );
+  }
+
+  renderTimeOutIndicator () {
+    return (
+      <div id="time_out_indicator" className="time-out-indicator">
+        <div className="time-out-content">
+          <div className="clock-icon">
+            <img src="src/images/clock-large.png" />
+          </div>
+          <div className="time-value">00:00</div>
+          <div className="oops-msg">Oops!</div>
+          <div className="times-up-msg">Time's up</div>
+        </div>
+      </div>
+    );
+  }
 
   renderMainContainerContent(cards) {
     const events = {};
@@ -828,45 +835,13 @@ class Container extends React.Component {
       return (
         <div className="quiz-container">
           <div className="quiz-content">
-            {
-              !this.state.isMobile ?
-                <div className="intro-container">
-                  <div className="intro-content">
-                    <div className="intro-header"></div>
-                    <div className="intro-description"></div>
-                    <div className="intro-button-div">
-                      <button className="intro-button"></button>
-                    </div>
-                  </div>
-                  <div className="intro-cover"></div>
-                </div>
-              :
-                undefined
-            }
+            { this.props.mode === 'laptop' && this.renderIntroCard() }
             <div id="main_container" className="main-container">
               <div id="fb-root"></div>
-              <div id="correct_indicator" className="correct-wrong-indicator correct-background">
-                <div className="tick-background">
-                  <span className="correct-tick">&#10004;&#xFE0E;</span>
-                </div>
-                <div className="correct-wrong-text">Correct</div>
-              </div>
-              <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
-                <div className="tick-background wrong-tick">
-                  <span>&#10007;&#xFE0E;</span>
-                </div>
-                <div className="correct-wrong-text wrong">Wrong</div>
-              </div>
-              <div id="time_out_indicator" className="time-out-indicator">
-                <div className="time-out-content">
-                  <div className="clock-icon">
-                    <img src="src/images/clock-large.png" />
-                  </div>
-                  <div className="time-value">00:00</div>
-                  <div className="oops-msg">Oops!</div>
-                  <div className="times-up-msg">Time's up</div>
-                </div>
-              </div>
+
+              { this.renderCorrectIndicator() }
+              { this.renderWrongIndicator() }
+              { this.renderTimeOutIndicator() }
 
               <IntroductionCard
                 introCardConfigs={this.state.introCardConfigs}
@@ -914,93 +889,19 @@ class Container extends React.Component {
     }
   }
 
-  // getCardHeight() {
-  //   let max_height = this.state.card_height,
-  //     total_cards = this.state.total_cards,
-  //     total_questions = this.state.total_questions,
-  //     intro_header_bcr = document.querySelector(".intro-header").offsetHeight,
-  //     intro_desc_bcr = document.querySelector(".intro-description").offsetHeight,
-  //     intro_button_bcr = document.querySelector(".intro-button").offsetHeight,
-  //     intro_height = (intro_header_bcr + intro_desc_bcr + intro_button_bcr + 50),
-  //     dimension_obj = {};
-
-  //   if(intro_height > max_height) {
-  //     max_height = intro_height;
-  //   }
-
-  //   if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-  //     let max_back = document.querySelector(".max-content"),
-  //       b_title = max_back.querySelector(".title").offsetHeight,
-  //       b_ans = max_back.querySelector(".answers-container").offsetHeight,
-  //       b_gif = 150,
-  //       b_fact = max_back.querySelector(".fact").offsetHeight,
-  //       b_num = max_back.querySelector(".question-number").offsetHeight,
-  //       b_swipe = max_back.querySelector(".swipe-hint-container").offsetHeight,
-  //       back_height = b_title + b_ans + b_gif + b_fact + b_num + b_swipe + 85;
-
-  //     dimension_obj.back_height_without_fact = back_height - b_fact;
-
-  //     if(back_height > max_height) {
-  //       max_height = back_height;
-  //     }
-  //   }
-
-  //   for(let i = 0; i < questions.length; i++) {
-  //     let q_title = 0,
-  //       q_options = questions[i].querySelectorAll(".option-div"),
-  //       q_num = questions[i].querySelector(".question-number").offsetHeight,
-  //       q_que = questions[i].querySelector(".question").offsetHeight,
-  //       q_height,
-  //       order_id = +questions[i].getAttribute("data-order");
-
-  //     q_height = q_title + q_que + q_num + 100;
-
-  //     for(let j = 0; j < q_options.length; j++) {
-  //       q_height += (q_options[j].offsetHeight + 15);
-  //     }
-
-  //     if(q_height > max_height) {
-  //       max_height = q_height;
-  //     }
-  //     questions[i].style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + ((total_questions - 1 - order_id) * 20) + ", " + ((order_id + 1) * 320 * -1) + ", " + (1 + 0.08 * (order_id + 1)) + ")";
-  //     if(i > 1) {
-  //       questions[i].style.opacity = 0;
-  //     }
-  //   }
-
-  //   let conclu_result = document.querySelector(".conclusion-card .result-container").offsetHeight,
-  //     conclu_buttons = document.querySelector(".conclusion-card .buttons-container").offsetHeight,
-  //     conclu_links = document.querySelector(".conclusion-card .links-container").offsetHeight,
-  //     slider_height = document.querySelector(".slider-container").offsetHeight,
-  //     conclu_height = (conclu_result + conclu_buttons + conclu_links + slider_height + 235); //45 + 20 + 70 *2 + 50
-  //   console.log("conclu_result", conclu_result);
-  //   console.log("conclu_buttons", conclu_buttons);
-  //   console.log("conclu_links", conclu_links);
-  //   console.log("conclu_height", conclu_height);
-  //   if(conclu_height > max_height) {
-  //     max_height = conclu_height;
-  //   }
-
-  //   if(max_height > card_height) {
-  //     card_height = max_height;
-  //   }
-  //   dimension_obj.card_height = card_height;
-  //   return dimension_obj;
-  // }
-
   render() {
     let styles = {},
       x = (this.state.totalQuestions * 20) - 20,
       y = 0 - 320,
       z = 1 + 0.08,
-      cards,
+      qCards,
       question_card_count = 0;
 
     if(this.state.commonConfigs.font_family) {
       document.querySelector('.main-container').style.fontFamily = this.state.commonConfigs.font_family;
     }
 
-    cards = this.state.questionsData.map((card, i) => {
+    qCards = this.state.questionsData.map((card, i) => {
       const style = {},
         events = {};
 
@@ -1018,14 +919,17 @@ class Container extends React.Component {
       z = z + 0.08;
 
       events.optionClick = ((e) => this.optionClicked(e));
+
       if (this.state.isMobile) {
         events.onTouchStart = ((e) => Touch.swipeStart(e));
         events.onTouchMove = ((e) => Touch.swipeMove(e));
         events.onTouchEnd = ((e) => this.touchEndHandler(e));
+      } else {
+        events.nextCard = ((e) => this.swipeCallback('up'));
       }
 
       return (
-        <Card
+        <QuestionCard
           key={i}
           cardNo={i}
           questionNo={this.formatNumber(i + 1)}
@@ -1041,7 +945,7 @@ class Container extends React.Component {
       )
     });
 
-    return this.renderMainContainerContent(cards)
+    return this.renderMainContainerContent(qCards)
   }
 }
 

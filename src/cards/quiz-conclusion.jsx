@@ -51,6 +51,7 @@ export default class ResultCard extends React.Component {
     let links,
       message = 'Thank you!';
 
+    console.log(config.quiz_type === "scoring",isScoreSpecific)
      if(config.quiz_type === "scoring" && isScoreSpecific) {
       const scoreItem = resultCardConfigs.filter((e) => {
         return this.props.score <= e.upper_limit_of_score_range;
@@ -64,37 +65,39 @@ export default class ResultCard extends React.Component {
         links = relatedLinks.map(function(d, i) {
           return (
             <div key={i} className='single-link-container' >
-              <a className='single-link' href={`${d.related_article_links}`} target='blank'></a>
-              {
-                d.related_article_links ?
-                  <img src={`${d.link_image}`} className='link-img' />
-                :
-                  undefined
-              }
-              <div className={`link-info ${!d.related_article_links ? 'link-info-full-width' : ''}`} >
-                <div className="link-title">{d.link_description}</div>
-              </div>
+              <a className='single-link' href={`${d.related_article_links}`} target='blank'>
+                {
+                  d.related_article_links ?
+                    <img src={`${d.link_image}`} className='link-img' />
+                  :
+                    undefined
+                }
+                <div className={`link-info ${!d.related_article_links ? 'link-info-full-width' : ''}`} >
+                  <div className="link-title">{d.link_description}</div>
+                </div>
+              </a>
               <div className='clearfix'></div>
             </div>
           )
         });
       }
     } else {
-      links = resultCardConfigs.map((e) => {
+      resultCardConfigs.map((e) => {
         const relatedLinks = e.related_articles.length > 2 ? e.related_articles.slice(0, 2) : e.related_articles;
-        relatedLinks.map(function(d, i) {
+        links = relatedLinks.map(function(d, i) {
           return (
             <div key={i} className='single-link-container' >
-              <a className='single-link' href={`${d.related_article_links}`} target='blank'></a>
-              {
-                d.related_article_links ?
-                  <img src={`${d.link_image}`} className='link-img' />
-                :
-                  undefined
-              }
-              <div className={`link-info ${!d.related_article_links ? 'link-info-full-width' : ''}`} >
-                <div className="link-title">{d.link_description}</div>
-              </div>
+              <a className='single-link' href={`${d.related_article_links}`} target='blank'>
+                {
+                  d.related_article_links ?
+                    <img src={`${d.link_image}`} className='link-img' />
+                  :
+                    undefined
+                }
+                <div className={`link-info ${!d.related_article_links ? 'link-info-full-width' : ''}`} >
+                  <div className="link-title">{d.link_description}</div>
+                </div>
+              </a>
               <div className='clearfix'></div>
             </div>
           )
@@ -137,13 +140,16 @@ export default class ResultCard extends React.Component {
             <div id="result_container" className="result-container">
               <img className="result-img" src="./src/images/cup.png" />
               <div className="result-text">{message}</div>
-              <div className="result-score">
-                {
-                  this.props.cardConfigs.timer ?
-                    `${this.props.score} / ${this.props.totalQuestions * this.props.cardConfigs.time_per_question}` :
-                    `${this.props.score} / ${+this.props.totalQuestions}`
-                }
-              </div>
+              {
+                this.props.cardConfigs.quiz_type === 'scoring' &&
+                <div className="result-score">
+                  {
+                    this.props.cardConfigs.timer ?
+                      `${this.props.score} / ${this.props.totalQuestions * this.props.cardConfigs.time_per_question}` :
+                      `${this.props.score} / ${+this.props.totalQuestions}`
+                  }
+                </div>
+              }
             </div>
             <div id="buttons_container" className="buttons-container">
               {

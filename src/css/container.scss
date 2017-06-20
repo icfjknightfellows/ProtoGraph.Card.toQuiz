@@ -14,7 +14,7 @@ html {
 .quiz-container {
   position: relative;
   width: 100%;
-  height: 700px;
+  height: 600px;
   background: #eee;
   font-size: 16px;
   /*font-family: 'Noto Sans', sans-serif;*/
@@ -28,10 +28,11 @@ html {
   width: 100%;
   height: 100%;
   margin: 0 auto;
+  width: 700px;
 }
 .main-container {
   position: relative;
-  height: 700px;
+  height: 600px;
   overflow: hidden;
   width: 326px;
   float: right;
@@ -60,9 +61,11 @@ html {
   // margin-left: -250px;
 }
 .intro-container {
-  float: left;
   position: relative;
-  visibility: hidden;
+  float: left;
+  height: 600px;
+  width: 374px;
+  // visibility: hidden;
 }
 .intro-cover {
   background: #eee;
@@ -681,7 +684,7 @@ html {
   position: absolute;
   display: none;
   z-index: 700;
-  bottom: 30px;
+  bottom: 31px;
   // visibility: hidden;
   left: 28px;
 }
