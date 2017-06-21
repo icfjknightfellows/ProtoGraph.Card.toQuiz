@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 class QuestionCard extends React.Component {
-  renderTimer(props, state) {
+  renderTimer() {
     return (
       <div className="timer">
         <span className="timer-count">
-          {`${props.timerValue.min}`}:{
-            +props.timerValue.sec < 6 ? <span className='danger'>{`${props.timerValue.sec}`}</span> : `${props.timerValue.sec}`
+          {`${this.props.timerValue.min}`}:{
+            +this.props.timerValue.sec < 6 ? <span className='danger'>{`${this.props.timerValue.sec}`}</span> : `${this.props.timerValue.sec}`
           }
         </span>
         <img className='timer-img' src='./src/images/clock-small.png'/>
@@ -32,7 +32,7 @@ class QuestionCard extends React.Component {
             onTouchMove={ this.props.isMobile && !this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchMove : undefined }
             onTouchEnd={ this.props.isMobile && !this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchEnd : undefined }
             >
-            { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer ? this.renderTimer(this.props, state) : undefined }
+            { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer ? this.renderTimer() : undefined }
             { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer && !this.props.cardConfigs.flip_card ?
                 <div className='timeout-msg'>Timed out!</div>
               :
