@@ -29,7 +29,9 @@ export default class IntroductionCard extends React.Component {
                   <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
                     {this.props.introCardConfigs.quiz_title}
                   </div>
-                  <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-description with-image' : 'intro-description'}`}></div>
+                  <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-description with-image' : 'intro-description'}`}>
+                    {this.props.introCardConfigs.introduction}
+                  </div>
                   <div className="intro-button-div">
                     <button className="intro-button" onClick={this.props.startQuiz} style={buttonStyle}>
                       {this.props.introCardConfigs.start_button_text}

@@ -98,61 +98,67 @@ export default class QuestionCard extends React.Component {
               <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
             </div>
           </div>
-          <div
-            className="back"
-            onTouchStart={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchStart : undefined }
-            onTouchMove={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchMove : undefined }
-            onTouchEnd={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchEnd : undefined }
-            >
-            <div className='question-number'>
-              <span className="current-question">{this.props.questionNo}</span>{`/${this.props.totalQuestions}`}
-            </div>
-            <div className="title">
-              {this.props.cardData.question}
-            </div>
-            <div className="gif-div">
-              <img className="gif" />
-            </div>
-            {
-              this.props.cardConfigs.quiz_type === 'scoring' ?
-                <div className="answers-container">
-                  <div className="wrong-answer">
-                    <span className="option-text"></span>
-                    <span className="cross-marker">✕</span>
-                  </div>
-                  <div className="correct-answer">
-                    <span className="option-text">{correctOption}</span>
-                    <span className="tick-marker">✓</span>
-                  </div>
+          {
+            this.props.cardConfigs.flip_card &&
+              <div
+                className="back"
+                onTouchStart={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchStart : undefined }
+                onTouchMove={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchMove : undefined }
+                onTouchEnd={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchEnd : undefined }
+                >
+                 { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer &&
+                      <div className='timeout-msg'>Timed out!</div>
+                  }
+                <div className='question-number'>
+                  <span className="current-question">{this.props.questionNo}</span>{`/${this.props.totalQuestions}`}
                 </div>
-              :
-                <div className="answers-container">
-                   <div className="correct-answer"></div>
+                <div className="title">
+                  {this.props.cardData.question}
                 </div>
-            }
-            <div className="clear-both"></div>
-            <div className="answer"></div>
-            <div className="fact"></div>
-            {
-              this.props.isMobile ?
-                <div className="swipe-hint-container" id="swipe_hint_container">
-                  <div className="swipe-hint-animation" id="swipe_hint_animation">
-                    <img src='./src/images/swipe-up.gif' />
-                  </div>
-                  <div className="swipe-hint-msg" id="swipe_hint_msg">Swipe up for next question</div>
+                <div className="gif-div">
+                  <img className="gif" />
                 </div>
-              :
-                <div className="next-container">
-                  <span id="next" className="next" onClick={(e) => this.props.cardEvents.nextCard(e)}>Next</span>
+                {
+                  this.props.cardConfigs.quiz_type === 'scoring' ?
+                    <div className="answers-container">
+                      <div className="wrong-answer">
+                        <span className="option-text"></span>
+                        <span className="cross-marker">✕</span>
+                      </div>
+                      <div className="correct-answer">
+                        <span className="option-text">{correctOption}</span>
+                        <span className="tick-marker">✓</span>
+                      </div>
+                    </div>
+                  :
+                    <div className="answers-container">
+                       <div className="correct-answer"></div>
+                    </div>
+                }
+                <div className="clear-both"></div>
+                <div className="answer"></div>
+                <div className="fact"></div>
+                {
+                  this.props.isMobile ?
+                    <div className="swipe-hint-container" id="swipe_hint_container">
+                      <div className="swipe-hint-animation" id="swipe_hint_animation">
+                        <img src='./src/images/swipe-up.gif' />
+                      </div>
+                      <div className="swipe-hint-msg" id="swipe_hint_msg">Swipe up for next question</div>
+                    </div>
+                  :
+                    <div className="next-container">
+                      <span id="next" className="next" onClick={(e) => this.props.cardEvents.nextCard(e)}>Next</span>
+                    </div>
+                }
+                <div className="progress-bar">
+                  <div className="progress-indicator" style={{width: (+this.props.questionNo * 100 / +this.props.totalQuestions) + "%"  }}></div>
                 </div>
-            }
-            <div className="progress-bar">
-              <div className="progress-indicator" style={{width: (+this.props.questionNo * 100 / +this.props.totalQuestions) + "%"  }}></div>
-            </div>
-            <div id="credits" className="credits" >
-              <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
-            </div>
-          </div>
+                <div id="credits" className="credits" >
+                  <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+                </div>
+              </div>
+          }
         </div>
       </div>
     )

@@ -27,7 +27,7 @@ class Container extends React.Component {
       backHeightWithoutFact: undefined,
       sliderValue: 0,
       timerCountValue: 10,
-      timePerQuestion: 30,
+      timePerQuestion: 10,
       questionScore: 1,
       timer: undefined,
       revisitingAnswers: false,
@@ -282,7 +282,7 @@ class Container extends React.Component {
   }
 
   optionClicked(e) {
-    let qCard = e.target.closest(".question-card"),
+    let qCard = document.querySelector(".question-card.active"),
       config = this.state.commonConfigs,
       totalQuestions = this.state.totalQuestions,
       cardData = this.state.questionsData[+qCard.getAttribute('data-order')],
@@ -425,16 +425,16 @@ class Container extends React.Component {
     }
 
     if(nextCard) {
+      if(config.quiz_type === "scoring" && config.timer) {
+        this.setState({timerCountValue: this.state.timePerQuestion});
+        this.setTimer();
+      }
       nextCard.classList.add("active");
       if(!(config.quiz_type === "scoring" && !config.flip_card)) {
         backDiv = nextCard.querySelector(".back");
         backDiv.style.display = "none";
       }
-      if(config.quiz_type === "scoring" && config.timer) {
-        this.setTimer();
-      }
     } else {
-
       document.querySelectorAll(".progress-bar").forEach((e) => {
         e.style.display = 'none';
       });
@@ -539,6 +539,11 @@ class Container extends React.Component {
       } else {
         questionElement.style.opacity = 0;
       }
+
+      if (config.flip_card) {
+        questionElement.querySelector('.back').style.display = 'none';
+      }
+
       if(config.quiz_type === "scoring" && !config.flip_card) {
         allOptions = frontElement.querySelectorAll(".option-div");
         for(let j = 0; j < allOptions.length; j++) {
@@ -590,6 +595,7 @@ class Container extends React.Component {
     this.hideSlider();
 
     if(config.quiz_type === "scoring" && config.timer) {
+      this.setState({timerCountValue: this.state.timePerQuestion});
       this.setTimer();
     }
 
@@ -798,7 +804,9 @@ class Container extends React.Component {
           <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
             {this.state.introCardConfigs.quiz_title}
           </div>
-          <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-description with-image' : 'intro-description'}`}></div>
+          <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-description with-image' : 'intro-description'}`}>
+            {this.state.introCardConfigs.introduction}
+          </div>
           <div className="intro-button-div">
             <button className="intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
               {this.state.introCardConfigs.start_button_text}

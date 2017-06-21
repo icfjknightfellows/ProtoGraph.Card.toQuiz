@@ -5,6 +5,10 @@ import Quiz from './src/js/Container.jsx';
 window.ProtoGraph = window.ProtoGraph || {};
 window.ProtoGraph.Card = window.ProtoGraph.Card || {};
 
+if (!NodeList.prototype.forEach) {
+  NodeList.prototype.forEach = Array.prototype.forEach;
+}
+
 ProtoGraph.Card.toQuiz = function () {
   this.cardType = 'QuizApp';
 }

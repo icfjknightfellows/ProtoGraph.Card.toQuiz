@@ -39,7 +39,9 @@ export default class ResultCard extends React.Component {
       conclusionFront = document.querySelector('.conclusion-front'),
       conclusionBack = document.querySelector('.conclusion-back');
     conclusionFront.style.display = 'block';
-    conclusionBack.style.display = 'none';
+    setTimeout((e) => {
+      conclusionBack.style.display = 'none';
+    }, 100);
     conclusionCard.classList.remove('clicked');
   }
 
@@ -51,8 +53,7 @@ export default class ResultCard extends React.Component {
     let links,
       message = 'Thank you!';
 
-    console.log(config.quiz_type === "scoring",isScoreSpecific)
-     if(config.quiz_type === "scoring" && isScoreSpecific) {
+    if(config.quiz_type === "scoring" && isScoreSpecific) {
       const scoreItem = resultCardConfigs.filter((e) => {
         return this.props.score <= e.upper_limit_of_score_range;
       })[0];
