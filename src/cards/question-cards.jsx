@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class QuestionCard extends React.Component {
+export default class QuestionCard extends React.Component {
   renderTimer() {
     return (
       <div className="timer">
@@ -158,5 +158,3 @@ class QuestionCard extends React.Component {
     )
   }
 }
-
-export default QuestionCard;

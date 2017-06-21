@@ -270,6 +270,15 @@ class Container extends React.Component {
         this.setTimer();
       }
     }, 4000);
+
+    // if (ga) {
+    //   ga('pyktracker.send', 'event', {
+    //     eventCategory: 'onStart',
+    //     eventAction: 'click',
+    //     eventLabel: 0,
+    //     eventValue: 0
+    //     });
+    // }
   }
 
   optionClicked(e) {
@@ -283,6 +292,9 @@ class Container extends React.Component {
     if(config.quiz_type === "scoring") {
       if(config.timer) {
         this.clearTimer();
+        if(!config.flip_card) {
+          qCard.querySelector(".front .timer").style.display = "none";
+        }
       }
       if(option.right_or_wrong) {
         this.setState((prevState, props) => {
@@ -298,6 +310,15 @@ class Container extends React.Component {
     }
 
     this.addOptionBasedContent(option);
+
+    // if (ga) {
+    //   ga('pyktracker.send', 'event', {
+    //     eventCategory: 'onClickOfOption',
+    //     eventAction: 'click',
+    //     eventLabel: order_id + 1,
+    //     eventValue: option.option
+    //   });
+    // }
   }
 
   addOptionBasedContent(option) {
@@ -464,6 +485,15 @@ class Container extends React.Component {
     if((totalQuestions - orderId) < 4) {
       conclusionCard.style.opacity = 1;
     }
+
+    // if (ga) {
+    //   ga('pyktracker.send', 'event', {
+    //     eventCategory: 'onSwipeLeft',
+    //     eventAction: 'swipe',
+    //     eventLabel: order_id + 1,
+    //     eventValue: order_id + 1
+    //   });
+    // }
   }
 
   touchEndHandler(event) {
@@ -559,6 +589,10 @@ class Container extends React.Component {
 
     this.hideSlider();
 
+    if(config.quiz_type === "scoring" && config.timer) {
+      this.setTimer();
+    }
+
     // if (ga) {
     //   ga('pyktracker.send', 'event', {
     //     eventCategory: 'onReset',
@@ -568,9 +602,6 @@ class Container extends React.Component {
     //   });
     // }
 
-    if(config.quiz_type === "scoring" && config.timer) {
-      this.setTimer();
-    }
   }
 
   revisitAnswers(e) {
