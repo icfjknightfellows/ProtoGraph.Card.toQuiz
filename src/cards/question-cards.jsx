@@ -99,7 +99,7 @@ export default class QuestionCard extends React.Component {
             </div>
           </div>
           {
-            this.props.cardConfigs.flip_card &&
+            !(this.props.cardConfigs.quiz_type === "scoring" && !this.props.cardConfigs.flip_card) &&
               <div
                 className="back"
                 onTouchStart={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchStart : undefined }

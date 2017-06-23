@@ -1,7 +1,7 @@
 import React      from 'react';
 import ReactDOM   from 'react-dom';
 import axios      from 'axios';
-import Scss       from '../css/container.scss'
+// import Scss       from '../css/container.scss'
 import Utility    from './utility.js';
 import Touch      from './touch.js';
 import LoadData   from './load_data.js';
@@ -15,16 +15,23 @@ class Container extends React.Component {
     super(props)
     this.state = {
       fetchingQuestions: true,
-      questionsData: [],
-      commonConfigs: {},
-      introCardConfigs: {},
-      resultCardConfigs: undefined,
+      dataJSON: {
+        data: {},
+        mandatory_config: {}
+      },
+      schemaJSON: {},
+      optionalConfigJSON: {},
+      optionalConfigSchemaJSON: {},
+      // questionsData: [],
+      // commonConfigs: {},
+      // introCardConfigs: {},
+      // resultCardConfigs: undefined,
       languageTexts: {},
       totalQuestions: 0,
       score: 0,
       rightCounter: 0,
-      cardHeight: 300,
-      backHeightWithoutFact: undefined,
+      // cardHeight: 300,
+      // backHeightWithoutFact: undefined,
       sliderValue: 0,
       timerCountValue: 10,
       timePerQuestion: 10,
@@ -35,58 +42,43 @@ class Container extends React.Component {
     };
   }
 
-  processQuestionsData(questionsData) {
-    let groupedData = Utility.groupBy(questionsData, 'question_no'),
-      keys = Object.keys(groupedData),
-      processedData = [];
-
-    keys.forEach(key => {
-      let tempObj = {};
-      groupedData[key].forEach(datum => {
-        if(Object.keys(tempObj).length) {
-          tempObj.options.push({
-            option: datum.options,
-            correct_answer: datum.correct_answer,
-            gif_image: datum.gif_image,
-            fact: datum.description,
-            right_or_wrong: datum.right_or_wrong ? (datum.right_or_wrong.toLowerCase() === 'right' ? true : false) : false
-          });
-        } else {
-          tempObj = {
-            "question": datum.question,
-            "question_no": datum.question_no,
-            "options": [{
-              option: datum.options,
-              correct_answer: datum.correct_answer,
-              gif_image: datum.gif_image,
-              fact: datum.description,
-              right_or_wrong: datum.right_or_wrong ? (datum.right_or_wrong.toLowerCase() === 'right' ? true : false) : false
-            }]
+   componentDidMount() {
+    if (typeof this.props.dataURL === "string"){
+      axios.all([
+        axios.get(this.props.dataURL),
+        axios.get(this.props.schemaURL),
+        axios.get(this.props.configURL),
+        axios.get(this.props.configSchemaURL)
+      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema) => {
+          let stateVar = {
+            fetchingQuestions: false,
+            sliderValue: 0,
+            dataJSON: {
+              data: cardData.data.data,
+              mandatory_config: cardData.data.mandatory_config
+            },
+            schemaJSON: cardSchema.data,
+            optionalConfigJSON: optionalConfig.data,
+            optionalConfigSchemaJSON: optionalConfigSchema.data
           };
-        }
-      });
-      processedData.push(tempObj);
-    });
-    return processedData;
-  }
 
-  processCommonConfigs(commonConfigs) {
-    return {
-      language: commonConfigs.language,
-      quiz_type: commonConfigs.quiz_type,
-      timer: commonConfigs.timer ? (commonConfigs.timer.toLowerCase() === 'yes' ? true : false ) : false,
-      time_per_question: commonConfigs.time_per_question,
-      flip_card: commonConfigs.flip_card ? (commonConfigs.flip_card.toLowerCase() === 'yes' ? true : false ) : false,
-      revisit_answers: commonConfigs.revisit_answers ? (commonConfigs.revisit_answers.toLowerCase() === 'yes' ? true : false ) : false,
-      social_share: commonConfigs.social_share ? (commonConfigs.social_share.toLowerCase() === 'yes' ? true : false ) : false,
-      share_link: commonConfigs.share_link,
-      share_msg: commonConfigs.share_msg
+          stateVar.dataJSON.data.result_card_data = stateVar.dataJSON.data.result_card_data ?  this.processResultData(stateVar.dataJSON.data.result_card_data, stateVar.dataJSON.mandatory_config.quiz_type) : undefined;
+          stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
+          stateVar.totalCards = (stateVar.totalQuestions + 2);
+          stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
+
+          if (stateVar.dataJSON.mandatory_config.time_per_question) {
+            stateVar.timePerQuestion = stateVar.dataJSON.mandatory_config.time_per_question;
+            stateVar.timerCountValue = stateVar.dataJSON.mandatory_config.time_per_question;
+          }
+          this.setState(stateVar);
+        }));
     }
   }
 
-  processResultData(resultCardData, config) {
+  processResultData(resultCardData, quizType) {
     let processedData = [];
-    if(config.quiz_type === "scoring" && resultCardData[0].upper_limit_of_score_range) {
+    if(quizType === "scoring" && resultCardData[0].upper_limit_of_score_range) {
       let groupedData = Utility.groupBy(resultCardData, "upper_limit_of_score_range"),
         keys = Object.keys(groupedData);
 
@@ -134,38 +126,8 @@ class Container extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const sheet = Utility.getURLParam('sheet'),
-      json = Utility.getURLParam('json');
-
-    if (sheet) {
-      LoadData.loadSheetData(sheet, sheetData => {
-        let stateVar = {
-          fetchingQuestions: false,
-          questionsData: this.processQuestionsData(sheetData.quiz.elements),
-          commonConfigs: this.processCommonConfigs(sheetData.common_configs.elements[0]),
-          introCardConfigs: sheetData.intro_card_configs.elements[0],
-          sliderValue: 0
-        };
-
-        stateVar.totalQuestions = stateVar.questionsData.length;
-        stateVar.totalCards = (stateVar.questionsData.length + 2);
-        stateVar.languageTexts = this.getLanguageTexts(stateVar.commonConfigs);
-        stateVar.resultCardConfigs = sheetData.result_card.elements ? this.processResultData(sheetData.result_card.elements, stateVar.commonConfigs) : undefined;
-
-        if (stateVar.commonConfigs.time_per_question) {
-          stateVar.timePerQuestion = stateVar.commonConfigs.time_per_question;
-          stateVar.timerCountValue = stateVar.commonConfigs.time_per_question;
-        }
-        this.setState(stateVar);
-      });
-    } else if (json) {
-
-    }
-  }
-
-  getLanguageTexts(config) {
-    let language = config ? config.language : "english",
+  getLanguageTexts(languageConfig) {
+    let language = languageConfig ? languageConfig : "english",
       text_obj;
 
     switch(language.toLowerCase()) {
@@ -191,9 +153,9 @@ class Container extends React.Component {
     }
 
     if(typeof text_obj === "object") {
-      text_obj.next = config.next_button_text || text_obj.next;
-      text_obj.restart = config.replay_button_text || text_obj.restart;
-      text_obj.swipe = config.swipe_hint_text || text_obj.swipe;
+      text_obj.next = text_obj.next;
+      text_obj.restart = text_obj.restart;
+      text_obj.swipe = text_obj.swipe;
     }
 
     return text_obj;
@@ -227,8 +189,9 @@ class Container extends React.Component {
       introFront = document.querySelector(".intro-front"),
       firstQCard = document.querySelector(".question-card[data-order='0']"),
       totalQuestions = this.state.totalQuestions,
-      config = this.state.commonConfigs;
+      config = this.state.dataJSON.mandatory_config;
 
+    console.log(config);
     introFront.style.display = "none";
     document.querySelector(".intro-back").style.display = "block";
 
@@ -242,6 +205,7 @@ class Container extends React.Component {
 
     setTimeout(() => {
       introCard.style.top = "-1000px";
+      console.log(config.quiz_type === "scoring" && !config.flip_card, config.quiz_type, config.flip_card);
       if(!(config.quiz_type === "scoring" && !config.flip_card)) {
         firstQCard.querySelector(".back").style.display = "none";
       }
@@ -283,11 +247,10 @@ class Container extends React.Component {
 
   optionClicked(e) {
     let qCard = document.querySelector(".question-card.active"),
-      config = this.state.commonConfigs,
+      config = this.state.dataJSON.mandatory_config,
       totalQuestions = this.state.totalQuestions,
-      cardData = this.state.questionsData[+qCard.getAttribute('data-order')],
-      option = cardData.options[+e.target.getAttribute('data-option-id')],
-      resultCardData = this.state.resultCardConfigs;
+      cardData = this.state.dataJSON.data.questions[+qCard.getAttribute('data-order')],
+      option = cardData.options[+e.target.getAttribute('data-option-id')];
 
     if(config.quiz_type === "scoring") {
       if(config.timer) {
@@ -325,7 +288,7 @@ class Container extends React.Component {
     let qCard = document.querySelector(".question-card.active"),
       parent = qCard.querySelector(".content"),
       orderId = qCard.getAttribute("data-order"),
-      config = this.state.commonConfigs;
+      config = this.state.dataJSON.mandatory_config;
 
     qCard.setAttribute('data-isNavigable', 1);
     if(!(config.quiz_type === "scoring" && !config.flip_card)) {
@@ -416,7 +379,7 @@ class Container extends React.Component {
       orderId = +qCard.getAttribute("data-order"),
       mainContainerWidth = document.querySelector(".main-container").offsetWidth,
       nextCard = document.querySelector(".question-card[data-order='" + (orderId + 1) + "']"),
-      config = this.state.commonConfigs,
+      config = this.state.dataJSON.mandatory_config,
       totalQuestions = this.state.totalQuestions,
       backDiv;
 
@@ -516,7 +479,7 @@ class Container extends React.Component {
     let qCard = document.querySelector(".question-card.active"),
       allQuestions = document.querySelectorAll(".question-card"),
       totalQuestions = this.state.totalQuestions,
-      config = this.state.commonConfigs,
+      config = this.state.dataJSON.mandatory_config,
       i;
 
     if(qCard) {
@@ -540,10 +503,6 @@ class Container extends React.Component {
         questionElement.style.opacity = 0;
       }
 
-      if (config.flip_card) {
-        questionElement.querySelector('.back').style.display = 'none';
-      }
-
       if(config.quiz_type === "scoring" && !config.flip_card) {
         allOptions = frontElement.querySelectorAll(".option-div");
         for(let j = 0; j < allOptions.length; j++) {
@@ -562,6 +521,7 @@ class Container extends React.Component {
           frontElement.querySelector(".timeout-msg").style.display = "none";
         }
       } else {
+        questionElement.querySelector('.back').style.display = 'none';
         if(this.state.isMobile) {
           let swipeHint = questionElement.querySelector(".back .swipe-hint-container");
           swipeHint.style.display = "block";
@@ -607,7 +567,6 @@ class Container extends React.Component {
     //     eventValue: total_questions
     //   });
     // }
-
   }
 
   revisitAnswers(e) {
@@ -697,7 +656,7 @@ class Container extends React.Component {
     let counter = this.state.timePerQuestion,
       activeQuestion = document.querySelector('.question-card.active'),
       orderId = +activeQuestion.getAttribute('data-order-id'),
-      options = this.state.questionsData[orderId].options,
+      options = this.state.dataJSON.data.questions[orderId].options,
       questionScore = counter;
 
     this.setState({ questionScore: counter });
@@ -712,7 +671,7 @@ class Container extends React.Component {
       if(counter === 0) {
         this.clearTimer();
         this.flashTimeUpIndicator();
-        if(!this.state.commonConfigs.flip_card) {
+        if(!this.state.dataJSON.mandatory_config.flip_card) {
           document.querySelector(".question-card.active .front .timer").style.display = "none";
         }
         document.querySelector(".question-card.active .timeout-msg").style.display = "block";
@@ -791,25 +750,35 @@ class Container extends React.Component {
     const buttonStyle = {},
       introFrontStyle = {};
 
-    this.state.introCardConfigs.start_button_color ? buttonStyle.backgroundColor = this.state.introCardConfigs.start_button_color : undefined;
-    this.state.introCardConfigs.start_button_text_color ? buttonStyle.color = this.state.introCardConfigs.start_button_text_color : undefined;
+    const data = this.state.dataJSON.data,
+      introCardConfigs = {
+        background_image: data.background_image,
+        quiz_title: data.quiz_title,
+        introduction: data.introduction,
+        start_button_text: data.start_button_text,
+        start_button_color: this.state.optionalConfigJSON.start_button_color,
+        start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
+      };
 
-    if(this.state.introCardConfigs.background_image) {
-      introFrontStyle.backgroundImage = "url(" + this.state.introCardConfigs.background_image + ")";
+    introCardConfigs.start_button_color ? buttonStyle.backgroundColor = introCardConfigs.start_button_color : undefined;
+    introCardConfigs.start_button_text_color ? buttonStyle.color = introCardConfigs.start_button_text_color : undefined;
+
+    if(introCardConfigs.background_image) {
+      introFrontStyle.backgroundImage = "url(" + introCardConfigs.background_image + ")";
     }
 
     return (
       <div className="intro-container">
-        <div className={`${this.state.introCardConfigs.background_image || this.state.mode === 'laptop' ? 'intro-content with-image' : 'intro-content'}`}>
-          <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
-            {this.state.introCardConfigs.quiz_title}
+        <div className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'intro-content with-image' : 'intro-content'}`}>
+          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
+            {introCardConfigs.quiz_title}
           </div>
-          <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-description with-image' : 'intro-description'}`}>
-            {this.state.introCardConfigs.introduction}
+          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'intro-description with-image' : 'intro-description'}`}>
+            {introCardConfigs.introduction}
           </div>
           <div className="intro-button-div">
             <button className="intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
-              {this.state.introCardConfigs.start_button_text}
+              {introCardConfigs.start_button_text}
             </button>
           </div>
         </div>
@@ -856,10 +825,81 @@ class Container extends React.Component {
   }
 
   renderMainContainerContent(cards) {
-    const events = {};
-    events.resetQuiz = ((e) => this.resetQuiz(e));
-    events.revisitAnswers = ((e) => this.revisitAnswers(e));
-    events.socialShare = ((e) => this.socialShare(e));
+    const events = {
+      resetQuiz: ((e) => this.resetQuiz(e)),
+      revisitAnswers: ((e) => this.revisitAnswers(e)),
+      socialShare: ((e) => this.socialShare(e))
+    },
+    data = this.state.dataJSON.data,
+    introCardConfigs = {
+      background_image: data.background_image,
+      quiz_title: data.quiz_title,
+      introduction: data.introduction,
+      start_button_text: data.start_button_text,
+      start_button_color: this.state.optionalConfigJSON.start_button_color,
+      start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
+    },
+    cardConfigs = this.state.dataJSON.mandatory_config;
+    cardConfigs.share_msg = data.share_msg;
+    cardConfigs.share_link = data.share_link;
+
+    return (
+      <div className="quiz-container">
+        <div className="quiz-content">
+          { this.props.mode === 'laptop' && this.renderIntroCard() }
+          <div id="main_container" className="main-container">
+            <div id="fb-root"></div>
+
+            { this.renderCorrectIndicator() }
+            { this.renderWrongIndicator() }
+            { this.renderTimeOutIndicator() }
+
+            <IntroductionCard
+              introCardConfigs={introCardConfigs}
+              startQuiz={((e) => this.startQuiz(e))}
+              totalQuestions={this.state.totalQuestions}
+              isMobile={this.state.isMobile}
+            />
+
+            <div id="card_stack" className="card-stack">
+              {cards}
+              {
+                this.state.isMobile ? <div className='help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
+              }
+            </div>
+
+            <ResultCard
+              introCardConfigs={introCardConfigs}
+              cardConfigs={this.state.dataJSON.mandatory_config}
+              resultCardConfigs={this.state.dataJSON.data.result_card_data}
+              totalQuestions={this.state.totalQuestions}
+              score={this.state.score}
+              cardEvents={events}
+            />
+
+            <div className="slider-container">
+              <div className="slider-hint">use slider to move between questions</div>
+              <span className="slider-card-no">5</span>
+              <input
+                className="card-slider"
+                name="card_slider"
+                type="range"
+                step="1"
+                min="0"
+                max={this.state.totalQuestions}
+                value={this.state.sliderValue}
+                onInput={((e) => { this.slideCallback(e.target.value); })}
+                onMouseDown={!this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
+                onTouchStart={this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  render() {
     if (this.state.fetchingQuestions) {
       return (
         <div className='quiz-container'>
@@ -871,120 +911,58 @@ class Container extends React.Component {
         </div>
       )
     } else {
-      return (
-        <div className="quiz-container">
-          <div className="quiz-content">
-            { this.props.mode === 'laptop' && this.renderIntroCard() }
-            <div id="main_container" className="main-container">
-              <div id="fb-root"></div>
+      let styles = {},
+        x = (this.state.totalQuestions * 20) - 20,
+        y = 0 - 320,
+        z = 1 + 0.08,
+        questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],
+        qCards;
 
-              { this.renderCorrectIndicator() }
-              { this.renderWrongIndicator() }
-              { this.renderTimeOutIndicator() }
+      qCards = questionsData.map((card, i) => {
+        const style = {},
+          events = {};
 
-              <IntroductionCard
-                introCardConfigs={this.state.introCardConfigs}
-                startQuiz={((e) => this.startQuiz(e))}
-                totalQuestions={this.state.totalQuestions}
-                isMobile={this.state.isMobile}
-              />
+        style.zIndex = this.state.totalQuestions - i;
+        style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
 
-              <div id="card_stack" className="card-stack">
-                {cards}
-                {
-                  this.state.isMobile ? <div className='help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
-                }
-              </div>
+        if(i < 2) {
+          style.opacity = 1;
+        } else {
+          style.opacity = 0;
+        }
 
-              <ResultCard
-                introCardConfigs={this.state.introCardConfigs}
-                cardConfigs={this.state.commonConfigs}
-                resultCardConfigs={this.state.resultCardConfigs}
-                totalQuestions={this.state.totalQuestions}
-                score={this.state.score}
-                cardEvents={events}
-              />
+        x = x - 20;
+        y = y - 320;
+        z = z + 0.08;
 
-              <div className="slider-container">
-                <div className="slider-hint">use slider to move between questions</div>
-                <span className="slider-card-no">5</span>
-                <input
-                  className="card-slider"
-                  name="card_slider"
-                  type="range"
-                  step="1"
-                  min="0"
-                  max={this.state.totalQuestions}
-                  value={this.state.sliderValue}
-                  onInput={((e) => { this.slideCallback(e.target.value); })}
-                  onMouseDown={!this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
-                  onTouchStart={this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )
+        events.optionClick = ((e) => this.optionClicked(e));
+        if (this.state.isMobile) {
+          events.onTouchStart = ((e) => Touch.swipeStart(e));
+          events.onTouchMove = ((e) => Touch.swipeMove(e));
+          events.onTouchEnd = ((e) => this.touchEndHandler(e));
+        } else {
+          events.nextCard = ((e) => this.swipeCallback('up'));
+        }
+
+        return (
+          <QuestionCard
+            key={i}
+            cardNo={i}
+            questionNo={this.formatNumber(i + 1)}
+            cardStyle={style}
+            cardData={this.state.dataJSON.data.questions[i]}
+            cardEvents={events}
+            cardConfigs={this.state.dataJSON.mandatory_config}
+            languageTexts={this.state.languageTexts}
+            totalQuestions={this.formatNumber(this.state.totalQuestions)}
+            isMobile={this.state.isMobile}
+            timerValue={this.calculateTime(this.state.timerCountValue)}
+          />
+        )
+      });
+
+      return this.renderMainContainerContent(qCards)
     }
-  }
-
-  render() {
-    let styles = {},
-      x = (this.state.totalQuestions * 20) - 20,
-      y = 0 - 320,
-      z = 1 + 0.08,
-      qCards,
-      question_card_count = 0;
-
-    if(this.state.commonConfigs.font_family) {
-      document.querySelector('.main-container').style.fontFamily = this.state.commonConfigs.font_family;
-    }
-
-    qCards = this.state.questionsData.map((card, i) => {
-      const style = {},
-        events = {};
-
-      style.zIndex = this.state.totalQuestions - i;
-      style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
-
-      if(i < 2) {
-        style.opacity = 1;
-      } else {
-        style.opacity = 0;
-      }
-
-      x = x - 20;
-      y = y - 320;
-      z = z + 0.08;
-
-      events.optionClick = ((e) => this.optionClicked(e));
-
-      if (this.state.isMobile) {
-        events.onTouchStart = ((e) => Touch.swipeStart(e));
-        events.onTouchMove = ((e) => Touch.swipeMove(e));
-        events.onTouchEnd = ((e) => this.touchEndHandler(e));
-      } else {
-        events.nextCard = ((e) => this.swipeCallback('up'));
-      }
-
-      return (
-        <QuestionCard
-          key={i}
-          cardNo={i}
-          questionNo={this.formatNumber(i + 1)}
-          cardStyle={style}
-          cardData={this.state.questionsData[i]}
-          cardEvents={events}
-          cardConfigs = {this.state.commonConfigs}
-          languageTexts={this.state.languageTexts}
-          totalQuestions={this.formatNumber(this.state.totalQuestions)}
-          isMobile={this.state.isMobile}
-          timerValue={this.calculateTime(this.state.timerCountValue)}
-        />
-      )
-    });
-
-    return this.renderMainContainerContent(qCards)
   }
 }
 

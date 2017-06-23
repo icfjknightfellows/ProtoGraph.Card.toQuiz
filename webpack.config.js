@@ -5,11 +5,8 @@ module.exports = {
     output: {
         library: 'Quiz',
         path: './',
-        filename: 'index.js',
+        filename: './dist/0.0.1/card.min.js',
     },
-    // plugins: [
-       // new webpack.optimize.UglifyJsPlugin()
-    // ],
     node: {
         net: 'empty',
         tls: 'empty',
