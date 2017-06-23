@@ -1,81 +1,167 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
-import Card from './Card.jsx';
-import Scss from '../css/container.scss'
-import Utility from './utility.js';
-import Touch from "./touch.js";
+import React      from 'react';
+import ReactDOM   from 'react-dom';
+import axios      from 'axios';
+import Scss       from '../css/container.scss'
+import Utility    from './utility.js';
+import Touch      from './touch.js';
+import LoadData   from './load_data.js';
+import IntroductionCard  from '../cards/quiz-introduction.jsx';
+import ResultCard from '../cards/quiz-conclusion.jsx';
+import QuestionCard from '../cards/question-cards.jsx'
 
 class Container extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      fetching_questions: true,
-      card_meta_data: [],
-      card_data: [],
-      configs: {},
-      intro_card_configs: {},
-      result_card_configs: {},
-      language_texts: {},
-      total_cards: 0,
-      total_questions: 0,
+      fetchingQuestions: true,
+      questionsData: [],
+      commonConfigs: {},
+      introCardConfigs: {},
+      resultCardConfigs: undefined,
+      languageTexts: {},
+      totalQuestions: 0,
       score: 0,
-      right_counter: 0,
-      card_height: 300,
+      rightCounter: 0,
+      cardHeight: 300,
+      backHeightWithoutFact: undefined,
       sliderValue: 0,
-      timer_count_value: 30,
-      time_per_question: 30,
-      question_score: 1,
+      timerCountValue: 10,
+      timePerQuestion: 10,
+      questionScore: 1,
       timer: undefined,
-      is_mobile: window.innerWidth <= 500
+      revisitingAnswers: false,
+      isMobile: this.props.mode === 'mobile' ? true : false
     };
   }
 
-  componentDidMount() {
-    axios.all([axios.get(this.props.containerURL), axios.get(this.props.dataURL)])
-      .then(axios.spread((cont, card) => {
-        //Note this call is async.
+  processQuestionsData(questionsData) {
+    let groupedData = Utility.groupBy(questionsData, 'question_no'),
+      keys = Object.keys(groupedData),
+      processedData = [];
 
-        let state_vars = {
-          fetching_questions: false,
-          card_meta_data: cont.data.cards,
-          card_data: card.data.root.row,
-          configs: cont.data.configurations.common_configs,
-          intro_card_configs: cont.data.configurations.intro_card_configs,
-          result_card_configs: this.processResultData(cont.data.configurations.result_card),
-          language_texts: this.getLanguageTexts(cont.data.configurations.common_configs),
-          total_cards: cont.data.cards.length,
-          total_questions: cont.data.cards.reduce((prev, curr) => {
-            if (curr.card_type === 'qa') {
-              return prev + 1;
-            } else {
-              return prev
-            }
-          }, 0),
+    keys.forEach(key => {
+      let tempObj = {};
+      groupedData[key].forEach(datum => {
+        if(Object.keys(tempObj).length) {
+          tempObj.options.push({
+            option: datum.options,
+            correct_answer: datum.correct_answer,
+            gif_image: datum.gif_image,
+            fact: datum.description,
+            right_or_wrong: datum.right_or_wrong ? (datum.right_or_wrong.toLowerCase() === 'right' ? true : false) : false
+          });
+        } else {
+          tempObj = {
+            "question": datum.question,
+            "question_no": datum.question_no,
+            "options": [{
+              option: datum.options,
+              correct_answer: datum.correct_answer,
+              gif_image: datum.gif_image,
+              fact: datum.description,
+              right_or_wrong: datum.right_or_wrong ? (datum.right_or_wrong.toLowerCase() === 'right' ? true : false) : false
+            }]
+          };
+        }
+      });
+      processedData.push(tempObj);
+    });
+    return processedData;
+  }
+
+  processCommonConfigs(commonConfigs) {
+    return {
+      language: commonConfigs.language,
+      quiz_type: commonConfigs.quiz_type,
+      timer: commonConfigs.timer ? (commonConfigs.timer.toLowerCase() === 'yes' ? true : false ) : false,
+      time_per_question: commonConfigs.time_per_question,
+      flip_card: commonConfigs.flip_card ? (commonConfigs.flip_card.toLowerCase() === 'yes' ? true : false ) : false,
+      revisit_answers: commonConfigs.revisit_answers ? (commonConfigs.revisit_answers.toLowerCase() === 'yes' ? true : false ) : false,
+      social_share: commonConfigs.social_share ? (commonConfigs.social_share.toLowerCase() === 'yes' ? true : false ) : false,
+      share_link: commonConfigs.share_link,
+      share_msg: commonConfigs.share_msg
+    }
+  }
+
+  processResultData(resultCardData, config) {
+    let processedData = [];
+    if(config.quiz_type === "scoring" && resultCardData[0].upper_limit_of_score_range) {
+      let groupedData = Utility.groupBy(resultCardData, "upper_limit_of_score_range"),
+        keys = Object.keys(groupedData);
+
+      keys.forEach(key => {
+        let tempObj = {};
+        groupedData[key].forEach(datum => {
+          if(Object.keys(tempObj).length) {
+            tempObj.related_articles.push({
+              "related_article_links": datum.related_article_links,
+              "link_description": datum.link_description,
+              "link_image": datum.link_image
+            });
+          } else {
+            tempObj = {
+              "upper_limit_of_score_range": datum.upper_limit_of_score_range,
+              "message": datum.message,
+              "related_articles": [{
+                "related_article_links": datum.related_article_links,
+                "link_description": datum.link_description,
+                "link_image": datum.link_image
+              }]
+            };
+          }
+        });
+        processedData.push(tempObj);
+      });
+
+      processedData.sort(function(a, b) {
+        return a.upper_limit_of_score_range - b.upper_limit_of_score_range;
+      });
+
+      return processedData;
+    } else {
+      processedData.push({
+        "message": resultCardData[0].message,
+        "related_articles": resultCardData.map(function(datum) {
+          return {
+            "related_article_links": datum.related_article_links,
+            "link_description": datum.link_description,
+            "link_image": datum.link_image
+          };
+        })
+      });
+      return processedData;
+    }
+  }
+
+  componentDidMount() {
+    const sheet = Utility.getURLParam('sheet'),
+      json = Utility.getURLParam('json');
+
+    if (sheet) {
+      LoadData.loadSheetData(sheet, sheetData => {
+        let stateVar = {
+          fetchingQuestions: false,
+          questionsData: this.processQuestionsData(sheetData.quiz.elements),
+          commonConfigs: this.processCommonConfigs(sheetData.common_configs.elements[0]),
+          introCardConfigs: sheetData.intro_card_configs.elements[0],
           sliderValue: 0
         };
 
-        if (state_vars.configs.time_per_question) {
-          state_vars.time_per_question = state_vars.configs.time_per_question;
-          state_vars.timer_count_value = state_vars.configs.time_per_question;
+        stateVar.totalQuestions = stateVar.questionsData.length;
+        stateVar.totalCards = (stateVar.questionsData.length + 2);
+        stateVar.languageTexts = this.getLanguageTexts(stateVar.commonConfigs);
+        stateVar.resultCardConfigs = sheetData.result_card.elements ? this.processResultData(sheetData.result_card.elements, stateVar.commonConfigs) : undefined;
+
+        if (stateVar.commonConfigs.time_per_question) {
+          stateVar.timePerQuestion = stateVar.commonConfigs.time_per_question;
+          stateVar.timerCountValue = stateVar.commonConfigs.time_per_question;
         }
+        this.setState(stateVar);
+      });
+    } else if (json) {
 
-        this.setState(state_vars);
-
-        if (this.state.is_mobile) {
-          let main_container = document.querySelector('.main-container'),
-            card_stack = document.querySelector(".card-stack"),
-            width = (window.innerWidth - 20),
-            margin_left = (-(window.innerWidth - 20) / 2);
-
-          main_container.style.width = (window.innerWidth - 14) + "px";
-          card_stack.style.width = width + "px";
-          card_stack.style.marginLeft = margin_left + "px";
-        }
-
-
-      }));
+    }
   }
 
   getLanguageTexts(config) {
@@ -117,122 +203,104 @@ class Container extends React.Component {
     return n > 9 ? "" + n : "0" + n;
   }
 
-  processResultData(result_card_data) {
-    let grouped_data = Utility.groupBy(result_card_data, "score_range_higher_mark"),
-      keys = Object.keys(grouped_data),
-      processed_data = [];
-
-    keys.forEach(key => {
-      let temp_obj = {};
-      grouped_data[key].forEach(datum => {
-        if(Object.keys(temp_obj).length) {
-          temp_obj.related_article_links.push(datum.related_article_links);
-        } else {
-          temp_obj = {
-            "score_range_higher_mark": datum.score_range_higher_mark,
-            "message": datum.message,
-            "related_article_links": [datum.related_article_links]
-          };
-        }
-      });
-      processed_data.push(temp_obj);
-    });
-    processed_data.sort(function(a, b) {
-      return a.score_range_higher_mark - b.score_range_higher_mark;
-    })
-    return processed_data;
-  }
-
   startCountdown() {
-    let countdown_value = document.querySelector('.question-card[data-card-type="intro"] .countdown-counter'),
-      countdown_interval,
+    let countdownValue = document.querySelector(".intro-card .countdown-counter"),
+      countdownInterval,
       counter = 3;
 
-    countdown_interval = setInterval(function() {
+    countdownInterval = setInterval(function() {
       counter--;
       if(counter > 0) {
-        countdown_value.innerHTML = counter;
+        countdownValue.innerHTML = counter;
       } else if(counter === 0) {
-        countdown_value.innerHTML = "GO";
+        countdownValue.innerHTML = "GO";
       } else {
-        clearInterval(countdown_interval);
+        clearInterval(countdownInterval);
       }
     }, 1000);
   }
 
   // EVENTS
   startQuiz(e) {
-    let q_card = document.querySelector(".question-card.active"),
-      card_no = +q_card.getAttribute("data-card-no"),
-      main_container_width = document.querySelector(".main-container").offsetWidth,
-      back_div,
-      total_cards = this.state.total_cards,
-      config = this.state.configs;
+    let button = document.querySelector(".intro-button"),
+      introCard = document.querySelector(".intro-card"),
+      introFront = document.querySelector(".intro-front"),
+      firstQCard = document.querySelector(".question-card[data-order='0']"),
+      totalQuestions = this.state.totalQuestions,
+      config = this.state.commonConfigs;
 
-    e.target.style.display = "none";
-    q_card.classList.add("clicked");
-    q_card.classList.remove("active");
+    introFront.style.display = "none";
+    document.querySelector(".intro-back").style.display = "block";
+
+    if(!this.state.isMobile) {
+      e.target.style.visibility = "hidden";
+      document.querySelector(".intro-cover").style.display = "block";
+    }
+    introCard.classList.add("clicked");
 
     this.startCountdown();
 
     setTimeout(() => {
-      q_card.style.top = "-1000px";
-      // if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-      //   first_q_card.querySelector(".back").style.display = "none";
-      // }
-      let next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']");
-      if(next_card) {
-        next_card.classList.add("active");
+      introCard.style.top = "-1000px";
+      if(!(config.quiz_type === "scoring" && !config.flip_card)) {
+        firstQCard.querySelector(".back").style.display = "none";
       }
 
-      for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
-        let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
-          position = (i - card_no - 1);
+      firstQCard.classList.add("active");
+      firstQCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${((totalQuestions) * 20)}, 0, 1)`;
 
-        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)},  ${(position * 320 * -1)} , ${(1 + 0.08 * position)})`;
-        // card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
-        if(count > 2) {
+      for(let i = 1; i < totalQuestions; i++) {
+        let card = document.querySelector(`.question-card[data-order='${i}']`);
+
+        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - i) * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+        if(i > 2) {
           card.style.opacity = 0;
         } else {
           card.style.opacity = 1;
         }
       }
 
-      if(config.quiz_type === "scoring" && config.timer === "yes") {
-        this.setTimer();
+      let conclusionCard = document.querySelector(".conclusion-card");
+      conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+      if(totalQuestions < 3) {
+        conclusionCard.style.opacity = 1;
       }
 
+      if(config.quiz_type === "scoring" && config.timer) {
+        this.setTimer();
+      }
     }, 4000);
 
-    // if(config.quiz_type === "scoring") {
-    //   let conclusion_card = document.querySelector(".conclusion-card"),
-    //     position = total_cards - card_no - 1;
-    //   conclusion_card.style.transform = "matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, " + (((total_cards) - position) * 24) + ", " + (position * 320 * -1) + ", " + (1 + 0.16 * position) + ")";
+    // if (ga) {
+    //   ga('pyktracker.send', 'event', {
+    //     eventCategory: 'onStart',
+    //     eventAction: 'click',
+    //     eventLabel: 0,
+    //     eventValue: 0
+    //     });
     // }
   }
 
   optionClicked(e) {
-    let q_card = e.target.closest(".question-card"),
-      question_no = +q_card.getAttribute('data-question-no'),
-      card_no = +q_card.getAttribute('data-card-no'),
-      parent = e.target.closest(".content"),
-      back_div,
-      config = this.state.configs,
-      total_questions = this.state.total_questions,
-      total_cards = this.state.total_cards,
-      card_data = this.state.card_data[card_no],
-      option = card_data.options[+e.target.getAttribute('data-option-id')],
-      result_card_data = this.state.result_card_configs;
+    let qCard = document.querySelector(".question-card.active"),
+      config = this.state.commonConfigs,
+      totalQuestions = this.state.totalQuestions,
+      cardData = this.state.questionsData[+qCard.getAttribute('data-order')],
+      option = cardData.options[+e.target.getAttribute('data-option-id')],
+      resultCardData = this.state.resultCardConfigs;
 
     if(config.quiz_type === "scoring") {
-      if(config.timer === "yes") {
+      if(config.timer) {
         this.clearTimer();
+        if(!config.flip_card) {
+          qCard.querySelector(".front .timer").style.display = "none";
+        }
       }
-      if(option.right_or_wrong === "right") {
+      if(option.right_or_wrong) {
         this.setState((prevState, props) => {
           return {
             right_counter: prevState.right_counter + 1,
-            score: prevState.score + this.state.question_score
+            score: prevState.score + this.state.questionScore
           };
         });
         this.flashCorrectIndicator();
@@ -242,223 +310,190 @@ class Container extends React.Component {
     }
 
     this.addOptionBasedContent(option);
+
+    // if (ga) {
+    //   ga('pyktracker.send', 'event', {
+    //     eventCategory: 'onClickOfOption',
+    //     eventAction: 'click',
+    //     eventLabel: order_id + 1,
+    //     eventValue: option.option
+    //   });
+    // }
   }
 
-  nextCard(e) {
-    let q_card = document.querySelector(".question-card.active"),
-      card_no = +q_card.getAttribute("data-card-no"),
-      main_container_width = document.querySelector(".main-container").offsetWidth,
-      back_div,
-      total_cards = this.state.total_cards;
+  addOptionBasedContent(option) {
+    let qCard = document.querySelector(".question-card.active"),
+      parent = qCard.querySelector(".content"),
+      orderId = qCard.getAttribute("data-order"),
+      config = this.state.commonConfigs;
 
-    e.target.style.display = "none";
-
-    q_card.classList.remove("active");
-    q_card.style.left = (main_container_width + 500) + "px";
-
-    let next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']");
-    if(next_card && card_no + 1 < total_cards - 1) {
-      next_card.classList.add("active");
-        back_div = next_card.querySelector(".back");
-        back_div.style.display = "none";
-    }
-
-    for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
-      let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
-        position = (i - card_no - 1);
-      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)},  ${(position * 320 * -1)} , ${(1 + 0.08 * position)})`;
-      if(count > 2) {
-        card.style.opacity = 0;
-      } else {
-        card.style.opacity = 1;
-      }
-
-    }
-    if(config.quiz_type === "scoring" && config.timer === "yes") {
-      this.setTimer();
-    }
-  }
-
-  resetQuiz(e) {
-    this.setState({
-      right_counter: 0,
-      score: 0
-    });
-
-    let q_card = document.querySelector(".question-card.active"),
-      all_questions = document.querySelectorAll(".question-card:not([data-card-type='intro']):not([data-card-type='score'])"), // instead can do data-card-type='qa' but its not done as we can have cards in between the question card stack that we want users to revisit.
-      total_cards = this.state.total_cards,
-      total_questions = this.state.total_questions,
-      config = this.state.configs,
-      i;
-
-    if(q_card) {
-      q_card.classList.remove("active");
-    }
-
-    for (i = 0;  i < all_questions.length; i++) {
-      let question_element = all_questions[i],
-        front_element = question_element.querySelector(".front"),
-        all_options;
-
-      question_element.classList.remove("clicked");
-      question_element.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - i) * 16)},  ${(i * 320 * -1)} , ${(1 + 0.08 * i)})`;
-      question_element.style.display = "block";
-      front_element.style.display = "block";
-      question_element.style.left = "50%";
-      question_element.style.top = "0px";
-
-      if(i < 3) {
-        question_element.style.opacity = 1;
-      } else {
-        question_element.style.opacity = 0;
-      }
+    qCard.setAttribute('data-isNavigable', 1);
+    if(!(config.quiz_type === "scoring" && !config.flip_card)) {
+      let backDiv = parent.querySelector(".back");
 
       if(config.quiz_type === "scoring") {
-        if(config.flip_card === "no") {
-          // removeTouchEvents(front_element);
-          all_options = front_element.querySelectorAll(".option-div");
-          for(let j = 0; j < all_options.length; j++) {
-            // all_options[j].style.pointerEvents = "auto";
-            all_options[j].style.display = "block";
+        setTimeout(function() {
+          qCard.classList.add("clicked");
+          if(option.right_or_wrong) {
+            backDiv.querySelector(".wrong-answer").style.display = "none";
+            backDiv.querySelector(".correct-answer").classList.remove("deselected");
+          } else {
+            backDiv.querySelector(".wrong-answer").style.display = "block";
+            backDiv.querySelector('.wrong-answer .option-text').innerHTML = option.option;
+            backDiv.querySelector(".correct-answer").classList.add("deselected");
           }
-          front_element.querySelector(".question").style.color = "black";
-          front_element.querySelector(".title").style.display = "none";
-          front_element.querySelector(".answers-container").style.display = "none";
-          front_element.querySelector(".swipe-hint-container").style.display = "none";
+          setTimeout(function() {
+            parent.querySelector(".front").style.display = "none";
+            backDiv.style.display = "block";
+          }, 100);
+        }, 1100);
+      } else {
+        qCard.classList.add("clicked");
+        setTimeout(function() {
+          parent.querySelector(".front").style.display = "none";
+          backDiv.style.display = "block";
+        }, 100);
+        backDiv.querySelector('.correct-answer').innerHTML = option.option;
+      }
+
+      if(option.gif_image) {
+        backDiv.querySelector(".gif-div").style.display = "block";
+        backDiv.querySelector(".gif").onload = function (e) {
+          let imgClientRect = e.target.offsetWidth,
+            imgContainerClientRect = backDiv.querySelector(".gif-div").offsetWidth,
+            idealImgWidth = imgContainerClientRect - 20;
+
+          if(imgClientRect >= idealImgWidth) {
+            e.target.style.width = idealImgWidth + "px";
+          }
+        };
+        backDiv.querySelector(".gif").setAttribute("src", option.gif_image);
+      } else {
+        backDiv.querySelector(".gif-div").style.display = "none";
+      }
+
+      if(option.fact) {
+        backDiv.querySelector(".fact").style.display = "block";
+        backDiv.querySelector(".fact").innerHTML = "";
+        backDiv.querySelector(".fact").appendChild(document.createTextNode(option.fact));
+      } else {
+        backDiv.querySelector(".fact").style.display = "none";
+      }
+    } else {
+      if(config.quiz_type === "scoring") {
+        let allOptions = parent.querySelectorAll(".option-div"),
+          frontDiv = parent.querySelector(".front");
+
+        for(let j = 0; j < allOptions.length; j++) {
+          allOptions[j].style.display = "none";
+        }
+        frontDiv.querySelector(".question").style.color = "#a8a8a8";
+        frontDiv.querySelector(".title").style.display = "block";
+        frontDiv.querySelector(".answers-container").style.display = "block";
+        if(this.state.isMobile) {
+          frontDiv.querySelector(".swipe-hint-container").style.display = "block";
         } else {
-          let back_element = question_element.querySelector(".back"),
-            swipe_hint = back_element.querySelector(".swipe-hint-container");
-          // addTouchEvents(back_element, config, total_cards);
-          if (swipe_hint) {
-            swipe_hint.style.display = "block";
-          }
+          frontDiv.querySelector(".next-container").style.display = "block";
+        }
+        if(option.right_or_wrong) {
+          frontDiv.querySelector(".wrong-answer").style.display = "none";
+          frontDiv.querySelector(".correct-answer").classList.remove("deselected");
+        } else {
+          frontDiv.querySelector(".wrong-answer").style.display = "block";
+          frontDiv.querySelector('.wrong-answer .option-text').innerHTML = option.option;
+          frontDiv.querySelector(".correct-answer").classList.add("deselected");
         }
       }
-    }
-
-    document.querySelector(".question-card[data-question-no='1']").classList.add('active');
-
-    let conclusion_card = document.querySelector(".question-card[data-card-type='score']"),
-      progress_bars = document.querySelectorAll(".progress-bar");
-
-    conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(total_cards * 320 * -1)}, ${(1 + 0.08 * total_cards)})`;
-
-    for(let i = 0; i < progress_bars.length; i++) {
-      progress_bars[i].style.display = "block";
-    }
-
-    this.hideSlider();
-
-    if(config.quiz_type === "scoring") {
-      if(config.timer === "yes") {
-        this.setTimer();
-      }
-    }
-  }
-
-  revisitAnswers(e) {
-    this.showSlider();
-    this.slideCallback(0);
-  }
-
-  slideCallback(value) {
-    this.setState({sliderValue: value});
-    let total_questions = this.state.total_questions,
-      slider = document.querySelector(".card-slider"),
-      percent = value / total_questions * 100,
-      conclusion_card = document.querySelector(".question-card[data-card-type='score']");
-
-    slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 " + percent + "%, #EEE " + percent + "%)";
-
-    for(let i = 1; i < total_questions; i++) {
-      let q_card = document.querySelector(`.question-card[data-question-no='${i}']`);
-      if(i < value) {
-        q_card.style.top = "-1000px";
-      } else {
-        let order_no = i - value;
-
-        q_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_questions) - order_no) * 24)}, ${(order_no * 320 * -1)}, ${(1 + 0.16 * order_no)})`
-        q_card.style.display = "block";
-        q_card.style.left = "50%";
-        q_card.style.top = "0px";
-      }
-    }
-    conclusion_card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(value * 16)}, ${(total_questions * 320 * -1)}, ${(1 + 0.08 * (total_questions - value))})`
-    if((total_questions - value) < 3) {
-      setTimeout(function() {
-        conclusion_card.style.opacity = 1;
-      }, 300);
-    } else {
-      setTimeout(function() {
-        conclusion_card.style.opacity = 0;
-      }, 300);
     }
   }
 
   swipeCallback(direction) {
-    let q_card = document.querySelector(".question-card.active"),
-      card_no = +q_card.getAttribute("data-card-no"),
-      question_no = +q_card.getAttribute("data-question-no"),
-      main_container_width = document.querySelector(".main-container").offsetWidth,
-      next_card = document.querySelector(".question-card[data-card-no='" + (card_no + 1) + "']"),
-      config = this.state.configs,
-      total_cards = this.state.total_cards,
-      back_div;
+    if (this.state.revisitAnswers) {
+      return;
+    }
 
-    if(next_card && card_no + 1 < total_cards - 1) {
-      next_card.classList.add("active");
-      if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-        back_div = next_card.querySelector(".back");
-        back_div.style.display = "none";
-      }
-      if(config.quiz_type === "scoring" && config.timer === "yes") {
+    let qCard = document.querySelector(".question-card.active"),
+      orderId = +qCard.getAttribute("data-order"),
+      mainContainerWidth = document.querySelector(".main-container").offsetWidth,
+      nextCard = document.querySelector(".question-card[data-order='" + (orderId + 1) + "']"),
+      config = this.state.commonConfigs,
+      totalQuestions = this.state.totalQuestions,
+      backDiv;
+
+    if (!+qCard.getAttribute('data-isNavigable')) {
+      return;
+    }
+
+    if(nextCard) {
+      if(config.quiz_type === "scoring" && config.timer) {
+        this.setState({timerCountValue: this.state.timePerQuestion});
         this.setTimer();
       }
+      nextCard.classList.add("active");
+      if(!(config.quiz_type === "scoring" && !config.flip_card)) {
+        backDiv = nextCard.querySelector(".back");
+        backDiv.style.display = "none";
+      }
     } else {
-      if(config.quiz_type === "scoring") {
-        let progress_bars = document.querySelectorAll(".progress-bar");
+      document.querySelectorAll(".progress-bar").forEach((e) => {
+        e.style.display = 'none';
+      });
 
-        for(let i = 0; i < progress_bars.length; i++) {
-          progress_bars[i].style.display = "none";
-        }
-
-        if(config.flip_card === "yes") {
-          let swipe_container = document.querySelectorAll(".question-card[data-card-type='qa'] .back .swipe-hint-container");
-          swipe_container.forEach((e) => {
-            e.style.display = 'none';
-          });
-        } else {
-          let swipe_container = document.querySelectorAll(".question-card[data-card-type='qa'] .front .swipe-hint-container");
-          swipe_container.forEach((e) => {
-            e.style.display = 'none';
-          });
-        }
+      if(!(config.quiz_type === "scoring" && !config.flip_card)) {
+        document.querySelectorAll('.question-card .back .swipe-hint-container').forEach((e) => {
+          e.style.display = 'none';
+        });
+        document.querySelectorAll('.question-card .back .next-container').forEach((e) => {
+          e.style.display = 'none';
+        });
+      } else {
+        document.querySelectorAll('.question-card .front .swipe-hint-container').forEach((e) => {
+          e.style.display = 'none';
+        });
+        document.querySelectorAll('.question-card .front .next-container').forEach((e) => {
+          e.style.display = 'none';
+        });
       }
     }
 
-    document.getElementById('next').style.display = "none";
-    q_card.classList.remove("active");
-
+    qCard.classList.remove("active");
     switch(direction) {
       case "left":
-        q_card.style.left = "-1000px";
+        qCard.style.left = "-1000px";
         break;
       case "right":
-        q_card.style.left = (main_container_width + 500) + "px";
+        qCard.style.left = (mainContainerWidth + 500) + "px";
         break;
       case "up":
-        q_card.style.top = "-1000px";
+        qCard.style.top = "-1000px";
         break;
     }
 
-    for(let i = (card_no + 1), count = 0; i < total_cards; i++, count++) {
-      let card = document.querySelector(".question-card[data-card-no='" + i + "']"),
-        position = (i - card_no - 1);
+    for(let i = (orderId + 1); i < totalQuestions; i++) {
+      let card = document.querySelector(`.question-card[data-order='${i}']`),
+        position = (i - orderId - 1);
 
-      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((total_cards) - position) * 16)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
-      count > 2 ? card.style.opacity = 0 : card.style.opacity = 1;
+      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - position) * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+      if((i - orderId) < 4) {
+        card.style.opacity = 1;
+      }
     }
+
+    let conclusionCard = document.querySelector(".conclusion-card"),
+      position = totalQuestions - orderId - 1;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - position) * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+    if((totalQuestions - orderId) < 4) {
+      conclusionCard.style.opacity = 1;
+    }
+
+    // if (ga) {
+    //   ga('pyktracker.send', 'event', {
+    //     eventCategory: 'onSwipeLeft',
+    //     eventAction: 'swipe',
+    //     eventLabel: order_id + 1,
+    //     eventValue: order_id + 1
+    //   });
+    // }
   }
 
   touchEndHandler(event) {
@@ -470,30 +505,218 @@ class Container extends React.Component {
     );
   }
 
+  resetQuiz(e) {
+    this.setState({
+      right_counter: 0,
+      score: 0,
+      timer: undefined,
+      revisitAnswers: false
+    });
+
+    let qCard = document.querySelector(".question-card.active"),
+      allQuestions = document.querySelectorAll(".question-card"),
+      totalQuestions = this.state.totalQuestions,
+      config = this.state.commonConfigs,
+      i;
+
+    if(qCard) {
+      qCard.classList.remove("active");
+    }
+
+    for (i = 0;  i < allQuestions.length; i++) {
+      let questionElement = allQuestions[i],
+        frontElement = questionElement.querySelector(".front"),
+        allOptions;
+
+      questionElement.classList.remove("clicked");
+      questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${((totalQuestions - i) * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+      questionElement.style.display = "block";
+      frontElement.style.display = "block";
+      questionElement.style.top = "0px";
+      questionElement.setAttribute('data-isNavigable', 0);
+      if(i < 3) {
+        questionElement.style.opacity = 1;
+      } else {
+        questionElement.style.opacity = 0;
+      }
+
+      if (config.flip_card) {
+        questionElement.querySelector('.back').style.display = 'none';
+      }
+
+      if(config.quiz_type === "scoring" && !config.flip_card) {
+        allOptions = frontElement.querySelectorAll(".option-div");
+        for(let j = 0; j < allOptions.length; j++) {
+          allOptions[j].style.display = "block";
+        }
+        frontElement.querySelector(".question").style.color = "black";
+        frontElement.querySelector(".title").style.display = "none";
+        frontElement.querySelector(".answers-container").style.display = "none";
+        if(this.state.isMobile) {
+          frontElement.querySelector(".swipe-hint-container").style.display = "none";
+        } else {
+          frontElement.querySelector(".next-container").style.display = "none";
+        }
+        if(config.timer) {
+          frontElement.querySelector(".timer").style.display = "block";
+          frontElement.querySelector(".timeout-msg").style.display = "none";
+        }
+      } else {
+        if(this.state.isMobile) {
+          let swipeHint = questionElement.querySelector(".back .swipe-hint-container");
+          swipeHint.style.display = "block";
+        } else {
+          let backNext = questionElement.querySelector(".back .next-container");
+          backNext.style.display = "block";
+        }
+        if(config.quiz_type === "scoring" && config.timer) {
+          questionElement.querySelector(".timeout-msg").style.display = "none";
+        }
+      }
+    }
+
+    document.querySelector(".question-card[data-order='0']").classList.add('active');
+
+
+    let conclusionCard = document.querySelector(".conclusion-card"),
+      progressBars = document.querySelectorAll(".progress-bar");
+
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+    if(totalQuestions < 3) {
+      conclusionCard.style.opacity = 1;
+    } else {
+      conclusionCard.style.opacity = 0;
+    }
+
+    progressBars.forEach((e) => {
+      e.style.display = 'block';
+    });
+
+    this.hideSlider();
+
+    if(config.quiz_type === "scoring" && config.timer) {
+      this.setState({timerCountValue: this.state.timePerQuestion});
+      this.setTimer();
+    }
+
+    // if (ga) {
+    //   ga('pyktracker.send', 'event', {
+    //     eventCategory: 'onReset',
+    //     eventAction: 'click',
+    //     eventLabel: total_questions,
+    //     eventValue: total_questions
+    //   });
+    // }
+
+  }
+
+  revisitAnswers(e) {
+    this.showSlider();
+    this.slideCallback(0);
+    this.setState({revisitAnswers: true});
+
+    //Question-Card
+    document.querySelectorAll('.question-card').forEach((e) => {
+      e.setAttribute('data-isNavigable', 0);
+    });
+  }
+
+  slideCallback(value) {
+    this.setState({sliderValue: value});
+    let slider = document.querySelector(".card-slider"),
+      sliderWidth = parseFloat(slider.style.width),
+      sliderHint = document.querySelector(".slider-hint"),
+      cardNum = document.querySelector(".slider-card-no"),
+      totalQuestions = this.state.totalQuestions,
+      percent = value / totalQuestions * 100,
+      conclusionCard = document.querySelector(".conclusion-card");
+
+    slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 " + percent + "%, #EEE " + percent + "%)";
+
+    if(isNaN(sliderWidth)) {
+      sliderWidth = 270;
+    }
+    cardNum.innerHTML = (+value + 1) > totalQuestions ? "" : (+value + 1);
+    cardNum.style.left = (value / totalQuestions * (sliderWidth - 16) + 4) + "px";
+
+    for(let i = 0; i < totalQuestions; i++) {
+      let qCard = document.querySelector(`.question-card[data-order='${i}']`);
+      if(i < value) {
+        qCard.style.top = "-1000px";
+      } else {
+        let position = i - value;
+        qCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${((totalQuestions - position) * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * position)})`;
+        qCard.style.display = "block";
+        // q_card.style.left = "50%";
+        qCard.style.top = "0px";
+        if((i - value) < 3) {
+          setTimeout(function() {
+            qCard.style.opacity = 1;
+          }, 300);
+        } else {
+          setTimeout(function() {
+            qCard.style.opacity = 0;
+          }, 300);
+        }
+      }
+    }
+
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(value * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * (totalQuestions - value))})`;
+    if((totalQuestions - value) < 3) {
+      setTimeout(function() {
+        conclusionCard.style.opacity = 1;
+      }, 300);
+    } else {
+      setTimeout(function() {
+        conclusionCard.style.opacity = 0;
+      }, 300);
+    }
+  }
+
+  socialShare(e) {
+    const conclusionCard = document.querySelector('.conclusion-card'),
+      conclusionFront = document.querySelector('.conclusion-front'),
+      conclusionBack = document.querySelector('.conclusion-back');
+
+    this.setState({revisitAnswers: false});
+
+    if(this.state.revisitAnswers) {
+      this.hideSlider();
+    }
+    conclusionCard.classList.add("clicked");
+    setTimeout(function() {
+      conclusionFront.style.display = "none";
+    }, 300);
+    conclusionBack.style.display = "block";
+  }
+
   setTimer() {
     if(this.state.timer) {
       this.clearTimer();
     }
-    let counter = this.state.time_per_question,
-      active_question = document.querySelector(".question-card.active"),
-      card_no = +active_question.getAttribute('data-card-no'),
-      question_no = +active_question.getAttribute('data-question-no'),
-      options = this.state.card_data[card_no].options,
-      question_score = counter;
+    let counter = this.state.timePerQuestion,
+      activeQuestion = document.querySelector('.question-card.active'),
+      orderId = +activeQuestion.getAttribute('data-order-id'),
+      options = this.state.questionsData[orderId].options,
+      questionScore = counter;
 
-    this.setState({ question_score: counter });
+    this.setState({ questionScore: counter });
     const timeInterval = setInterval(() => {
       counter--;
 
       this.setState({
-        timer_count_value: counter,
-        question_score: counter
-      })
+        timerCountValue: counter,
+        questionScore: counter
+      });
 
       if(counter === 0) {
         this.clearTimer();
         this.flashTimeUpIndicator();
-        this.addOptionBasedContent(options.filter((e) => { return e.right_or_wrong === 'right'; })[0]);
+        if(!this.state.commonConfigs.flip_card) {
+          document.querySelector(".question-card.active .front .timer").style.display = "none";
+        }
+        document.querySelector(".question-card.active .timeout-msg").style.display = "block";
+        this.addOptionBasedContent(options.filter((e) => { return e.right_or_wrong === true; })[0]);
       }
     }, 1000);
 
@@ -504,7 +727,9 @@ class Container extends React.Component {
 
   clearTimer() {
     clearInterval(this.state.timer);
-    this.setState({ timer: undefined });
+    this.setState({
+      timer: undefined
+    });
   }
 
   calculateTime(seconds) {
@@ -519,106 +744,26 @@ class Container extends React.Component {
     return out;
   }
 
+  sliderMousedownCallback(e) {
+    e.stopPropagation();
+    document.querySelector(".slider-hint").style.visibility = "hidden";
+    document.querySelector(".slider-card-no").style.display = "block";
+  }
+
   resetSlider(total_questions) {
     let slider = document.querySelector(".card-slider");
     slider.setAttribute("value", total_questions);
     slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 100%, #EEE 100%)";
   }
 
-
-  addOptionBasedContent(option) {
-    let q_card = document.querySelector(".question-card.active"),
-      parent = q_card.querySelector(".content"),
-      card_no = q_card.getAttribute("data-card-no"),
-      question_no = q_card.getAttribute('data-question-no'),
-      config = this.state.configs;
-
-    if(!(config.quiz_type === "scoring" && config.flip_card === "no")) {
-      let back_div = parent.querySelector(".back");
-      back_div.style.display = "block";
-
-      if(config.quiz_type === "scoring") {
-        setTimeout(function() {
-          q_card.classList.add("clicked");
-          if(option.right_or_wrong === "right") {
-            back_div.querySelector(".wrong-answer").style.display = "none";
-            back_div.querySelector(".correct-answer").classList.remove("deselected");
-          } else {
-            back_div.querySelector(".wrong-answer").style.display = "block";
-            back_div.querySelector('.wrong-answer .option-text').innerHTML = option.option;
-            back_div.querySelector(".correct-answer").classList.add("deselected");
-          }
-          parent.querySelector(".front").style.display = "none";
-        }, 1100);
-      } else {
-        q_card.classList.add("clicked");
-        parent.querySelector(".front").style.display = "none";
-        back_div.querySelector('.correct-answer').innerHTML = option.option;
-      }
-
-      if(option.answer_description) {
-        back_div.querySelector(".answer").style.display = "block";
-        back_div.querySelector(".answer").innerHTML = "";
-        back_div.querySelector(".answer").appendChild(document.createTextNode(option.answer_description));
-      } else {
-        back_div.querySelector(".answer").style.display = "none";
-      }
-
-      if(option.gif_image) {
-        back_div.querySelector(".gif-div").style.display = "block";
-        back_div.querySelector(".gif").onload = function (e) {
-          let img_client_rect = e.target.offsetWidth,
-            img_container_client_rect = back_div.querySelector(".gif-div").offsetWidth,
-            ideal_img_width = img_container_client_rect - 20;
-
-          if(img_client_rect >= ideal_img_width) {
-            e.target.style.width = ideal_img_width + "px";
-          }
-        };
-        back_div.querySelector(".gif").setAttribute("src", option.gif_image);
-      } else {
-        back_div.querySelector(".gif-div").style.display = "none";
-      }
-
-      if(option.fact) {
-        back_div.querySelector(".fact").style.display = "block";
-        back_div.querySelector(".fact").innerHTML = "";
-        back_div.querySelector(".fact").appendChild(document.createTextNode(option.fact));
-      } else {
-        back_div.querySelector(".fact").style.display = "none";
-      }
-    } else {
-      if(config.quiz_type === "scoring") {
-        let all_options = parent.querySelectorAll(".option-div"),
-          front_div = parent.querySelector(".front");
-
-        for(let j = 0; j < all_options.length; j++) {
-          all_options[j].style.display = "none";
-        }
-
-        front_div.querySelector(".question").style.color = "grey";
-        front_div.querySelector(".title").style.display = "block";
-        front_div.querySelector(".answers-container").style.display = "block";
-        front_div.querySelector(".swipe-hint-container").style.display = "block";
-        if(option.right_or_wrong === "right") {
-          front_div.querySelector(".wrong-answer").style.display = "none";
-          front_div.querySelector(".correct-answer").classList.remove("deselected");
-        } else {
-          front_div.querySelector(".wrong-answer").style.display = "block";
-          front_div.querySelector('.wrong-answer .option-text').innerHTML = option.option;
-          front_div.querySelector(".correct-answer").classList.add("deselected");
-        }
-      }
-    }
-  }
-
-
   showSlider() {
     document.querySelector(".card-slider").style.display = "block";
+    document.querySelector(".slider-container").style.display = "block";
   }
 
   hideSlider() {
     document.querySelector(".card-slider").style.display = "none";
+    document.querySelector(".slider-container").style.display = "none";
   }
 
   flashCorrectIndicator() {
@@ -642,10 +787,82 @@ class Container extends React.Component {
     }, 1000);
   }
 
+  renderIntroCard() {
+    const buttonStyle = {},
+      introFrontStyle = {};
+
+    this.state.introCardConfigs.start_button_color ? buttonStyle.backgroundColor = this.state.introCardConfigs.start_button_color : undefined;
+    this.state.introCardConfigs.start_button_text_color ? buttonStyle.color = this.state.introCardConfigs.start_button_text_color : undefined;
+
+    if(this.state.introCardConfigs.background_image) {
+      introFrontStyle.backgroundImage = "url(" + this.state.introCardConfigs.background_image + ")";
+    }
+
+    return (
+      <div className="intro-container">
+        <div className={`${this.state.introCardConfigs.background_image || this.state.mode === 'laptop' ? 'intro-content with-image' : 'intro-content'}`}>
+          <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
+            {this.state.introCardConfigs.quiz_title}
+          </div>
+          <div className={`${this.state.introCardConfigs.background_image && this.state.isMobile ? 'intro-description with-image' : 'intro-description'}`}>
+            {this.state.introCardConfigs.introduction}
+          </div>
+          <div className="intro-button-div">
+            <button className="intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
+              {this.state.introCardConfigs.start_button_text}
+            </button>
+          </div>
+        </div>
+        <div className="intro-cover"></div>
+      </div>
+    );
+  }
+
+  renderCorrectIndicator() {
+    return (
+      <div id="correct_indicator" className="correct-wrong-indicator correct-background">
+        <div className="tick-background">
+          <span className="correct-tick">&#10004;&#xFE0E;</span>
+        </div>
+        <div className="correct-wrong-text">Correct</div>
+      </div>
+    );
+  }
+
+  renderWrongIndicator() {
+    return (
+      <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
+        <div className="tick-background wrong-tick">
+          <span>&#10007;&#xFE0E;</span>
+        </div>
+        <div className="correct-wrong-text wrong">Wrong</div>
+      </div>
+    );
+  }
+
+  renderTimeOutIndicator () {
+    return (
+      <div id="time_out_indicator" className="time-out-indicator">
+        <div className="time-out-content">
+          <div className="clock-icon">
+            <img src="src/images/clock-large.png" />
+          </div>
+          <div className="time-value">00:00</div>
+          <div className="oops-msg">Oops!</div>
+          <div className="times-up-msg">Time's up</div>
+        </div>
+      </div>
+    );
+  }
+
   renderMainContainerContent(cards) {
-    if (this.state.fetching_questions) {
+    const events = {};
+    events.resetQuiz = ((e) => this.resetQuiz(e));
+    events.revisitAnswers = ((e) => this.revisitAnswers(e));
+    events.socialShare = ((e) => this.socialShare(e));
+    if (this.state.fetchingQuestions) {
       return (
-        <div className='main-container'>
+        <div className='quiz-container'>
           <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
               Fetching Questions ...
@@ -655,36 +872,57 @@ class Container extends React.Component {
       )
     } else {
       return (
-        <div className='main-container'>
-          <div id="correct_indicator" className="correct-wrong-indicator correct-background">
-            <div className="tick-background">
-              <span className="correct-tick">&#10004;</span>
+        <div className="quiz-container">
+          <div className="quiz-content">
+            { this.props.mode === 'laptop' && this.renderIntroCard() }
+            <div id="main_container" className="main-container">
+              <div id="fb-root"></div>
+
+              { this.renderCorrectIndicator() }
+              { this.renderWrongIndicator() }
+              { this.renderTimeOutIndicator() }
+
+              <IntroductionCard
+                introCardConfigs={this.state.introCardConfigs}
+                startQuiz={((e) => this.startQuiz(e))}
+                totalQuestions={this.state.totalQuestions}
+                isMobile={this.state.isMobile}
+              />
+
+              <div id="card_stack" className="card-stack">
+                {cards}
+                {
+                  this.state.isMobile ? <div className='help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
+                }
+              </div>
+
+              <ResultCard
+                introCardConfigs={this.state.introCardConfigs}
+                cardConfigs={this.state.commonConfigs}
+                resultCardConfigs={this.state.resultCardConfigs}
+                totalQuestions={this.state.totalQuestions}
+                score={this.state.score}
+                cardEvents={events}
+              />
+
+              <div className="slider-container">
+                <div className="slider-hint">use slider to move between questions</div>
+                <span className="slider-card-no">5</span>
+                <input
+                  className="card-slider"
+                  name="card_slider"
+                  type="range"
+                  step="1"
+                  min="0"
+                  max={this.state.totalQuestions}
+                  value={this.state.sliderValue}
+                  onInput={((e) => { this.slideCallback(e.target.value); })}
+                  onMouseDown={!this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
+                  onTouchStart={this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
+                />
+              </div>
             </div>
-            <div className="correct-wrong-text">Correct</div>
           </div>
-          <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
-            <div className="tick-background wrong-tick">
-              <span>&#10007;</span>
-            </div>
-            <div className="correct-wrong-text wrong">Wrong</div>
-          </div>
-          <div id="time_out_indicator" className="time-out-indicator">
-            <div className="time-out-content">
-              <div className="clock-icon"></div>
-              <div className="time-value">00:00</div>
-              <div className="oops-msg">Oops!</div>
-              <div className="times-up-msg">Time's up</div>
-            </div>
-          </div>
-          <div id="card_stack" className="card-stack">
-            {cards}
-            <div id="next" className="next" onClick={(e) => this.nextCard(e)}>{this.state.language_texts.next}</div>
-            <div id="reset" className="reset" >{this.state.language_texts.restart}</div>
-            {
-              window.innerWidth <= 500 ? <div className='help-text' id="help_text">{this.state.language_texts.swipe}</div> : undefined
-            }
-          </div>
-          <input className="card-slider" name="card_slider" type="range" step="1" min="0" max={this.state.total_questions} value={this.state.sliderValue} onInput={((e) => { this.slideCallback(e.target.value); })}/>
         </div>
       )
     }
@@ -692,88 +930,62 @@ class Container extends React.Component {
 
   render() {
     let styles = {},
-      x = this.state.card_meta_data.length * 16,
-      y = 0,
-      z = 1,
-      cards,
+      x = (this.state.totalQuestions * 20) - 20,
+      y = 0 - 320,
+      z = 1 + 0.08,
+      qCards,
       question_card_count = 0;
 
-    if(this.state.configs.font_family) {
-      document.querySelector('.main-container').style.fontFamily = this.state.configs.font_family;
+    if(this.state.commonConfigs.font_family) {
+      document.querySelector('.main-container').style.fontFamily = this.state.commonConfigs.font_family;
     }
 
-    cards = this.state.card_meta_data.map((card, i) => {
+    qCards = this.state.questionsData.map((card, i) => {
       const style = {},
         events = {};
 
-      style.zIndex = this.state.card_meta_data.length - i;
+      style.zIndex = this.state.totalQuestions - i;
       style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
 
-      if(i < 3) {
+      if(i < 2) {
         style.opacity = 1;
       } else {
         style.opacity = 0;
       }
 
-      if (this.state.is_mobile) {
-        style.width = (window.innerWidth - 20) + "px";
-        style.marginLeft = (-(window.innerWidth - 20) / 2) + "px";
-      }
-
-      x = x - 16;
+      x = x - 20;
       y = y - 320;
       z = z + 0.08;
 
-      switch (card.card_type) {
-        case 'intro':
-          events.startQuiz = ((e) => this.startQuiz(e));
-          break;
-        case 'qa':
-          //Updating the count of question cards.
-          question_card_count += 1;
-          events.optionClick = ((e) => this.optionClicked(e));
-          events.nextCard = ((e) => this.nextCard(e));
-          if (this.state.is_mobile) {
-            events.onTouchStart = ((e) => Touch.swipeStart(e));
-            events.onTouchMove = ((e) => Touch.swipeMove(e));
-            events.onTouchEnd = ((e) => this.touchEndHandler(e));
-          }
-          break;
-        case 'score':
-          events.resetQuiz = ((e) => this.resetQuiz(e));
-          events.revisitAnswers = ((e) => this.revisitAnswers(e));
-          break;
+      events.optionClick = ((e) => this.optionClicked(e));
+
+      if (this.state.isMobile) {
+        events.onTouchStart = ((e) => Touch.swipeStart(e));
+        events.onTouchMove = ((e) => Touch.swipeMove(e));
+        events.onTouchEnd = ((e) => this.touchEndHandler(e));
+      } else {
+        events.nextCard = ((e) => this.swipeCallback('up'));
       }
 
       return (
-        <Card
-          key={card.id}
+        <QuestionCard
+          key={i}
           cardNo={i}
-          cardId={card.id}
-          cardType={card.card_type}
+          questionNo={this.formatNumber(i + 1)}
           cardStyle={style}
-          cardData={this.state.card_data[i]}
+          cardData={this.state.questionsData[i]}
           cardEvents={events}
-          cardConfigs = {this.state.configs}
-          introCardConfigs={this.state.intro_card_configs}
-          languageTexts={this.state.language_texts}
-          resultCardConfigs = {this.state.result_card_configs}
-          questionNo={card.card_type === 'qa' ? this.formatNumber(question_card_count) : undefined}
-          totalCards={this.formatNumber(this.state.total_cards)}
-          totalQuestionCards={this.formatNumber(this.state.total_questions)}
-          score={this.state.score}
-          isMobile={this.state.is_mobile}
-          timerValue={this.calculateTime(this.state.timer_count_value)} />
+          cardConfigs = {this.state.commonConfigs}
+          languageTexts={this.state.languageTexts}
+          totalQuestions={this.formatNumber(this.state.totalQuestions)}
+          isMobile={this.state.isMobile}
+          timerValue={this.calculateTime(this.state.timerCountValue)}
+        />
       )
     });
 
-    return this.renderMainContainerContent(cards)
+    return this.renderMainContainerContent(qCards)
   }
 }
 
-Container.defaultProps = {
-  containerURL: '/src/js/container.json'
-}
-
 export default Container;
-
