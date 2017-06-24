@@ -1,0 +1,16 @@
+{
+  "mandatory_config": {
+    "flip_card": {
+      "ui:widget": "radio"
+    },
+    "revisit_answers": {
+      "ui:widget": "radio"
+    },
+    "social_share": {
+      "ui:widget": "radio"
+    },
+    "timer": {
+      "ui:widget": "radio"
+    }
+  }
+}

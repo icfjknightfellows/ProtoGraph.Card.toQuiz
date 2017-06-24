@@ -1,13 +1,13 @@
 import React      from 'react';
 import ReactDOM   from 'react-dom';
 import axios      from 'axios';
-// import Scss       from '../css/container.scss'
 import Utility    from './utility.js';
 import Touch      from './touch.js';
 import LoadData   from './load_data.js';
 import IntroductionCard  from '../cards/quiz-introduction.jsx';
 import ResultCard from '../cards/quiz-conclusion.jsx';
-import QuestionCard from '../cards/question-cards.jsx'
+import QuestionCard from '../cards/question-cards.jsx';
+import Form from '../../lib/js/react-jsonschema-form.js';
 
 class Container extends React.Component {
 
@@ -22,6 +22,8 @@ class Container extends React.Component {
       schemaJSON: {},
       optionalConfigJSON: {},
       optionalConfigSchemaJSON: {},
+      uiSchemaJSON: {},
+      step: 1,
       // questionsData: [],
       // commonConfigs: {},
       // introCardConfigs: {},
@@ -48,8 +50,9 @@ class Container extends React.Component {
         axios.get(this.props.dataURL),
         axios.get(this.props.schemaURL),
         axios.get(this.props.configURL),
-        axios.get(this.props.configSchemaURL)
-      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema) => {
+        axios.get(this.props.configSchemaURL),
+        axios.get(this.props.uiSchemaURL)
+      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema, uiSchema) => {
           let stateVar = {
             fetchingQuestions: false,
             sliderValue: 0,
@@ -59,7 +62,8 @@ class Container extends React.Component {
             },
             schemaJSON: cardSchema.data,
             optionalConfigJSON: optionalConfig.data,
-            optionalConfigSchemaJSON: optionalConfigSchema.data
+            optionalConfigSchemaJSON: optionalConfigSchema.data,
+            uiSchemaJSON: uiSchema.data,
           };
 
           stateVar.dataJSON.data.result_card_data = stateVar.dataJSON.data.result_card_data ?  this.processResultData(stateVar.dataJSON.data.result_card_data, stateVar.dataJSON.mandatory_config.quiz_type) : undefined;
@@ -752,10 +756,10 @@ class Container extends React.Component {
 
     const data = this.state.dataJSON.data,
       introCardConfigs = {
-        background_image: data.background_image,
-        quiz_title: data.quiz_title,
-        introduction: data.introduction,
-        start_button_text: data.start_button_text,
+        background_image: data.basic_datapoints.background_image,
+        quiz_title: data.basic_datapoints.quiz_title,
+        introduction: data.basic_datapoints.introduction,
+        start_button_text: data.basic_datapoints.start_button_text,
         start_button_color: this.state.optionalConfigJSON.start_button_color,
         start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
       };
@@ -832,21 +836,21 @@ class Container extends React.Component {
     },
     data = this.state.dataJSON.data,
     introCardConfigs = {
-      background_image: data.background_image,
-      quiz_title: data.quiz_title,
-      introduction: data.introduction,
-      start_button_text: data.start_button_text,
+      background_image: data.basic_datapoints.background_image,
+      quiz_title: data.basic_datapoints.quiz_title,
+      introduction: data.basic_datapoints.introduction,
+      start_button_text: data.basic_datapoints.start_button_text,
       start_button_color: this.state.optionalConfigJSON.start_button_color,
       start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
     },
     cardConfigs = this.state.dataJSON.mandatory_config;
-    cardConfigs.share_msg = data.share_msg;
-    cardConfigs.share_link = data.share_link;
+    cardConfigs.share_msg = data.basic_datapoints.share_msg;
+    cardConfigs.share_link = data.basic_datapoints.share_link;
 
     return (
       <div className="quiz-container">
         <div className="quiz-content">
-          { this.props.mode === 'laptop' && this.renderIntroCard() }
+          { (this.props.mode === 'laptop' || this.props.mode === 'edit')  && this.renderIntroCard() }
           <div id="main_container" className="main-container">
             <div id="fb-root"></div>
 
@@ -899,7 +903,7 @@ class Container extends React.Component {
     )
   }
 
-  render() {
+  renderQuiz() {
     if (this.state.fetchingQuestions) {
       return (
         <div className='quiz-container'>
@@ -964,6 +968,241 @@ class Container extends React.Component {
       return this.renderMainContainerContent(qCards)
     }
   }
+
+  getSchemaJSON() {
+    switch(this.state.step){
+      case 1:
+        return this.state.schemaJSON.properties.mandatory_config;
+        break;
+      case 2:
+        return this.state.schemaJSON.properties.data.properties.basic_datapoints;
+        break;
+      case 3:
+        return this.state.schemaJSON.properties.data.properties.questions;
+        break;
+      case 4:
+        return this.state.schemaJSON.properties.data.properties.result_card_data;
+        break;
+      case 5:
+        return this.state.optionalConfigSchemaJSON;
+        break;
+    }
+  }
+
+  getFormData() {
+    switch(this.state.step) {
+      case 1:
+        return this.state.dataJSON.mandatory_config;
+        break;
+      case 2:
+        return this.state.dataJSON.data.basic_datapoints;
+        break;
+      case 3:
+        return this.state.dataJSON.data.questions;
+        break;
+      case 4:
+        return this.state.dataJSON.data.result_card_data;
+        break;
+      case 5:
+        return this.state.optionalConfig;
+        break;
+    }
+  }
+
+  getUISchemaJSON() {
+    switch(this.state.step) {
+      case 1:
+        return this.state.uiSchemaJSON.mandatory_config;
+        break;
+      default:
+        return {};
+        break;
+    }
+  }
+
+  showLinkText() {
+    switch(this.state.step) {
+      case 1:
+        return '';
+        break;
+      case 2:
+        return '';
+        break;
+      case 3:
+        return '< Back';
+        break;
+      case 4:
+        return '< Back';
+        break;
+      case 5:
+        return '< Back';
+        break;
+    }
+  }
+
+  showButtonText() {
+    switch(this.state.step) {
+      case 1:
+        return 'Proceed to next step';
+        break;
+      case 2:
+        return 'Proceed to next step';
+        break;
+      case 3:
+        return 'Proceed to next step';
+        break;
+      case 4:
+        return 'Proceed to next step';
+        break;
+      case 5:
+        return 'Publish';
+        break;
+    }
+  }
+
+  onPrevHandler() {
+    this.setState((prevStep, prop) => {
+      return {
+        step: --prevStep.step
+      }
+    });
+  }
+
+  renderEdit() {
+    if (this.state.fetchingQuestions) {
+      return (
+        <div className='quiz-container'>
+          <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
+            <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
+              Fetching Questions ...
+            </span>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className="col-sm-12">
+          <br/>
+          <br/>
+          <div className = "col-sm-6" id="protograph-explainer-form-div">
+            <Form schema = {this.getSchemaJSON()}
+              onSubmit = {((e) => this.onSubmitHandler(e))}
+              onChange = {((e) => this.onChangeHandler(e))}
+              formData = {this.getFormData()}
+              uiSchema={this.getUISchemaJSON()}
+            >
+              <a onClick={((e) => this.onPrevHandler(e))}> {this.showLinkText()} </a>
+              <button type="submit" className="btn btn-info">
+                {this.showButtonText()}
+              </button>
+            </Form>
+          </div>
+          <div className = "col-sm-6">
+            {this.renderQuiz()}
+          </div>
+        </div>
+      )
+    }
+  }
+
+  onChangeHandler({formData}) {
+    switch (this.state.step) {
+      case 1:
+        this.setState((prevStep, prop) => {
+          let dataJSON = prevStep.dataJSON;
+          dataJSON.mandatory_config = formData
+          return {
+            dataJSON: dataJSON
+          }
+        });
+        break;
+      case 2:
+        this.setState((prevStep, prop) => {
+          let dataJSON = prevStep.dataJSON;
+          dataJSON.data.basic_datapoints = formData;
+          return {
+            dataJSON: dataJSON
+          }
+        });
+        break;
+      case 3:
+        this.setState((prevStep, prop) => {
+          let dataJSON = prevStep.dataJSON;
+          dataJSON.data.questions = formData;
+          return {
+            dataJSON: dataJSON,
+            totalQuestions: dataJSON.data.questions.length
+          }
+        });
+        break;
+      case 4:
+        this.setState((prevStep, prop) => {
+          let dataJSON = prevStep.dataJSON;
+          dataJSON.data.result_card_data = formData;
+          return {
+            dataJSON: dataJSON
+          }
+        });
+        break;
+      case 5:
+        // this.setState((prevStep, prop) => {
+        //   let dataJSON = prevStep.dataJSON;
+        //   dataJSON.data.questions = formData;
+        //   return {
+        //     dataJSON: dataJSON
+        //   }
+        // });
+        break;
+    }
+  }
+
+  onSubmitHandler({formData}) {
+    switch(this.state.step) {
+      case 1:
+        this.setState({
+          step: 2
+        });
+        break;
+      case 2:
+        this.setState({
+          step: 3
+        });
+        break;
+      case 3:
+        this.setState({
+          step: 4
+        });
+        break;
+      case 4:
+        this.setState({
+          step: 5
+        });
+        break;
+      case 5:
+        alert("The card is published");
+        break;
+    }
+  }
+
+  render() {
+     switch(this.props.mode) {
+      case 'laptop' :
+        return this.renderQuiz();
+        break;
+      case 'mobile' :
+        return this.renderQuiz();
+        break;
+      case 'tablet' :
+        return this.renderQuiz();
+        break;
+      case 'edit' :
+        return this.renderEdit();
+        break;
+    }
+  }
+
+
+
 }
 
 export default Container;

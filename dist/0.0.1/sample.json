@@ -1,11 +1,13 @@
 {
   "data":{
-    "background_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/BloodPressure.jpg",
-    "quiz_title":"How well do you really know what happens when you visit a doctor?",
-    "introduction":"",
-    "start_button_text":"Take our quiz",
-    "share_link":"https://pykih.com",
-    "share_msg":"I found this quiz really informative. Would you like to try it?",
+    "basic_datapoints": {
+      "background_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/BloodPressure.jpg",
+      "quiz_title":"How well do you really know what happens when you visit a doctor?",
+      "introduction":"",
+      "start_button_text":"Take our quiz",
+      "share_link":"https://pykih.com",
+      "share_msg":"I found this quiz really informative. Would you like to try it?"
+    },
     "questions":[
       {
         "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
@@ -24,144 +26,6 @@
             "right_or_wrong":false
           }
         ]
-      },
-      {
-        "question":"Do you know about Vital Science?",
-        "question_no":2,
-        "options":[
-          {
-            "option":"Yes",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/vitalsigns.jpg",
-            "fact":"That's great.",
-            "right_or_wrong":true
-          },
-          {
-            "option":"No",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/vitalsigns.jpg",
-            "fact":"Vital science is the primary pillar of primary health in which comes five things - body temperature, blood pressure, pulse rate, respiratory rate, pain.",
-            "right_or_wrong":false
-          }
-        ]
-      },
-      {
-        "question":"What is the normal body temperature?",
-        "question_no":3,
-        "options":[
-          {
-            "option":"98.6 ° F",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/temperature.jpg",
-            "fact":"Normal body temperature is 99.5 ° F to 97.7.",
-            "right_or_wrong":true
-          },
-          {
-            "option":"100.6 ° F",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/temperature.jpg",
-            "fact":"It is called fever.",
-            "right_or_wrong":false
-          }
-        ]
-      },
-      {
-        "question":"When should you get your blood pressure checked?",
-        "question_no":4,
-        "options":[
-          {
-            "option":"6 months",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/BloodPressure.jpg",
-            "fact":"Any time. Checkup whenever you go to a doctor. Blood pressure should be checked regularly. In general, the blood pressure of a person is 90/60 to 139/89 mmHg. Source: Wikipedia",
-            "right_or_wrong":false
-          },
-          {
-            "option":"1 year",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/BloodPressure.jpg",
-            "fact":"Any time. Checkup whenever you go to a doctor.",
-            "right_or_wrong":true
-          }
-        ]
-      },
-      {
-        "question":"What is your pulse rate?",
-        "question_no":5,
-        "options":[
-          {
-            "option":"100-150",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/pulseline.jpg\r\n",
-            "fact":"If you are a kid, it's perfect. The pulse rate of a normal individual is 60-100 per minute.",
-            "right_or_wrong":false
-          },
-          {
-            "option":"60-100",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/pulseline.jpg\r\n",
-            "fact":"It is common",
-            "right_or_wrong":true
-          }
-        ]
-      },
-      {
-        "question":"What is the normal respiratory rate? Means how many times do you breathe in one minute?",
-        "question_no":6,
-        "options":[
-          {
-            "option":"12-20",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/breathing.jpg",
-            "fact":"A child upto 6 months breathes in 30-60 times/min, 6-12 months breathes in 24-30 times/min, 1-5 years breathes in 20-30 times/min and an adult breathes in 12-20 times/min.",
-            "right_or_wrong":true
-          },
-          {
-            "option":"24-30",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/breathing.jpg",
-            "fact":"This is the respiratory rate of 6-12 months old infant.",
-            "right_or_wrong":false
-          }
-        ]
-      },
-      {
-        "question":"Do you feel pain in these parts of the body?",
-        "question_no":7,
-        "options":[
-          {
-            "option":"Hands and feet",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/pain.jpg",
-            "fact":"If there is a pain in your limbs often, it means that you are not eating good food and should be taken as a warning for the future.",
-            "right_or_wrong":false
-          },
-          {
-            "option":"Waist and back",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/pain.jpg",
-            "fact":"In this pain we use a pain spray and ignore the pain. While this pain means that your daily lifestyle is not good and should be taken as a warning for the future.",
-            "right_or_wrong":true
-          },
-          {
-            "option":"Head and eyes",
-            "gif_image":"http://images.onlymyhealth.com/imported/images/2017/April/06_Apr_2017/pain.jpg",
-            "fact":"Thought to be the most common disease in the world,headache is counted as an early symptom of many illnesses and should be taken as a warning for the future.",
-            "right_or_wrong":false
-          }
-        ]
-      },
-      {
-        "question":"According to you, which kind of a doctor is important for living a healthy lifestyle?",
-        "question_no":8,
-        "options":[
-          {
-            "option":"Surgeon",
-            "gif_image":"https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png",
-            "fact":"Most people would answer super specialists while there is a need of basic health doctor for a healthy lifestyle",
-            "right_or_wrong":false
-          },
-          {
-            "option":"Basic health doctor",
-            "gif_image":"https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png",
-            "fact":"Most people would answer super specialists while there is a need of basic health doctor for a healthy lifestyle",
-            "right_or_wrong":true
-          },
-          {
-            "option":"Super Specialist",
-            "gif_image":"https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png",
-            "fact":"Most people would answer super specialists while there is a need of basic health doctor for a healthy lifestyle",
-            "right_or_wrong":false
-          }
-        ]
       }
     ],
     "result_card_data":[
@@ -171,48 +35,13 @@
         "related_article_links":"http://indianexpress.com/article/lifestyle/life-style/human-vision-keeps-developing-until-mid-life-4681081/",
         "link_description":"Human vision keeps developing until mid-life",
         "link_image":"http://images.indianexpress.com/2017/05/brain-759.jpg?w=450"
-      },
-      {
-        "upper_limit_of_score_range":40,
-        "message":"Still a scope to improve",
-        "related_article_links":"http://indianexpress.com/article/lifestyle/life-style/should-we-be-worrying-about-the-purpose-of-life-4690403/",
-        "link_description":"Should we be worrying about the purpose of life?",
-        "link_image":"http://images.indianexpress.com/2017/06/life-purpose_759_thinkstockphotos-485715206.jpg?w=450"
-      },
-      {
-        "upper_limit_of_score_range":60,
-        "message":"Good job!",
-        "related_article_links":"http://indianexpress.com/article/lifestyle/life-style/human-vision-keeps-developing-until-mid-life-4681081/",
-        "link_description":"Human vision keeps developing until mid-life",
-        "link_image":"http://images.indianexpress.com/2017/05/brain-759.jpg?w=450"
-      },
-      {
-        "upper_limit_of_score_range":60,
-        "message":"Good job!",
-        "related_article_links":"http://indianexpress.com/article/lifestyle/life-style/should-we-be-worrying-about-the-purpose-of-life-4690403/",
-        "link_description":"Should we be worrying about the purpose of life?",
-        "link_image":"http://images.indianexpress.com/2017/06/life-purpose_759_thinkstockphotos-485715206.jpg?w=450"
-      },
-      {
-        "upper_limit_of_score_range":80,
-        "message":"Fantastic!",
-        "related_article_links":"http://indianexpress.com/article/lifestyle/life-style/human-vision-keeps-developing-until-mid-life-4681081/",
-        "link_description":"Human vision keeps developing until mid-life",
-        "link_image":"http://images.indianexpress.com/2017/05/brain-759.jpg?w=450"
-      },
-      {
-        "upper_limit_of_score_range":80,
-        "message":"Fantastic!",
-        "related_article_links":"http://indianexpress.com/article/lifestyle/life-style/should-we-be-worrying-about-the-purpose-of-life-4690403/",
-        "link_description":"Should we be worrying about the purpose of life?",
-        "link_image":"http://images.indianexpress.com/2017/06/life-purpose_759_thinkstockphotos-485715206.jpg?w=450"
       }
     ]
   },
   "mandatory_config":{
     "language":"english",
-    "quiz_type":"scoring",
-    "timer":true,
+    "quiz_type":"general",
+    "timer":false,
     "time_per_question":10,
     "flip_card":false,
     "social_share":true,

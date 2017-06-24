@@ -16,7 +16,10 @@ export default class QuestionCard extends React.Component {
   }
 
   render () {
-    const correctOption = this.props.cardData.options.filter((e) => { return e.right_or_wrong === true })[0].option;
+    let correctOption;
+    if (this.props.cardConfigs.quiz_type === "scoring") {
+      correctOption = this.props.cardData.options.filter((e) => { return e.right_or_wrong === true })[0].option;
+    }
     return (
       <div
         className={this.props.cardNo === 0 ? 'question-card active' : 'question-card'}
