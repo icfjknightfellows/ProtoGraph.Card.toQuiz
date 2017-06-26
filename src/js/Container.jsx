@@ -215,12 +215,12 @@ class Container extends React.Component {
       }
 
       firstQCard.classList.add("active");
-      firstQCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${((totalQuestions) * 20)}, 0, 1)`;
+      firstQCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 160, 0, 1)`;
 
       for(let i = 1; i < totalQuestions; i++) {
         let card = document.querySelector(`.question-card[data-order='${i}']`);
 
-        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - i) * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (i * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
         if(i > 2) {
           card.style.opacity = 0;
         } else {
@@ -229,7 +229,7 @@ class Container extends React.Component {
       }
 
       let conclusionCard = document.querySelector(".conclusion-card");
-      conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+      conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
       if(totalQuestions < 3) {
         conclusionCard.style.opacity = 1;
       }
@@ -440,7 +440,7 @@ class Container extends React.Component {
       let card = document.querySelector(`.question-card[data-order='${i}']`),
         position = (i - orderId - 1);
 
-      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - position) * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
       if((i - orderId) < 4) {
         card.style.opacity = 1;
       }
@@ -448,7 +448,8 @@ class Container extends React.Component {
 
     let conclusionCard = document.querySelector(".conclusion-card"),
       position = totalQuestions - orderId - 1;
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(((totalQuestions) - position) * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+      console.log(position, totalQuestions, orderId);
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
     if((totalQuestions - orderId) < 4) {
       conclusionCard.style.opacity = 1;
     }
@@ -496,7 +497,7 @@ class Container extends React.Component {
         allOptions;
 
       questionElement.classList.remove("clicked");
-      questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${((totalQuestions - i) * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+      questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (i * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
       questionElement.style.display = "block";
       frontElement.style.display = "block";
       questionElement.style.top = "0px";
@@ -545,7 +546,7 @@ class Container extends React.Component {
     let conclusionCard = document.querySelector(".conclusion-card"),
       progressBars = document.querySelectorAll(".progress-bar");
 
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 0, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions + 1) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
     if(totalQuestions < 3) {
       conclusionCard.style.opacity = 1;
     } else {
@@ -608,7 +609,7 @@ class Container extends React.Component {
         qCard.style.top = "-1000px";
       } else {
         let position = i - value;
-        qCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${((totalQuestions - position) * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * position)})`;
+        qCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160  - (position * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * position)})`;
         qCard.style.display = "block";
         // q_card.style.left = "50%";
         qCard.style.top = "0px";
@@ -756,7 +757,7 @@ class Container extends React.Component {
 
     const data = this.state.dataJSON.data,
       introCardConfigs = {
-        background_image: data.basic_datapoints.background_image,
+        background_image: data.basic_datapoints.background_image.image,
         quiz_title: data.basic_datapoints.quiz_title,
         introduction: data.basic_datapoints.introduction,
         start_button_text: data.basic_datapoints.start_button_text,
@@ -836,7 +837,7 @@ class Container extends React.Component {
     },
     data = this.state.dataJSON.data,
     introCardConfigs = {
-      background_image: data.basic_datapoints.background_image,
+      background_image: data.basic_datapoints.background_image.image,
       quiz_title: data.basic_datapoints.quiz_title,
       introduction: data.basic_datapoints.introduction,
       start_button_text: data.basic_datapoints.start_button_text,
@@ -916,7 +917,7 @@ class Container extends React.Component {
       )
     } else {
       let styles = {},
-        x = (this.state.totalQuestions * 20) - 20,
+        x = 140,//(this.state.totalQuestions * 20) - 20,
         y = 0 - 320,
         z = 1 + 0.08,
         questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],
@@ -1082,9 +1083,7 @@ class Container extends React.Component {
     } else {
       return (
         <div className="col-sm-12">
-          <br/>
-          <br/>
-          <div className = "col-sm-6" id="protograph-explainer-form-div">
+          <div className = "col-sm-5" id="protograph-explainer-form-div">
             <Form schema = {this.getSchemaJSON()}
               onSubmit = {((e) => this.onSubmitHandler(e))}
               onChange = {((e) => this.onChangeHandler(e))}
@@ -1097,7 +1096,7 @@ class Container extends React.Component {
               </button>
             </Form>
           </div>
-          <div className = "col-sm-6">
+          <div className = "col-sm-7">
             {this.renderQuiz()}
           </div>
         </div>

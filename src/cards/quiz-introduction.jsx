@@ -12,7 +12,7 @@ export default class IntroductionCard extends React.Component {
     this.props.introCardConfigs.start_button_color ? buttonStyle.backgroundColor = this.props.introCardConfigs.start_button_color : undefined;
     this.props.introCardConfigs.start_button_text_color ? buttonStyle.color = this.props.introCardConfigs.start_button_text_color : undefined;
 
-    introCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${+this.props.totalQuestions * 20}, 0, 1)`;
+    introCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 160, 0, 1)`;
 
     if(this.props.introCardConfigs.background_image) {
       introFrontStyle.backgroundImage = "url(" + this.props.introCardConfigs.background_image + ")";

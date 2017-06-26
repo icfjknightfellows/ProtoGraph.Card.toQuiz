@@ -11,7 +11,16 @@
                     "properties": {
                         "background_image": {
                             "id": "/properties/data/properties/basic_datapoints/properties/background_image",
-                            "type": "string"
+                            "type": "object",
+                            "properties": {
+                                "image": {
+                                    "description": "An explanation about the purpose of this instance.",
+                                    "id": "/properties/data/properties/cover_data/properties/logo_image",
+                                    "title": "Upload a background image",
+                                    "type": "string",
+                                    "format": "data-url"
+                                }
+                            }
                         },
                         "introduction": {
                             "id": "/properties/data/properties/basic_datapoints/properties/introduction",
