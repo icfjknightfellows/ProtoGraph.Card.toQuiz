@@ -1,20 +1,18 @@
-import React      from 'react';
-import ReactDOM   from 'react-dom';
-import axios      from 'axios';
-import Utility    from './utility.js';
-import Touch      from './touch.js';
-import LoadData   from './load_data.js';
-import IntroductionCard  from '../cards/quiz-introduction.jsx';
-import ResultCard from '../cards/quiz-conclusion.jsx';
-import QuestionCard from '../cards/question-cards.jsx';
-import Form from '../../lib/js/react-jsonschema-form.js';
+import React              from 'react';
+import ReactDOM           from 'react-dom';
+import axios              from 'axios';
+import Utility            from './utility.js';
+import Touch              from './touch.js';
+import IntroductionCard   from '../cards/quiz-introduction.jsx';
+import ResultCard         from '../cards/quiz-conclusion.jsx';
+import QuestionCard       from '../cards/question-cards.jsx';
 
-class Container extends React.Component {
+class Quiz extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      fetchingQuestions: true,
+    let stateVar = {
+      fetchingData: true,
       dataJSON: {
         data: {},
         mandatory_config: {}
@@ -23,17 +21,10 @@ class Container extends React.Component {
       optionalConfigJSON: {},
       optionalConfigSchemaJSON: {},
       uiSchemaJSON: {},
-      step: 1,
-      // questionsData: [],
-      // commonConfigs: {},
-      // introCardConfigs: {},
-      // resultCardConfigs: undefined,
       languageTexts: {},
       totalQuestions: 0,
       score: 0,
       rightCounter: 0,
-      // cardHeight: 300,
-      // backHeightWithoutFact: undefined,
       sliderValue: 0,
       timerCountValue: 10,
       timePerQuestion: 10,
@@ -42,10 +33,51 @@ class Container extends React.Component {
       revisitingAnswers: false,
       isMobile: this.props.mode === 'mobile' ? true : false
     };
+
+
+    if (this.props.dataJSON) {
+      stateVar.fetchingData = false;
+      stateVar.dataJSON = this.props.dataJSON;
+    }
+
+    if (this.props.schemaJSON) {
+      stateVar.schemaJSON = this.props.schemaJSON;
+    }
+
+    if (this.props.optionalConfigJSON) {
+      stateVar.optionalConfigJSON = this.props.optionalConfigJSON;
+    }
+
+    if (this.props.optionalConfigSchemaJSON) {
+      stateVar.optionalConfigSchemaJSON = this.props.optionalConfigSchemaJSON;
+    }
+
+    if (this.props.totalQuestions) {
+      stateVar.totalQuestions = this.props.totalQuestions;
+    }
+
+    if (this.props.totalCards) {
+      stateVar.totalCards = this.props.totalCards;
+    }
+
+    if (this.props.languageTexts) {
+      stateVar.languageTexts = this.props.languageTexts;
+    }
+
+    if (this.props.timePerQuestion) {
+      stateVar.timePerQuestion = this.props.timePerQuestion;
+    }
+
+    if (this.props.timerCountValue) {
+      stateVar.timerCountValue = this.props.timerCountValue;
+    }
+
+    this.state = stateVar;
   }
 
-   componentDidMount() {
-    if (typeof this.props.dataURL === "string"){
+  componentDidMount() {
+    console.log(this.state.fetchingData)
+    if (this.state.fetchingData){
       axios.all([
         axios.get(this.props.dataURL),
         axios.get(this.props.schemaURL),
@@ -54,8 +86,7 @@ class Container extends React.Component {
         axios.get(this.props.uiSchemaURL)
       ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema, uiSchema) => {
           let stateVar = {
-            fetchingQuestions: false,
-            sliderValue: 0,
+            fetchingData: false,
             dataJSON: {
               data: cardData.data.data,
               mandatory_config: cardData.data.mandatory_config
@@ -905,7 +936,7 @@ class Container extends React.Component {
   }
 
   renderQuiz() {
-    if (this.state.fetchingQuestions) {
+    if (this.state.fetchingData) {
       return (
         <div className='quiz-container'>
           <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
@@ -970,221 +1001,8 @@ class Container extends React.Component {
     }
   }
 
-  getSchemaJSON() {
-    switch(this.state.step){
-      case 1:
-        return this.state.schemaJSON.properties.mandatory_config;
-        break;
-      case 2:
-        return this.state.schemaJSON.properties.data.properties.basic_datapoints;
-        break;
-      case 3:
-        return this.state.schemaJSON.properties.data.properties.questions;
-        break;
-      case 4:
-        return this.state.schemaJSON.properties.data.properties.result_card_data;
-        break;
-      case 5:
-        return this.state.optionalConfigSchemaJSON;
-        break;
-    }
-  }
-
-  getFormData() {
-    switch(this.state.step) {
-      case 1:
-        return this.state.dataJSON.mandatory_config;
-        break;
-      case 2:
-        return this.state.dataJSON.data.basic_datapoints;
-        break;
-      case 3:
-        return this.state.dataJSON.data.questions;
-        break;
-      case 4:
-        return this.state.dataJSON.data.result_card_data;
-        break;
-      case 5:
-        return this.state.optionalConfig;
-        break;
-    }
-  }
-
-  getUISchemaJSON() {
-    switch(this.state.step) {
-      case 1:
-        return this.state.uiSchemaJSON.mandatory_config;
-        break;
-      default:
-        return {};
-        break;
-    }
-  }
-
-  showLinkText() {
-    switch(this.state.step) {
-      case 1:
-        return '';
-        break;
-      case 2:
-        return '';
-        break;
-      case 3:
-        return '< Back';
-        break;
-      case 4:
-        return '< Back';
-        break;
-      case 5:
-        return '< Back';
-        break;
-    }
-  }
-
-  showButtonText() {
-    switch(this.state.step) {
-      case 1:
-        return 'Proceed to next step';
-        break;
-      case 2:
-        return 'Proceed to next step';
-        break;
-      case 3:
-        return 'Proceed to next step';
-        break;
-      case 4:
-        return 'Proceed to next step';
-        break;
-      case 5:
-        return 'Publish';
-        break;
-    }
-  }
-
-  onPrevHandler() {
-    this.setState((prevStep, prop) => {
-      return {
-        step: --prevStep.step
-      }
-    });
-  }
-
-  renderEdit() {
-    if (this.state.fetchingQuestions) {
-      return (
-        <div className='quiz-container'>
-          <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
-            <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
-              Fetching Questions ...
-            </span>
-          </div>
-        </div>
-      )
-    } else {
-      return (
-        <div className="col-sm-12">
-          <div className = "col-sm-5" id="protograph-explainer-form-div">
-            <Form schema = {this.getSchemaJSON()}
-              onSubmit = {((e) => this.onSubmitHandler(e))}
-              onChange = {((e) => this.onChangeHandler(e))}
-              formData = {this.getFormData()}
-              uiSchema={this.getUISchemaJSON()}
-            >
-              <a onClick={((e) => this.onPrevHandler(e))}> {this.showLinkText()} </a>
-              <button type="submit" className="btn btn-info">
-                {this.showButtonText()}
-              </button>
-            </Form>
-          </div>
-          <div className = "col-sm-7">
-            {this.renderQuiz()}
-          </div>
-        </div>
-      )
-    }
-  }
-
-  onChangeHandler({formData}) {
-    switch (this.state.step) {
-      case 1:
-        this.setState((prevStep, prop) => {
-          let dataJSON = prevStep.dataJSON;
-          dataJSON.mandatory_config = formData
-          return {
-            dataJSON: dataJSON
-          }
-        });
-        break;
-      case 2:
-        this.setState((prevStep, prop) => {
-          let dataJSON = prevStep.dataJSON;
-          dataJSON.data.basic_datapoints = formData;
-          return {
-            dataJSON: dataJSON
-          }
-        });
-        break;
-      case 3:
-        this.setState((prevStep, prop) => {
-          let dataJSON = prevStep.dataJSON;
-          dataJSON.data.questions = formData;
-          return {
-            dataJSON: dataJSON,
-            totalQuestions: dataJSON.data.questions.length
-          }
-        });
-        break;
-      case 4:
-        this.setState((prevStep, prop) => {
-          let dataJSON = prevStep.dataJSON;
-          dataJSON.data.result_card_data = formData;
-          return {
-            dataJSON: dataJSON
-          }
-        });
-        break;
-      case 5:
-        // this.setState((prevStep, prop) => {
-        //   let dataJSON = prevStep.dataJSON;
-        //   dataJSON.data.questions = formData;
-        //   return {
-        //     dataJSON: dataJSON
-        //   }
-        // });
-        break;
-    }
-  }
-
-  onSubmitHandler({formData}) {
-    switch(this.state.step) {
-      case 1:
-        this.setState({
-          step: 2
-        });
-        break;
-      case 2:
-        this.setState({
-          step: 3
-        });
-        break;
-      case 3:
-        this.setState({
-          step: 4
-        });
-        break;
-      case 4:
-        this.setState({
-          step: 5
-        });
-        break;
-      case 5:
-        alert("The card is published");
-        break;
-    }
-  }
-
   render() {
-     switch(this.props.mode) {
+    switch(this.props.mode) {
       case 'laptop' :
         return this.renderQuiz();
         break;
@@ -1194,9 +1012,6 @@ class Container extends React.Component {
       case 'tablet' :
         return this.renderQuiz();
         break;
-      case 'edit' :
-        return this.renderEdit();
-        break;
     }
   }
 
@@ -1204,4 +1019,4 @@ class Container extends React.Component {
 
 }
 
-export default Container;
+export default Quiz;

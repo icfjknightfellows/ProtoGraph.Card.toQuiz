@@ -12,5 +12,18 @@
     "timer": {
       "ui:widget": "radio"
     }
+  },
+  "data": {
+    "questions": {
+        "items": {
+          "options": {
+            "items": {
+              "right_or_wrong": {
+                "ui:widget": "radio"
+              }
+            }
+          }
+        }
+    }
   }
 }

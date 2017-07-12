@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Utility from '../js/utility.js';
 
 export default class ResultCard extends React.Component {
 
