@@ -8,7 +8,10 @@ import JSONSchemaForm   from '../../lib/js/react-jsonschema-form';
 class EditQuiz extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
+
+    this.shouldQuizRender = true;
+
     this.state = {
       fetchingData: true,
       dataJSON: {
@@ -19,7 +22,8 @@ class EditQuiz extends React.Component {
       optionalConfigJSON: {},
       optionalConfigSchemaJSON: {},
       uiSchemaJSON: {},
-      step: 1
+      step: 1,
+      updatingQuiz: false
     };
   }
 
@@ -117,7 +121,6 @@ class EditQuiz extends React.Component {
           ans_title: "उत्तर",
           restart: 'फिर से शुरू करें ↺',
           next: 'अगला प्रश्न ➜',
-          // swipe: 'अगले प्रश्न के लिए दाईं ओर स्वाइप करें ➜'हाँ या ना
           swipe: 'अगले प्रश्न के लिए दाईं या बाईं ओर स्वाइप करें ➜'
         }
         break;
@@ -187,7 +190,6 @@ class EditQuiz extends React.Component {
         return this.state.uiSchemaJSON.mandatory_config;
         break;
       case 3:
-      console.log(this.state.uiSchemaJSON.data.questions);
         return this.state.uiSchemaJSON.data.questions;
         break;
       default:
@@ -251,6 +253,7 @@ class EditQuiz extends React.Component {
           let dataJSON = prevStep.dataJSON;
           dataJSON.mandatory_config = formData
           return {
+            updatingQuiz: true,
             dataJSON: dataJSON
           }
         });
@@ -260,6 +263,7 @@ class EditQuiz extends React.Component {
           let dataJSON = prevStep.dataJSON;
           dataJSON.data.basic_datapoints = formData;
           return {
+            updatingQuiz: true,
             dataJSON: dataJSON
           }
         });
@@ -269,6 +273,7 @@ class EditQuiz extends React.Component {
           let dataJSON = prevStep.dataJSON;
           dataJSON.data.questions = formData;
           return {
+            updatingQuiz: true,
             dataJSON: dataJSON,
             totalQuestions: dataJSON.data.questions.length
           }
@@ -279,6 +284,7 @@ class EditQuiz extends React.Component {
           let dataJSON = prevStep.dataJSON;
           dataJSON.data.result_card_data = formData;
           return {
+            updatingQuiz: true,
             dataJSON: dataJSON
           }
         });
@@ -343,7 +349,40 @@ class EditQuiz extends React.Component {
     }
   }
 
-  render() {
+  componentWillUpdate(prevProps, prevState) {
+    if (document.getElementById('protograph_embed_editQuiz') && prevState.updatingQuiz) {
+      // ReactDOM.unmountComponentAtNode(document.getElementById('protograph_embed_editQuiz'));
+      this.shouldQuizRender = false;
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (document.getElementById('protograph_embed_editQuiz') && this.state.updatingQuiz) {
+      this.shouldQuizRender = true;
+      this.setState({ updatingQuiz: false });
+    }
+  }
+
+  renderQuiz() {
+    if (this.shouldQuizRender) {
+      return <Quiz
+        mode='laptop'
+        dataJSON={this.state.dataJSON}
+        schemaJSON={this.state.schemaJSON}
+        optionalConfigJSON={this.state.optionalConfigJSON}
+        optionalConfigSchemaJSON={this.state.optionalConfigSchemaJSON}
+        totalQuestions={this.state.totalQuestions}
+        totalCards={this.state.totalCards}
+        languageTexts={this.state.languageTexts}
+        timePerQuestion={this.state.timePerQuestion}
+        timerCountValue={this.state.timerCountValue}
+      />
+    } else {
+      return <div />
+    }
+  }
+
+  render(e) {
     if (this.state.fetchingData) {
       return (
         <div className='quiz-container'>
@@ -355,13 +394,6 @@ class EditQuiz extends React.Component {
         </div>
       )
     } else {
-      console.log(<JSONSchemaForm
-              schema = {this.getSchemaJSON()}
-              formData = {this.getFormData()}
-              uiSchema={this.getUISchemaJSON()}
-              onSubmit = {((e) => this.onSubmitHandler(e))}
-              onChange = {((e) => this.onChangeHandler(e))}
-            />, this.getSchemaJSON(), this.getFormData(), this.getUISchemaJSON())
       return (
         <div className="col-sm-12">
           <div className = "col-sm-5">
@@ -378,19 +410,8 @@ class EditQuiz extends React.Component {
               </button>
             </JSONSchemaForm>
           </div>
-          <div className = "col-sm-7">
-          <Quiz
-              mode='laptop'
-              dataJSON={this.state.dataJSON}
-              schemaJSON={this.state.schemaJSON}
-              optionalConfigJSON={this.state.optionalConfigJSON}
-              optionalConfigSchemaJSON={this.state.optionalConfigSchemaJSON}
-              totalQuestions={this.state.totalQuestions}
-              totalCards={this.state.totalCards}
-              languageTexts={this.state.languageTexts}
-              timePerQuestion={this.state.timePerQuestion}
-              timerCountValue={this.state.timerCountValue}
-            />
+          <div id="protograph_embed_editQuiz" className="col-sm-7">
+            { this.renderQuiz() }
           </div>
         </div>
       )
