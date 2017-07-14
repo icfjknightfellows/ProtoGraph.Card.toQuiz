@@ -75,6 +75,10 @@ class Quiz extends React.Component {
     this.state = stateVar;
   }
 
+componentWillReceiveProps() {
+    console.log(arguments)
+  }
+
   componentDidMount() {
     console.log(this.state.fetchingData)
     if (this.state.fetchingData){
@@ -354,7 +358,7 @@ class Quiz extends React.Component {
         backDiv.querySelector('.correct-answer').innerHTML = option.option;
       }
 
-      if(option.gif_image) {
+      if(option.gif_image && option.gif_image.image) {
         backDiv.querySelector(".gif-div").style.display = "block";
         backDiv.querySelector(".gif").onload = function (e) {
           let imgClientRect = e.target.offsetWidth,
@@ -365,7 +369,7 @@ class Quiz extends React.Component {
             e.target.style.width = idealImgWidth + "px";
           }
         };
-        backDiv.querySelector(".gif").setAttribute("src", option.gif_image);
+        backDiv.querySelector(".gif").setAttribute("src", option.gif_image.image);
       } else {
         backDiv.querySelector(".gif-div").style.display = "none";
       }
@@ -878,7 +882,7 @@ class Quiz extends React.Component {
     cardConfigs = this.state.dataJSON.mandatory_config;
     cardConfigs.share_msg = data.basic_datapoints.share_msg;
     cardConfigs.share_link = data.basic_datapoints.share_link;
-
+    console.log(this.state.optionalConfigJSON, ";;;;;;;;;;;;;;")
     return (
       <div className="quiz-container">
         <div className="quiz-content">

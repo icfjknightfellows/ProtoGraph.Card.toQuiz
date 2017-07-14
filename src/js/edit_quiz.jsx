@@ -204,14 +204,8 @@ class EditQuiz extends React.Component {
         return '';
         break;
       case 2:
-        return '< Back';
-        break;
       case 3:
-        return '< Back';
-        break;
       case 4:
-        return '< Back';
-        break;
       case 5:
         return '< Back';
         break;
@@ -221,14 +215,8 @@ class EditQuiz extends React.Component {
   showButtonText() {
     switch(this.state.step) {
       case 1:
-        return 'Next';
-        break;
       case 2:
-        return 'Next';
-        break;
       case 3:
-        return 'Next';
-        break;
       case 4:
         return 'Next';
         break;
@@ -290,13 +278,11 @@ class EditQuiz extends React.Component {
         });
         break;
       case 5:
-        // this.setState((prevStep, prop) => {
-        //   let dataJSON = prevStep.dataJSON;
-        //   dataJSON.data.questions = formData;
-        //   return {
-        //     dataJSON: dataJSON
-        //   }
-        // });
+        this.setState((prevStep, prop) => {
+          return {
+            optionalConfigJSON: formData
+          }
+        });
         break;
     }
   }
@@ -332,17 +318,9 @@ class EditQuiz extends React.Component {
   getReferenceFormData() {
     switch(this.state.step) {
       case 1:
-        return JSON.parse(JSON.stringify(this.state.dataJSON.mandatory_config));
-        break;
       case 2:
-        return JSON.parse(JSON.stringify(this.state.dataJSON.mandatory_config));
-        break;
       case 3:
-        return JSON.parse(JSON.stringify(this.state.dataJSON.mandatory_config));
-        break;
       case 4:
-        return JSON.parse(JSON.stringify(this.state.dataJSON.mandatory_config));
-        break;
       case 5:
         return JSON.parse(JSON.stringify(this.state.dataJSON.mandatory_config));
         break;
@@ -350,21 +328,23 @@ class EditQuiz extends React.Component {
   }
 
   componentWillUpdate(prevProps, prevState) {
-    if (document.getElementById('protograph_embed_editQuiz') && prevState.updatingQuiz) {
-      // ReactDOM.unmountComponentAtNode(document.getElementById('protograph_embed_editQuiz'));
-      this.shouldQuizRender = false;
-    }
+    // if (document.getElementById('protograph_embed_editQuiz') && prevState.updatingQuiz) {
+    //   // ReactDOM.unmountComponentAtNode(document.getElementById('protograph_embed_editQuiz'));
+    //   this.shouldQuizRender = false;
+    // }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (document.getElementById('protograph_embed_editQuiz') && this.state.updatingQuiz) {
-      this.shouldQuizRender = true;
-      this.setState({ updatingQuiz: false });
-    }
+    // if (document.getElementById('protograph_embed_editQuiz') && this.state.updatingQuiz) {
+    //   this.shouldQuizRender = true;
+    //   this.setState({ updatingQuiz: false });
+    // }
   }
 
   renderQuiz() {
     if (this.shouldQuizRender) {
+    console.log(this.state.optionalConfigJSON, "_______+++++++______")
+
       return <Quiz
         mode='laptop'
         dataJSON={this.state.dataJSON}
@@ -397,7 +377,8 @@ class EditQuiz extends React.Component {
       return (
         <div className="col-sm-12">
           <div className = "col-sm-5">
-            <JSONSchemaForm schema = {this.getSchemaJSON()}
+            <JSONSchemaForm
+              schema = {this.getSchemaJSON()}
               onSubmit = {((e) => this.onSubmitHandler(e))}
               onChange = {((e) => this.onChangeHandler(e))}
               referenceFormData={this.getReferenceFormData()}

@@ -8,10 +8,12 @@
             "properties": {
                 "basic_datapoints": {
                     "id": "/properties/data/properties/basic_datapoints",
+                    "title": "Card Details",
                     "properties": {
                         "background_image": {
                             "id": "/properties/data/properties/basic_datapoints/properties/background_image",
                             "type": "object",
+                            "title": "Cover Image",
                             "properties": {
                                 "image": {
                                     "description": "An explanation about the purpose of this instance.",
@@ -53,29 +55,49 @@
                 },
                 "questions": {
                     "id": "/properties/data/properties/questions",
+                    "title": "Questions",
                     "items": {
                         "id": "/properties/data/properties/questions/items",
                         "properties": {
+                            "question": {
+                                "default": "This is a sample question?",
+                                "title": "Question",
+                                "id": "/properties/data/properties/questions/items/properties/question",
+                                "type": "string"
+                            },
                             "options": {
+                                "title": "Answers",
                                 "id": "/properties/data/properties/questions/items/properties/options",
                                 "items": {
                                     "id": "/properties/data/properties/questions/items/properties/options/items",
                                     "properties": {
                                         "fact": {
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/fact",
-                                            "type": "string"
+                                            "type": "string",
+                                            "title": "Educative Text"
                                         },
                                         "gif_image": {
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/gif_image",
-                                            "type": "string"
+                                            "type": "object",
+                                            "title": "",
+                                            "properties": {
+                                                "image": {
+                                                    "id": "/properties/data/properties/cover_data/properties/logo_image",
+                                                    "title": "Add an educative image",
+                                                    "type": "string",
+                                                    "format": "data-url"
+                                                }
+                                            }
                                         },
                                         "option": {
-                                            "default": "Option Value",
+                                            "default": "Answer Text",
+                                            "title": "Answer Text",
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/option",
                                             "type": "string"
                                         },
                                         "right_or_wrong": {
                                             "default": true,
+                                            "title": "Is this question right?",
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/right_or_wrong",
                                             "type": "boolean",
                                             "condition": { "element": "quiz_type", "value": "scoring" }
@@ -88,16 +110,6 @@
                                 },
                                 "minItems" : 1,
                                 "type": "array"
-                            },
-                            "question": {
-                                "default": "This is a sample question?",
-                                "id": "/properties/data/properties/questions/items/properties/question",
-                                "type": "string"
-                            },
-                            "question_no": {
-                                "default": 0,
-                                "id": "/properties/data/properties/questions/items/properties/question_no",
-                                "type": "integer"
                             }
                         },
                         "required": [
@@ -110,6 +122,7 @@
                 },
                 "result_card_data": {
                     "id": "/properties/data/properties/result_card_data",
+                    "title": "External Links",
                     "items": {
                         "id": "/properties/data/properties/result_card_data/items",
                         "properties": {
@@ -155,10 +168,12 @@
         },
         "mandatory_config": {
             "id": "/properties/mandatory_config",
+            "title": "Mandatory Configurations",
             "properties": {
                 "flip_card": {
                     "id": "/properties/mandatory_config/properties/flip_card",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "title": "Should the card flip after every answer?"
                 },
                 "language": {
                     "id": "/properties/mandatory_config/properties/language",
@@ -170,7 +185,8 @@
                     "enumNames": [
                         "English",
                         "Hindi"
-                    ]
+                    ],
+                    "title": "Language"
                 },
                 "quiz_type": {
                     "id": "/properties/mandatory_config/properties/quiz_type",
@@ -182,24 +198,29 @@
                     "enumNames": [
                         "General",
                         "Scoring"
-                    ]
+                    ],
+                    "title": "Quiz Mode"
                 },
                 "revisit_answers": {
                     "id": "/properties/mandatory_config/properties/revisit_answers",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "title": "Allow users to revisit answers"
                 },
                 "social_share": {
                     "id": "/properties/mandatory_config/properties/social_share",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "title": "Allow users to share this quiz on social media"
                 },
                 "timer": {
                     "id": "/properties/mandatory_config/properties/timer",
-                    "type": "boolean"
+                    "type": "boolean",
+                    "title": "Should the Quiz be timer based?"
                 },
                 "time_per_question": {
                     "id": "/properties/mandatory_config/properties/time_per_question",
                     "type": "integer",
-                    "condition": {"element": "timer", "value": true}
+                    "condition": {"element": "timer", "value": true},
+                    "title": "Time user shoud spend on each question. (in seconds)"
                 }
             },
             "required": [
