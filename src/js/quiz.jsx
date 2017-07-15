@@ -852,7 +852,7 @@ class Quiz extends React.Component {
       <div id="time_out_indicator" className="time-out-indicator">
         <div className="time-out-content">
           <div className="clock-icon">
-            <img src="src/images/clock-large.png" />
+            <img src={`${this.props.baseURL}/images/clock-large.png`} />
           </div>
           <div className="time-value">00:00</div>
           <div className="oops-msg">Oops!</div>
@@ -913,6 +913,7 @@ class Quiz extends React.Component {
               totalQuestions={this.state.totalQuestions}
               score={this.state.score}
               cardEvents={events}
+              baseURL={this.props.baseURL}
             />
 
             <div className="slider-container">
@@ -995,6 +996,7 @@ class Quiz extends React.Component {
             totalQuestions={this.formatNumber(this.state.totalQuestions)}
             isMobile={this.state.isMobile}
             timerValue={this.calculateTime(this.state.timerCountValue)}
+            baseURL={this.props.baseURL}
           />
         )
       });
@@ -1016,8 +1018,6 @@ class Quiz extends React.Component {
         break;
     }
   }
-
-
 
 }
 

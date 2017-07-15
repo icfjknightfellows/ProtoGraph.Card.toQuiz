@@ -18,6 +18,7 @@ ProtoGraph.Card.toQuiz.prototype.renderEdit = function (data) {
       configURL={this.options.configuration_url}
       configSchemaURL={this.options.configuration_schema_url}
       uiSchemaURL={this.options.ui_schema_url}
+      baseURL={this.options.base_url}
       mode={this.mode}
       ref={(e) => {
         this.containerInstance = this.containerInstance || e;

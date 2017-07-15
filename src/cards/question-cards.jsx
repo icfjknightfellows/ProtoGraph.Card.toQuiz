@@ -10,7 +10,7 @@ export default class QuestionCard extends React.Component {
             +this.props.timerValue.sec < 6 ? <span className='danger'>{`${this.props.timerValue.sec}`}</span> : `${this.props.timerValue.sec}`
           }
         </span>
-        <img className='timer-img' src='./src/images/clock-small.png'/>
+        <img className='timer-img' src={`${this.props.baseURL}/images/clock-small.png`} />
       </div>
     )
   }
@@ -85,7 +85,7 @@ export default class QuestionCard extends React.Component {
               this.props.isMobile ?
                 <div className="swipe-hint-container" id="swipe_hint_container">
                   <div className="swipe-hint-animation" id="swipe_hint_animation">
-                    <img src='./src/images/swipe-up.gif' />
+                    <img src={`${this.props.baseURL}/images/swipe-up.gif`} />
                   </div>
                   <div className="swipe-hint-msg" id="swipe_hint_msg">Swipe up for next question</div>
                 </div>
@@ -145,7 +145,7 @@ export default class QuestionCard extends React.Component {
                   this.props.isMobile ?
                     <div className="swipe-hint-container" id="swipe_hint_container">
                       <div className="swipe-hint-animation" id="swipe_hint_animation">
-                        <img src='./src/images/swipe-up.gif' />
+                        <img src={`${this.props.baseURL}/images/swipe-up.gif`} />
                       </div>
                       <div className="swipe-hint-msg" id="swipe_hint_msg">Swipe up for next question</div>
                     </div>

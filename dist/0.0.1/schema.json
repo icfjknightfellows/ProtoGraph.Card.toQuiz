@@ -25,24 +25,30 @@
                         },
                         "introduction": {
                             "id": "/properties/data/properties/basic_datapoints/properties/introduction",
-                            "type": "string"
+                            "type": "string",
+                            "title": "Introduction Text"
                         },
                         "quiz_title": {
                             "id": "/properties/data/properties/basic_datapoints/properties/quiz_title",
-                            "type": "string"
+                            "type": "string",
+                            "title": "Quiz Title"
                         },
                         "start_button_text": {
                             "id": "/properties/data/properties/basic_datapoints/properties/start_button_text",
-                            "type": "string"
+                            "type": "string",
+                            "title": "Start Button Text"
                         },
                         "share_link": {
                             "id": "/properties/data/properties/basic_datapoints/properties/share_link",
                             "type": "string",
+                            "title": "Link URL to share",
+                            "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)",
                             "condition": {"element": "social_share", "value": true}
                         },
                         "share_msg": {
                             "id": "/properties/data/properties/basic_datapoints/properties/share_msg",
                             "type": "string",
+                            "title": "Messsage to be shared",
                             "condition": {"element": "social_share", "value": true}
                         }
                     },

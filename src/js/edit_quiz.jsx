@@ -24,7 +24,8 @@ class EditQuiz extends React.Component {
       uiSchemaJSON: {},
       resultCardData: {},
       step: 1,
-      updatingQuiz: false
+      updatingQuiz: false,
+      baseURL: this.props.baseURL
     };
   }
 
@@ -347,6 +348,7 @@ class EditQuiz extends React.Component {
         languageTexts={this.state.languageTexts}
         timePerQuestion={this.state.timePerQuestion}
         timerCountValue={this.state.timerCountValue}
+        baseURL={this.state.baseURL}
       />
     } else {
       return <div />
@@ -366,32 +368,42 @@ class EditQuiz extends React.Component {
       )
     } else {
       return (
-        <div className="col-sm-12">
-          <div className = "col-sm-5">
-            <JSONSchemaForm
-              schema = {this.getSchemaJSON()}
-              onSubmit = {((e) => this.onSubmitHandler(e))}
-              onChange = {((e) => this.onChangeHandler(e))}
-              referenceFormData={this.getReferenceFormData()}
-              formData = {this.getFormData()}
-              uiSchema={this.getUISchemaJSON()}
-            >
-              <a
-                onClick={((e) => this.onPrevHandler(e))}
-                className={`${this.state.publishing ? 'protograph-disable' : ''}`}
-              >
-                {this.showLinkText()}
-              </a>
-              <button
-                type="submit"
-                className={`${this.state.publishing ? 'ui primary loading disabled button' : ''} default-button protograph-primary-button`}
-              >
-                { this.showButtonText() }
-              </button>
-            </JSONSchemaForm>
-          </div>
-          <div id="protograph_embed_editQuiz" className="col-sm-7">
-            { this.renderQuiz() }
+        <div className="proto-container">
+          <div className="ui grid form-layout">
+            <div className="row">
+              <div className="four wide column proto-card-form">
+                <div>
+                  <div className="section-title-text">Fill the form</div>
+                  <div className="ui label proto-pull-right">
+                    ToQuiz
+                  </div>
+                </div>
+                <JSONSchemaForm
+                  schema = {this.getSchemaJSON()}
+                  onSubmit = {((e) => this.onSubmitHandler(e))}
+                  onChange = {((e) => this.onChangeHandler(e))}
+                  referenceFormData={this.getReferenceFormData()}
+                  formData = {this.getFormData()}
+                  uiSchema={this.getUISchemaJSON()}
+                >
+                  <a
+                    onClick={((e) => this.onPrevHandler(e))}
+                    className={`${this.state.publishing ? 'protograph-disable' : ''}`}
+                  >
+                    {this.showLinkText()}
+                  </a>
+                  <button
+                    type="submit"
+                    className={`${this.state.publishing ? 'ui primary loading disabled button' : ''} default-button protograph-primary-button`}
+                  >
+                    { this.showButtonText() }
+                  </button>
+                </JSONSchemaForm>
+              </div>
+              <div id="protograph_embed_editQuiz" className="twelve wide column proto-card-preview proto-share-card-div">
+                { this.renderQuiz() }
+              </div>
+            </div>
           </div>
         </div>
       )

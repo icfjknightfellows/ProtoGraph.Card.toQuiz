@@ -4,7 +4,7 @@
 @import url("https://fonts.googleapis.com/css?family=Mukta+Vaani:500");
 @font-face {
   font-family: "charter";
-  src: url("../fonts/charter_regular-webfont.ttf") format("truetype");
+  src: url("./fonts/charter_regular-webfont.ttf") format("truetype");
 }
 html {
   -webkit-font-smoothing: antialiased;

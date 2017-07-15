@@ -138,7 +138,7 @@ export default class ResultCard extends React.Component {
         <div className='content'>
           <div className='conclusion-front'>
             <div id="result_container" className="result-container">
-              <img className="result-img" src="./src/images/cup.png" />
+              <img className="result-img" src={`${this.props.baseURL}/images/cup.png`} />
               <div className="result-text">{message}</div>
               {
                 this.props.cardConfigs.quiz_type === 'scoring' &&
@@ -155,7 +155,7 @@ export default class ResultCard extends React.Component {
               {
                 this.props.cardConfigs.revisit_answers ?
                   <div id="revisit" className={`revisit card-button ${revisitStyleCss}`} onClick={this.props.cardEvents.revisitAnswers} >
-                    <img className="card-button-img" src="./src/images/revisit-icon.png" />
+                    <img className="card-button-img" src={`${this.props.baseURL}/images/revisit-icon.png`} />
                     <div className="card-button-text">Revisit Answers</div>
                   </div>
                 :
@@ -163,14 +163,14 @@ export default class ResultCard extends React.Component {
               }
 
               <div id="replay" className={`replay card-button ${replayStyleCss}`}  onClick={this.props.cardEvents.resetQuiz} >
-                <img className="card-button-img" src="./src/images/replay.png" />
+                <img className="card-button-img" src={`${this.props.baseURL}/images/replay.png`} />
                 <div className="card-button-text">Play Again</div>
               </div>
 
               {
                 this.props.cardConfigs.social_share ?
                   <div id="share" className={`share card-button ${shareStyleCss}`} onClick={this.props.cardEvents.socialShare}>
-                    <img className="card-button-img" src="./src/images/share.png" />
+                    <img className="card-button-img" src={`${this.props.baseURL}/images/share.png`} />
                     <div className="card-button-text">Share</div>
                   </div>
                 :
