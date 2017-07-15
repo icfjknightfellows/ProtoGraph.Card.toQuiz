@@ -68,7 +68,7 @@ export default class ResultCard extends React.Component {
               <a className='single-link' href={`${d.related_article_links}`} target='blank'>
                 {
                   d.related_article_links ?
-                    <img src={`${d.link_image}`} className='link-img' />
+                    <img src={`${d.link_image.image}`} className='link-img' />
                   :
                     undefined
                 }
@@ -90,7 +90,7 @@ export default class ResultCard extends React.Component {
               <a className='single-link' href={`${d.related_article_links}`} target='blank'>
                 {
                   d.related_article_links ?
-                    <img src={`${d.link_image}`} className='link-img' />
+                    <img src={`${d.link_image.image}`} className='link-img' />
                   :
                     undefined
                 }

@@ -22,6 +22,7 @@ class EditQuiz extends React.Component {
       optionalConfigJSON: {},
       optionalConfigSchemaJSON: {},
       uiSchemaJSON: {},
+      resultCardData: {},
       step: 1,
       updatingQuiz: false
     };
@@ -42,6 +43,7 @@ class EditQuiz extends React.Component {
             schemaJSON: cardSchema.data,
             optionalConfigJSON: optionalConfig.data,
             optionalConfigSchemaJSON: optionalConfigSchema.data,
+            resultCardData: cardData.data.data.result_card_data,
             uiSchemaJSON: uiSchema.data,
           };
 
@@ -176,10 +178,10 @@ class EditQuiz extends React.Component {
         return this.state.dataJSON.data.questions;
         break;
       case 4:
-        return this.state.dataJSON.data.result_card_data;
+        return this.state.resultCardData;
         break;
       case 5:
-        return this.state.optionalConfig;
+        return this.state.optionalConfigJSON;
         break;
     }
   }
@@ -269,11 +271,14 @@ class EditQuiz extends React.Component {
         break;
       case 4:
         this.setState((prevStep, prop) => {
-          let dataJSON = prevStep.dataJSON;
-          dataJSON.data.result_card_data = formData;
+          let resultCardData = formData,
+            dataJSON = prevStep.dataJSON;
+
+          dataJSON.result_card_data = this.processResultData(resultCardData, dataJSON.mandatory_config.quiz_type)
           return {
             updatingQuiz: true,
-            dataJSON: dataJSON
+            dataJSON: dataJSON,
+            resultCardData: resultCardData
           }
         });
         break;
@@ -290,61 +295,47 @@ class EditQuiz extends React.Component {
   onSubmitHandler({formData}) {
     switch(this.state.step) {
       case 1:
-        this.setState({
-          step: 2
-        });
-        break;
       case 2:
-        this.setState({
-          step: 3
-        });
-        break;
       case 3:
-        this.setState({
-          step: 4
-        });
-        break;
       case 4:
-        this.setState({
-          step: 5
+        this.setState((prevStep, prop) => {
+          return {
+            step: prevStep.step + 1
+          }
         });
         break;
       case 5:
-        alert("The card is published");
+        if (typeof this.props.onPublishCallback === "function") {
+          this.setState({ publishing: true });
+          let publishCallback = this.props.onPublishCallback();
+          publishCallback.then((message) => {
+            this.setState({ publishing: false });
+          });
+        }
         break;
     }
   }
 
   getReferenceFormData() {
-    switch(this.state.step) {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-        return JSON.parse(JSON.stringify(this.state.dataJSON.mandatory_config));
-        break;
-    }
+    return JSON.parse(JSON.stringify(this.state.dataJSON.mandatory_config));
   }
 
   componentWillUpdate(prevProps, prevState) {
-    // if (document.getElementById('protograph_embed_editQuiz') && prevState.updatingQuiz) {
-    //   // ReactDOM.unmountComponentAtNode(document.getElementById('protograph_embed_editQuiz'));
-    //   this.shouldQuizRender = false;
-    // }
+    if (document.getElementById('protograph_embed_editQuiz') && prevState.updatingQuiz) {
+      // ReactDOM.unmountComponentAtNode(document.getElementById('protograph_embed_editQuiz'));
+      this.shouldQuizRender = false;
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if (document.getElementById('protograph_embed_editQuiz') && this.state.updatingQuiz) {
-    //   this.shouldQuizRender = true;
-    //   this.setState({ updatingQuiz: false });
-    // }
+    if (document.getElementById('protograph_embed_editQuiz') && this.state.updatingQuiz) {
+      this.shouldQuizRender = true;
+      this.setState({ updatingQuiz: false });
+    }
   }
 
   renderQuiz() {
     if (this.shouldQuizRender) {
-    console.log(this.state.optionalConfigJSON, "_______+++++++______")
-
       return <Quiz
         mode='laptop'
         dataJSON={this.state.dataJSON}
@@ -385,9 +376,17 @@ class EditQuiz extends React.Component {
               formData = {this.getFormData()}
               uiSchema={this.getUISchemaJSON()}
             >
-              <a onClick={((e) => this.onPrevHandler(e))}> {this.showLinkText()} </a>
-              <button type="submit" className="btn btn-info">
-                {this.showButtonText()}
+              <a
+                onClick={((e) => this.onPrevHandler(e))}
+                className={`${this.state.publishing ? 'protograph-disable' : ''}`}
+              >
+                {this.showLinkText()}
+              </a>
+              <button
+                type="submit"
+                className={`${this.state.publishing ? 'ui primary loading disabled button' : ''} default-button protograph-primary-button`}
+              >
+                { this.showButtonText() }
               </button>
             </JSONSchemaForm>
           </div>
@@ -398,9 +397,6 @@ class EditQuiz extends React.Component {
       )
     }
   }
-
-
-
 }
 
 export default EditQuiz;

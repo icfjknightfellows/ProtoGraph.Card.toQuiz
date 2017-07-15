@@ -75,12 +75,13 @@ class Quiz extends React.Component {
     this.state = stateVar;
   }
 
-componentWillReceiveProps() {
-    console.log(arguments)
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      optionalConfigJSON: nextProps.optionalConfigJSON
+    })
   }
 
   componentDidMount() {
-    console.log(this.state.fetchingData)
     if (this.state.fetchingData){
       axios.all([
         axios.get(this.props.dataURL),
@@ -230,7 +231,6 @@ componentWillReceiveProps() {
       totalQuestions = this.state.totalQuestions,
       config = this.state.dataJSON.mandatory_config;
 
-    console.log(config);
     introFront.style.display = "none";
     document.querySelector(".intro-back").style.display = "block";
 
@@ -244,7 +244,6 @@ componentWillReceiveProps() {
 
     setTimeout(() => {
       introCard.style.top = "-1000px";
-      console.log(config.quiz_type === "scoring" && !config.flip_card, config.quiz_type, config.flip_card);
       if(!(config.quiz_type === "scoring" && !config.flip_card)) {
         firstQCard.querySelector(".back").style.display = "none";
       }
@@ -483,7 +482,6 @@ componentWillReceiveProps() {
 
     let conclusionCard = document.querySelector(".conclusion-card"),
       position = totalQuestions - orderId - 1;
-      console.log(position, totalQuestions, orderId);
     conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
     if((totalQuestions - orderId) < 4) {
       conclusionCard.style.opacity = 1;
@@ -882,7 +880,7 @@ componentWillReceiveProps() {
     cardConfigs = this.state.dataJSON.mandatory_config;
     cardConfigs.share_msg = data.basic_datapoints.share_msg;
     cardConfigs.share_link = data.basic_datapoints.share_link;
-    console.log(this.state.optionalConfigJSON, ";;;;;;;;;;;;;;")
+
     return (
       <div className="quiz-container">
         <div className="quiz-content">
@@ -952,7 +950,7 @@ componentWillReceiveProps() {
       )
     } else {
       let styles = {},
-        x = 140,//(this.state.totalQuestions * 20) - 20,
+        x = 140, //(this.state.totalQuestions * 20) - 20,
         y = 0 - 320,
         z = 1 + 0.08,
         questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],

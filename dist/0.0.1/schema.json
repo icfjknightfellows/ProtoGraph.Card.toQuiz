@@ -13,10 +13,9 @@
                         "background_image": {
                             "id": "/properties/data/properties/basic_datapoints/properties/background_image",
                             "type": "object",
-                            "title": "Cover Image",
+                            "title": "",
                             "properties": {
                                 "image": {
-                                    "description": "An explanation about the purpose of this instance.",
                                     "id": "/properties/data/properties/cover_data/properties/logo_image",
                                     "title": "Upload a background image",
                                     "type": "string",
@@ -122,28 +121,42 @@
                 },
                 "result_card_data": {
                     "id": "/properties/data/properties/result_card_data",
-                    "title": "External Links",
+                    "title": "Related article Links",
                     "items": {
                         "id": "/properties/data/properties/result_card_data/items",
                         "properties": {
+                            "related_article_links": {
+                                "id": "/properties/data/properties/result_card_data/items/properties/related_article_links",
+                                "title": "Related article link URL",
+                                "type": "string",
+                                "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
+                            },
                             "link_description": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/link_description",
+                                "title": "Description on the link",
                                 "type": "string"
                             },
                             "link_image": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/link_image",
-                                "type": "string"
+                                "type": "object",
+                                "title": "",
+                                "properties": {
+                                    "image": {
+                                        "id": "/properties/data/properties/cover_data/properties/logo_image",
+                                        "title": "Upload a article cover image",
+                                        "type": "string",
+                                        "format": "data-url"
+                                    }
+                                }
                             },
                             "message": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/message",
-                                "type": "string"
-                            },
-                            "related_article_links": {
-                                "id": "/properties/data/properties/result_card_data/items/properties/related_article_links",
+                                "title": "Result Message",
                                 "type": "string"
                             },
                             "upper_limit_of_score_range": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/upper_limit_of_score_range",
+                                "title": "Maximum score",
                                 "type": "integer",
                                 "condition": { "element": "quiz_type", "value": "scoring" }
                             }
@@ -170,10 +183,18 @@
             "id": "/properties/mandatory_config",
             "title": "Mandatory Configurations",
             "properties": {
-                "flip_card": {
-                    "id": "/properties/mandatory_config/properties/flip_card",
-                    "type": "boolean",
-                    "title": "Should the card flip after every answer?"
+                "quiz_type": {
+                    "id": "/properties/mandatory_config/properties/quiz_type",
+                    "type": "string",
+                    "enum": [
+                        "general",
+                        "scoring"
+                    ],
+                    "enumNames": [
+                        "General",
+                        "Scoring"
+                    ],
+                    "title": "Quiz Mode"
                 },
                 "language": {
                     "id": "/properties/mandatory_config/properties/language",
@@ -188,18 +209,11 @@
                     ],
                     "title": "Language"
                 },
-                "quiz_type": {
-                    "id": "/properties/mandatory_config/properties/quiz_type",
-                    "type": "string",
-                    "enum": [
-                        "general",
-                        "scoring"
-                    ],
-                    "enumNames": [
-                        "General",
-                        "Scoring"
-                    ],
-                    "title": "Quiz Mode"
+                "flip_card": {
+                    "id": "/properties/mandatory_config/properties/flip_card",
+                    "type": "boolean",
+                    "title": "Should the card flip after every answer?",
+                    "condition": {"element": "quiz_type", "value": "scoring"}
                 },
                 "revisit_answers": {
                     "id": "/properties/mandatory_config/properties/revisit_answers",
@@ -214,7 +228,8 @@
                 "timer": {
                     "id": "/properties/mandatory_config/properties/timer",
                     "type": "boolean",
-                    "title": "Should the Quiz be timer based?"
+                    "title": "Should the Quiz be timer based?",
+                    "condition": {"element": "quiz_type", "value": "scoring"}
                 },
                 "time_per_question": {
                     "id": "/properties/mandatory_config/properties/time_per_question",

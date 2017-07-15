@@ -13,6 +13,7 @@
     <script src="./dist/0.0.1/card.min.js"></script>
     <script type="text/javascript">
       var quiz = new ProtoGraph.Card.toQuiz()
+
       quiz.init({
         selector: document.querySelector('#root'),
         data_url: './dist/0.0.1/sample.json',
@@ -21,12 +22,14 @@
         configuration_schema_url: './dist/0.0.1/configuration_schema.json', //will come from local folder
         ui_schema_url: './dist/0.0.1/ui_schema.json'
       });
+
       if (window.innerWidth <= 500) {
         quiz.renderMobile();
       } else {
-        // quiz.renderLaptop();
-        quiz.renderEdit();
+        quiz.renderLaptop();
+        // quiz.renderEdit();
       }
+
     </script>
   </body>
 </html>
