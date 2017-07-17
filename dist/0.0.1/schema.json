@@ -112,6 +112,8 @@
                                     "required": [
                                         "option"
                                     ],
+                                    "minItems" : 1,
+                                    "addButtonText": "Add a new option",
                                     "type": "object"
                                 },
                                 "minItems" : 1,
@@ -122,8 +124,11 @@
                             "question",
                             "options"
                         ],
+                        "minItems" : 1,
+                        "addButtonText": "Add a new question",
                         "type": "object"
                     },
+                    "minItems" : 1,
                     "type": "array"
                 },
                 "result_card_data": {
@@ -174,8 +179,11 @@
                             "link_image",
                             "link_description"
                         ],
+                        "minItems" : 1,
+                        "addButtonText": "Add a new link",
                         "type": "object"
                     },
+                    "minItems" : 1,
                     "type": "array"
                 }
             },
