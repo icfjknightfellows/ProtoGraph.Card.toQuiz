@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>React Quiz</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="./lib/css/react-jsonschema-form.css">
-    <link rel="stylesheet" type="text/css" href="./dist/0.0.1/card.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="./lib/css/react-jsonschema-form.css"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="./dist/0.0.1/card.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="./src/css/styles.css">
   </head>
   <body>
     <div id="root"></div>
@@ -27,7 +28,8 @@
       if (window.innerWidth <= 500) {
         quiz.renderMobile();
       } else {
-        quiz.renderLaptop();
+        quiz.renderScreenshot();
+        // quiz.renderLaptop();
         // quiz.renderEdit();
       }
 

@@ -92,7 +92,8 @@
                                                     "type": "string",
                                                     "format": "data-url"
                                                 }
-                                            }
+                                            },
+                                            "condition": { "element": "quiz_type", "value": "scoring" }
                                         },
                                         "option": {
                                             "default": "Answer Text",

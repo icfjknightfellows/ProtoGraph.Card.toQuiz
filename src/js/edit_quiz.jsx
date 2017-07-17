@@ -63,6 +63,15 @@ class EditQuiz extends React.Component {
     }
   }
 
+  exportData() {
+    let getDataObj = {
+      dataJSON: this.state.dataJSON,
+      optionalConfigJSON: this.state.optionalConfigJSON
+    }
+    getDataObj["name"] = getDataObj.dataJSON.data.basic_datapoints.quiz_title.substr(0,225); // Reduces the name to ensure the slug does not get too long
+    return getDataObj;
+  }
+
   processResultData(resultCardData, quizType) {
     let processedData = [];
     if(quizType === "scoring" && resultCardData[0].upper_limit_of_score_range) {
@@ -355,6 +364,18 @@ class EditQuiz extends React.Component {
     }
   }
 
+  setScrollClass() {
+    switch(this.state.step) {
+      case 3:
+      case 4:
+        return 'protograph-scroll-form'
+        break;
+      default:
+        return ''
+        break;
+    }
+  }
+
   render(e) {
     if (this.state.fetchingData) {
       return (
@@ -371,7 +392,7 @@ class EditQuiz extends React.Component {
         <div className="proto-container">
           <div className="ui grid form-layout">
             <div className="row">
-              <div className="four wide column proto-card-form">
+              <div className={`four wide column proto-card-form ${this.setScrollClass()}`}>
                 <div>
                   <div className="section-title-text">Fill the form</div>
                   <div className="ui label proto-pull-right">

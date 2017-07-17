@@ -51,4 +51,9 @@
   pointer-events: none;
   cursor: default;
 }
+
+.protograph-scroll-form {
+  overflow: scroll;
+  height: 100vh;
+}
 /*# sourceMappingURL=master-style.css.map */

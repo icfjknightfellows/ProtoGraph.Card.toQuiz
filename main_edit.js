@@ -9,6 +9,10 @@ if (!NodeList.prototype.forEach) {
   NodeList.prototype.forEach = Array.prototype.forEach;
 }
 
+ProtoGraph.Card.toQuiz.prototype.getData = function (data) {
+  return this.containerInstance.exportData();
+}
+
 ProtoGraph.Card.toQuiz.prototype.renderEdit = function (data) {
   this.mode = 'edit';
   ReactDOM.render(

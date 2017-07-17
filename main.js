@@ -17,11 +17,11 @@ ProtoGraph.Card.toQuiz.prototype.init = function (options) {
   this.options = options;
 }
 
-ProtoGraph.Card.toQuiz.prototype.getData = function (data) {
+ProtoGraph.Card.toQuiz.prototype.getData = function () {
   return this.containerInstance.exportData();
 }
 
-ProtoGraph.Card.toQuiz.prototype.renderLaptop = function (data) {
+ProtoGraph.Card.toQuiz.prototype.renderLaptop = function () {
   this.mode = 'laptop';
   ReactDOM.render(
     <Quiz
@@ -38,8 +38,25 @@ ProtoGraph.Card.toQuiz.prototype.renderLaptop = function (data) {
     this.options.selector);
 }
 
-ProtoGraph.Card.toQuiz.prototype.renderMobile = function (data) {
+ProtoGraph.Card.toQuiz.prototype.renderMobile = function () {
   this.mode = 'mobile';
+  ReactDOM.render(
+    <Quiz
+      dataURL={this.options.data_url}
+      schemaURL={this.options.schema_url}
+      configURL={this.options.configuration_url}
+      configSchemaURL={this.options.configuration_schema_url}
+      uiSchemaURL={this.options.ui_schema_url}
+      baseURL={this.options.base_url}
+      mode={this.mode}
+      ref={(e) => {
+        this.containerInstance = this.containerInstance || e;
+      }}/>,
+    this.options.selector);
+}
+
+ProtoGraph.Card.toQuiz.prototype.renderScreenshot = function () {
+  this.mode = 'screenshot';
   ReactDOM.render(
     <Quiz
       dataURL={this.options.data_url}

@@ -907,3 +907,11 @@ html {
 .link-info-full-width {
   width: 100%;
 }
+
+#ProtoScreenshot {
+  width: 450px;
+  padding: 10px 15px;
+  margin-left: 20px;
+  height: 450px;
+  overflow: hidden;
+}

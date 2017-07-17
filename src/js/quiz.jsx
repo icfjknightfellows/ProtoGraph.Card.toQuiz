@@ -75,6 +75,10 @@ class Quiz extends React.Component {
     this.state = stateVar;
   }
 
+  exportData() {
+    return document.getElementById('ProtoScreenshot').getBoundingClientRect();
+  }
+
   componentWillReceiveProps(nextProps) {
     this.setState({
       optionalConfigJSON: nextProps.optionalConfigJSON
@@ -807,7 +811,9 @@ class Quiz extends React.Component {
 
     return (
       <div className="intro-container">
-        <div className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'intro-content with-image' : 'intro-content'}`}>
+        <div
+          id={ this.props.mode === 'screenshot' ? "ProtoScreenshot" : undefined }
+          className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'intro-content with-image' : 'intro-content'}`}>
           <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
             {introCardConfigs.quiz_title}
           </div>
@@ -1005,16 +1011,41 @@ class Quiz extends React.Component {
     }
   }
 
+  renderScreenshot() {
+    if (this.state.fetchingData) {
+      return (
+        <div className='quiz-container'>
+          <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
+            <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
+              Fetching Questions ...
+            </span>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div className="quiz-container">
+          <div className="quiz-content">
+            { this.renderIntroCard() }
+          </div>
+        </div>
+      )
+    }
+  }
+
   render() {
     switch(this.props.mode) {
-      case 'laptop' :
+      case 'laptop':
         return this.renderQuiz();
         break;
-      case 'mobile' :
+      case 'mobile':
         return this.renderQuiz();
         break;
-      case 'tablet' :
+      case 'tablet':
         return this.renderQuiz();
+        break;
+      case 'screenshot':
+        return this.renderScreenshot();
         break;
     }
   }
