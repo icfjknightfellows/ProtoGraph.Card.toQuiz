@@ -3,17 +3,58 @@
   <head>
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explainer Card</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Quiz App</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
     <link rel="stylesheet" type="text/css" href="card.min.css">
+    <script type="text/javascript">
+      var endpoint, siteId, origin;
+      // Setting variables from environment
+      origin = window.location.origin;
+      if (origin == 'https://s3.ap-south-1.amazonaws.com') {
+        let bucket_name = window.location.pathname.split('/')['1'];
+        switch(bucket_name){
+          case "cdn.protograph":
+            endpoint = "https://protograph.pykih.com";
+            siteId = '1';
+            break;
+          case "staging.cdn.protograph":
+            endpoint = "https://protograph-staging.pykih.com";
+            siteId = '2';
+            break;
+          case "dev.cdn.protograph":
+          default:
+            endpoint = "https://e6340ed0.ngrok.io";
+            break;
+        }
+      } else if (origin === 'https://dkqrqc7q64awx.cloudfront.net') {
+        endpoint = "https://protograph-staging.pykih.com";
+        siteId = '2';
+      } else {
+        endpoint = "https://7f39d727.ngrok.io";
+      }
+
+      if(siteId){
+        var _paq = _paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+          var u="//protograph.innocraft.cloud/";
+          _paq.push(['setTrackerUrl', u+'piwik.php']);
+          _paq.push(['setSiteId', siteId]);
+          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+          g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+      }
+    </script>
   </head>
   <body>
-    <div id="explainer-div"></div></br>
+    <div id="protograph_toQuiz_root"></div></br>
     <script src="https://d2m6lzru8erw1k.cloudfront.net/lib/oasis.min.js"></script>
-    <!-- // <script src="lib/oasis.min.js"></script> -->
     <script src = "card.min.js"></script>
     <script type="text/javascript">
-    let param = location.search.split('HtmlCast_Unique_Identifier=')[1]
+    var x = new ProtoGraph.Card.toQuiz();
+    let param = location.search.split('ViewCast_Unique_Identifier=')[1];
     function get(url) {
       return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
@@ -32,33 +73,76 @@
         req.send();
       });
     }
-    get('https://7d9c56ac.ngrok.io/api/v1/view_casts/'+param).then(function (response) {
-      console.log("Success!", response);
-      let response_object = JSON.parse(response)
-      var x = new ProtoGraph.Card.toExplain()
-      console.log(x, "xxxx")
-      x.init({
-        selector: document.querySelector('#explainer-div'),
-        data_url: response_object.data_url,
-        schema_url: 'https://s3.ap-south-1.amazonaws.com/protos.dev/Schemas/toExplain/0.0.1/schema.json',
-        configuration_url: response_object.configuration_url, //will come from local folder
-        configuration_schema_url: 'configuration_schema.json' //will come from local folder
-      })
-      x.renderLaptop();
-    }, function(error) {
-      console.error("Failed!", error);
-    })
-    // console.log("xxxxx inside index.html", window)
-    // var x = new ProtoGraph.Card.toExplain()
-    // x.init({
-    //   selector: document.querySelector('#explainer-div'),
-    //   data_url: 'https://s3.ap-south-1.amazonaws.com/protos.dev/Schemas/toExplain/0.0.1/sample.json',
-    //   schema_url: 'https://s3.ap-south-1.amazonaws.com/protos.dev/Schemas/toExplain/0.0.1/schema.json',
-    //   configuration_url: '/dist/0.0.1/configuration_sample.json', //will come from local folder
-    //   configuration_schema_url: '/dist/0.0.1/configuration_schema.json' //will come from local folder
-    // })
-    //  x.renderLaptop();
-    // x.renderEdit();
+
+    var ReceiverConsumer = Oasis.Consumer.extend({
+      requests: {
+        receive: function(mode) {
+          var that = this;
+          get(endpoint+'/api/v1/view_casts/' + param).then(function (response) {
+            let response_object = JSON.parse(response);
+
+            let options = {
+              selector: document.querySelector('#protograph_toQuiz_root'),
+              data_url: response_object.data_url,
+              schema_url: response_object.schema_json,
+              configuration_url: response_object.configuration_url,
+              configuration_schema_url: './configuration_schema.json',
+              onClickCallback: function () {
+                let h = x.getData().height;
+                that.send('resize_frame', {width: '100%', height: h})
+              }
+            };
+            if (response_object.base_url) {
+              options.base_url = response_object.base_url;
+            }
+            x.init(options);
+            renderWithMode(mode);
+          }, function(error) {
+            console.error("Failed!", error);
+          })
+        }
+      },
+      events: {
+        get_size: function(){
+          var that = this;
+          var intervalId = setInterval(function(){
+              console.log(that, document.querySelector('#protograph_toQuiz'), "that in get size")
+            clientRect = x.getData();
+            if(clientRect.height){
+              var height = clientRect.height,
+                width = clientRect.width;
+              that.send("resize_frame", {height: height, width: width});
+              clearInterval(intervalId);
+            }
+          }, 1000)
+        },
+        change_mode: function(mode){
+          renderWithMode(mode);
+          var that = this;
+          setTimeout(function(){
+            height = x.getData().height;
+            that.send("resize_frame", {height: height});
+          })
+        }
+      }
+    });
+    oasis.connect({
+      consumers: {
+        receive: ReceiverConsumer
+      }
+    });
+
+    function renderWithMode(mode) {
+      switch(mode){
+        case "laptop":
+          x.renderLaptop();
+          break;
+        case "mobile":
+          x.renderMobile();
+          break;
+      }
+    }
+
     </script>
   </body>
 </html>

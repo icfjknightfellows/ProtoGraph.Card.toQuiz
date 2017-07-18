@@ -9,11 +9,11 @@ if (!NodeList.prototype.forEach) {
   NodeList.prototype.forEach = Array.prototype.forEach;
 }
 
-ProtoGraph.Card.toQuiz.prototype.getData = function (data) {
+ProtoGraph.Card.toQuiz.prototype.getData = function () {
   return this.containerInstance.exportData();
 }
 
-ProtoGraph.Card.toQuiz.prototype.renderEdit = function (data) {
+ProtoGraph.Card.toQuiz.prototype.renderEdit = function (onPublishCallback) {
   this.mode = 'edit';
   ReactDOM.render(
     <EditQuiz
@@ -24,6 +24,7 @@ ProtoGraph.Card.toQuiz.prototype.renderEdit = function (data) {
       uiSchemaURL={this.options.ui_schema_url}
       baseURL={this.options.base_url}
       mode={this.mode}
+      onPublishCallback={onPublishCallback}
       ref={(e) => {
         this.containerInstance = this.containerInstance || e;
       }}/>,

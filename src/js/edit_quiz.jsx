@@ -67,7 +67,8 @@ class EditQuiz extends React.Component {
     let getDataObj = {
       dataJSON: this.state.dataJSON,
       optionalConfigJSON: this.state.optionalConfigJSON
-    }
+    };
+    getDataObj.dataJSON.data.result_card_data = this.state.resultCardData;
     getDataObj["name"] = getDataObj.dataJSON.data.basic_datapoints.quiz_title.substr(0,225); // Reduces the name to ensure the slug does not get too long
     return getDataObj;
   }

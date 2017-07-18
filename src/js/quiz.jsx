@@ -20,7 +20,6 @@ class Quiz extends React.Component {
       schemaJSON: {},
       optionalConfigJSON: {},
       optionalConfigSchemaJSON: {},
-      uiSchemaJSON: {},
       languageTexts: {},
       totalQuestions: 0,
       score: 0,
@@ -76,7 +75,7 @@ class Quiz extends React.Component {
   }
 
   exportData() {
-    return document.getElementById('ProtoScreenshot').getBoundingClientRect();
+    return document.getElementById('protograph_toQuiz').getBoundingClientRect();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -91,9 +90,8 @@ class Quiz extends React.Component {
         axios.get(this.props.dataURL),
         axios.get(this.props.schemaURL),
         axios.get(this.props.configURL),
-        axios.get(this.props.configSchemaURL),
-        axios.get(this.props.uiSchemaURL)
-      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema, uiSchema) => {
+        axios.get(this.props.configSchemaURL)
+      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema) => {
           let stateVar = {
             fetchingData: false,
             dataJSON: {
@@ -102,8 +100,7 @@ class Quiz extends React.Component {
             },
             schemaJSON: cardSchema.data,
             optionalConfigJSON: optionalConfig.data,
-            optionalConfigSchemaJSON: optionalConfigSchema.data,
-            uiSchemaJSON: uiSchema.data,
+            optionalConfigSchemaJSON: optionalConfigSchema.data
           };
 
           stateVar.dataJSON.data.result_card_data = stateVar.dataJSON.data.result_card_data ?  this.processResultData(stateVar.dataJSON.data.result_card_data, stateVar.dataJSON.mandatory_config.quiz_type) : undefined;
@@ -583,7 +580,7 @@ class Quiz extends React.Component {
     let conclusionCard = document.querySelector(".conclusion-card"),
       progressBars = document.querySelectorAll(".progress-bar");
 
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions + 1) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (totalQuestions * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
     if(totalQuestions < 3) {
       conclusionCard.style.opacity = 1;
     } else {
@@ -662,7 +659,7 @@ class Quiz extends React.Component {
       }
     }
 
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${(value * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * (totalQuestions - value))})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions - value) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * (totalQuestions - value))})`;
     if((totalQuestions - value) < 3) {
       setTimeout(function() {
         conclusionCard.style.opacity = 1;
@@ -888,7 +885,7 @@ class Quiz extends React.Component {
     cardConfigs.share_link = data.basic_datapoints.share_link;
 
     return (
-      <div className="quiz-container">
+      <div id="protograph_toQuiz" className="quiz-container">
         <div className="quiz-content">
           { (this.props.mode === 'laptop' || this.props.mode === 'edit')  && this.renderIntroCard() }
           <div id="main_container" className="main-container">
