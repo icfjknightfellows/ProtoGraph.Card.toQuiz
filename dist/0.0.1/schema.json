@@ -93,7 +93,7 @@
                                                     "format": "data-url"
                                                 }
                                             },
-                                            "condition": { "element": "quiz_type", "value": "scoring" }
+                                            "condition": [{"element": "quiz_type", "value": "general", "conjunction": "or" }, {"element": "flip_card", "value": true, "conjunction": "or" }]
                                         },
                                         "option": {
                                             "default": "Answer Text",

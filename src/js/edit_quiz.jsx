@@ -65,7 +65,7 @@ class EditQuiz extends React.Component {
 
   exportData() {
     let getDataObj = {
-      dataJSON: this.state.dataJSON,
+      dataJSON: JSON.parse(JSON.stringify(this.state.dataJSON)),
       optionalConfigJSON: this.state.optionalConfigJSON
     };
     getDataObj.dataJSON.data.result_card_data = this.state.resultCardData;
