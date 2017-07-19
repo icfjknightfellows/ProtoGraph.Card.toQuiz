@@ -202,6 +202,9 @@ class EditQuiz extends React.Component {
       case 1:
         return this.state.uiSchemaJSON.mandatory_config;
         break;
+      case 2:
+        return this.state.uiSchemaJSON.data.basic_datapoints;
+        break;
       case 3:
         return this.state.uiSchemaJSON.data.questions;
         break;
@@ -247,12 +250,35 @@ class EditQuiz extends React.Component {
     });
   }
 
+  // validateAndSetOptionsValues(questions) {
+  //   questions.forEach((e, i) => {
+  //     let options = e.options,
+  //       isValid;
+
+  //     isValid = options.reduce((boolean, current) => {
+  //       return boolean || current.right_or_wrong;
+  //     }, false);
+  //     debugger;
+  //     if (!isValid) {
+  //       options[0].right_or_wrong = !options[0].right_or_wrong
+  //     }
+  //   });
+  // }
+
   onChangeHandler({formData}) {
     switch (this.state.step) {
       case 1:
         this.setState((prevStep, prop) => {
           let dataJSON = prevStep.dataJSON;
-          dataJSON.mandatory_config = formData
+
+          if (formData.quiz_type_form === 'scoring_and_timer') {
+            formData.quiz_type = "scoring";
+            formData.timer = true;
+          } else {
+            formData.quiz_type = formData.quiz_type_form;
+          }
+
+          dataJSON.mandatory_config = formData;
           return {
             updatingQuiz: true,
             dataJSON: dataJSON
@@ -272,6 +298,10 @@ class EditQuiz extends React.Component {
       case 3:
         this.setState((prevStep, prop) => {
           let dataJSON = prevStep.dataJSON;
+          // if (this.state.dataJSON.mandatory_config.quiz_type === "scoring") {
+          //   this.validateAndSetOptionsValues(formData);
+          //   debugger;
+          // }
           dataJSON.data.questions = formData;
           return {
             updatingQuiz: true,
@@ -400,6 +430,7 @@ class EditQuiz extends React.Component {
                     ToQuiz
                   </div>
                 </div>
+                <br />
                 <JSONSchemaForm
                   schema = {this.getSchemaJSON()}
                   onSubmit = {((e) => this.onSubmitHandler(e))}

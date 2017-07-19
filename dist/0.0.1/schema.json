@@ -8,7 +8,8 @@
             "properties": {
                 "basic_datapoints": {
                     "id": "/properties/data/properties/basic_datapoints",
-                    "title": "Card Details",
+                    "title": "Introduction Slide",
+                    "subTitle": "Did you know how inviting you make this slide directly determines how many readers will click on the Quiz?",
                     "properties": {
                         "background_image": {
                             "id": "/properties/data/properties/basic_datapoints/properties/background_image",
@@ -17,21 +18,24 @@
                             "properties": {
                                 "image": {
                                     "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                    "title": "Upload a background image",
+                                    "title": "Upload an image",
                                     "type": "string",
-                                    "format": "data-url"
+                                    "format": "image",
+                                    "ratio": "1/2"
                                 }
                             }
-                        },
-                        "introduction": {
-                            "id": "/properties/data/properties/basic_datapoints/properties/introduction",
-                            "type": "string",
-                            "title": "Introduction Text"
                         },
                         "quiz_title": {
                             "id": "/properties/data/properties/basic_datapoints/properties/quiz_title",
                             "type": "string",
-                            "title": "Quiz Title"
+                            "title": "Title",
+                            "default": "What is this quiz about?"
+                        },
+                        "introduction": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/introduction",
+                            "type": "string",
+                            "title": "Context",
+                            "default": "Reasons why the reader should take the quiz. This is optional so you can delete this text and continue."
                         },
                         "start_button_text": {
                             "id": "/properties/data/properties/basic_datapoints/properties/start_button_text",
@@ -103,7 +107,7 @@
                                         },
                                         "right_or_wrong": {
                                             "default": true,
-                                            "title": "Is this question right?",
+                                            "title": "Is this the correct option?",
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/right_or_wrong",
                                             "type": "boolean",
                                             "condition": { "element": "quiz_type", "value": "scoring" }
@@ -196,18 +200,21 @@
         },
         "mandatory_config": {
             "id": "/properties/mandatory_config",
-            "title": "Mandatory Configurations",
+            "title": "What kind of a Quiz do you want?",
             "properties": {
-                "quiz_type": {
+                "quiz_type_form": {
                     "id": "/properties/mandatory_config/properties/quiz_type",
                     "type": "string",
+                    "default": "Quiz without scores",
                     "enum": [
                         "general",
-                        "scoring"
+                        "scoring",
+                        "scoring_and_timer"
                     ],
                     "enumNames": [
-                        "General",
-                        "Scoring"
+                        "Quiz without scores",
+                        "Quiz with scores",
+                        "Timed Quiz with scores"
                     ],
                     "title": "Quiz Mode"
                 },
@@ -228,16 +235,19 @@
                     "id": "/properties/mandatory_config/properties/flip_card",
                     "type": "boolean",
                     "title": "Should the card flip after every answer?",
+                    "default": true,
                     "condition": {"element": "quiz_type", "value": "scoring"}
                 },
                 "revisit_answers": {
                     "id": "/properties/mandatory_config/properties/revisit_answers",
                     "type": "boolean",
+                    "default": true,
                     "title": "Allow users to revisit answers"
                 },
                 "social_share": {
                     "id": "/properties/mandatory_config/properties/social_share",
                     "type": "boolean",
+                    "default": true,
                     "title": "Allow users to share this quiz on social media"
                 },
                 "timer": {
@@ -249,6 +259,7 @@
                 "time_per_question": {
                     "id": "/properties/mandatory_config/properties/time_per_question",
                     "type": "integer",
+                    "default": 10,
                     "condition": {"element": "timer", "value": true},
                     "title": "Time user shoud spend on each question. (in seconds)"
                 }

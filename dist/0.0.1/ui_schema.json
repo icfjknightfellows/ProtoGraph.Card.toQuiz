@@ -1,19 +1,33 @@
 {
   "mandatory_config": {
     "flip_card": {
-      "ui:widget": "radio"
+      "ui:widget": "hidden"
     },
     "revisit_answers": {
-      "ui:widget": "radio"
+      "ui:widget": "hidden"
     },
     "social_share": {
-      "ui:widget": "radio"
+      "ui:widget": "hidden"
     },
     "timer": {
-      "ui:widget": "radio"
+      "ui:widget": "hidden"
+    },
+    "time_per_question": {
+      "ui:widget": "hidden"
     }
   },
   "data": {
+    "basic_datapoints": {
+      "start_button_text": {
+        "ui:widget": "hidden"
+      },
+      "share_link": {
+        "ui:widget": "hidden"
+      },
+      "share_msg": {
+        "ui:widget": "hidden"
+      }
+    },
     "questions": {
         "items": {
           "options": {

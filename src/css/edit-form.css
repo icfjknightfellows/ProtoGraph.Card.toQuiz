@@ -56,4 +56,10 @@
   overflow: scroll;
   height: 100vh;
 }
+
+
+option[value=''] {
+  display: none !important;
+}
+
 /*# sourceMappingURL=master-style.css.map */
