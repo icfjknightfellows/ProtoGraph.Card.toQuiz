@@ -31,6 +31,384 @@
             "right_or_wrong":false
           }
         ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
       }
     ],
     "result_card_data":[
