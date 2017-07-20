@@ -376,7 +376,7 @@ html {
   border: 5px solid white;
 }
 
-.protograph-toQuiz-intro-content.with-image {
+.protograph-toQuiz-intro-content.protograph-toQuiz-with-image {
   position: absolute;
   bottom: 27px;
 }
