@@ -207,7 +207,7 @@ class Quiz extends React.Component {
   }
 
   startCountdown() {
-    let countdownValue = document.querySelector(".intro-card .countdown-counter"),
+    let countdownValue = document.querySelector(".protograph-toQuiz-intro-card .protograph-toQuiz-countdown-counter"),
       countdownInterval,
       counter = 3;
 
@@ -225,35 +225,35 @@ class Quiz extends React.Component {
 
   // EVENTS
   startQuiz(e) {
-    let button = document.querySelector(".intro-button"),
-      introCard = document.querySelector(".intro-card"),
-      introFront = document.querySelector(".intro-front"),
-      firstQCard = document.querySelector(".question-card[data-order='0']"),
+    let button = document.querySelector(".protograph-toQuiz-intro-button"),
+      introCard = document.querySelector(".protograph-toQuiz-intro-card"),
+      introFront = document.querySelector(".protograph-toQuiz-intro-front"),
+      firstQCard = document.querySelector(".protograph-toQuiz-question-card[data-order='0']"),
       totalQuestions = this.state.totalQuestions,
       config = this.state.dataJSON.mandatory_config;
 
     introFront.style.display = "none";
-    document.querySelector(".intro-back").style.display = "block";
+    document.querySelector(".protograph-toQuiz-intro-back").style.display = "block";
 
     if(!this.state.isMobile) {
       e.target.style.visibility = "hidden";
-      document.querySelector(".intro-cover").style.display = "block";
+      document.querySelector(".protograph-toQuiz-intro-cover").style.display = "block";
     }
-    introCard.classList.add("clicked");
+    introCard.classList.add("protograph-toQuiz-clicked");
 
     this.startCountdown();
 
     setTimeout(() => {
       introCard.style.top = "-1000px";
       if(!(config.quiz_type === "scoring" && !config.flip_card)) {
-        firstQCard.querySelector(".back").style.display = "none";
+        firstQCard.querySelector(".protograph-toQuiz-back").style.display = "none";
       }
 
-      firstQCard.classList.add("active");
+      firstQCard.classList.add("protograph-toQuiz-active");
       firstQCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, 160, 0, 1)`;
 
       for(let i = 1; i < totalQuestions; i++) {
-        let card = document.querySelector(`.question-card[data-order='${i}']`);
+        let card = document.querySelector(`.protograph-toQuiz-question-card[data-order='${i}']`);
 
         card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (i * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
         if(i > 2) {
@@ -263,7 +263,7 @@ class Quiz extends React.Component {
         }
       }
 
-      let conclusionCard = document.querySelector(".conclusion-card");
+      let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card");
       conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
       if(totalQuestions < 3) {
         conclusionCard.style.opacity = 1;
@@ -285,7 +285,7 @@ class Quiz extends React.Component {
   }
 
   optionClicked(e) {
-    let qCard = document.querySelector(".question-card.active"),
+    let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
       config = this.state.dataJSON.mandatory_config,
       totalQuestions = this.state.totalQuestions,
       cardData = this.state.dataJSON.data.questions[+qCard.getAttribute('data-order')],
@@ -295,7 +295,7 @@ class Quiz extends React.Component {
       if(config.timer) {
         this.clearTimer();
         if(!config.flip_card) {
-          qCard.querySelector(".front .timer").style.display = "none";
+          qCard.querySelector(".protograph-toQuiz-front .protograph-toQuiz-timer").style.display = "none";
         }
       }
       if(option.right_or_wrong) {
@@ -324,86 +324,86 @@ class Quiz extends React.Component {
   }
 
   addOptionBasedContent(option) {
-    let qCard = document.querySelector(".question-card.active"),
-      parent = qCard.querySelector(".content"),
+    let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
+      parent = qCard.querySelector(".protograph-toQuiz-content"),
       orderId = qCard.getAttribute("data-order"),
       config = this.state.dataJSON.mandatory_config;
 
     qCard.setAttribute('data-isNavigable', 1);
     if(!(config.quiz_type === "scoring" && !config.flip_card)) {
-      let backDiv = parent.querySelector(".back");
+      let backDiv = parent.querySelector(".protograph-toQuiz-back");
 
       if(config.quiz_type === "scoring") {
         setTimeout(function() {
-          qCard.classList.add("clicked");
+          qCard.classList.add("protograph-toQuiz-clicked");
           if(option.right_or_wrong) {
-            backDiv.querySelector(".wrong-answer").style.display = "none";
-            backDiv.querySelector(".correct-answer").classList.remove("deselected");
+            backDiv.querySelector(".protograph-toQuiz-wrong-answer").style.display = "none";
+            backDiv.querySelector(".protograph-toQuiz-correct-answer").classList.remove("protograph-toQuiz-deselected");
           } else {
-            backDiv.querySelector(".wrong-answer").style.display = "block";
-            backDiv.querySelector('.wrong-answer .option-text').innerHTML = option.option;
-            backDiv.querySelector(".correct-answer").classList.add("deselected");
+            backDiv.querySelector(".protograph-toQuiz-wrong-answer").style.display = "block";
+            backDiv.querySelector('.protograph-toQuiz-wrong-answer .protograph-toQuiz-option-text').innerHTML = option.option;
+            backDiv.querySelector(".protograph-toQuiz-correct-answer").classList.add("protograph-toQuiz-deselected");
           }
           setTimeout(function() {
-            parent.querySelector(".front").style.display = "none";
+            parent.querySelector(".protograph-toQuiz-front").style.display = "none";
             backDiv.style.display = "block";
           }, 100);
         }, 1100);
       } else {
-        qCard.classList.add("clicked");
+        qCard.classList.add("protograph-toQuiz-clicked");
         setTimeout(function() {
-          parent.querySelector(".front").style.display = "none";
+          parent.querySelector(".protograph-toQuiz-front").style.display = "none";
           backDiv.style.display = "block";
         }, 100);
-        backDiv.querySelector('.correct-answer').innerHTML = option.option;
+        backDiv.querySelector('.protograph-toQuiz-correct-answer').innerHTML = option.option;
       }
 
       if(option.gif_image && option.gif_image.image) {
-        backDiv.querySelector(".gif-div").style.display = "block";
-        backDiv.querySelector(".gif").onload = function (e) {
+        backDiv.querySelector(".protograph-toQuiz-gif-div").style.display = "block";
+        backDiv.querySelector(".protograph-toQuiz-gif").onload = function (e) {
           let imgClientRect = e.target.offsetWidth,
-            imgContainerClientRect = backDiv.querySelector(".gif-div").offsetWidth,
+            imgContainerClientRect = backDiv.querySelector(".protograph-toQuiz-gif-div").offsetWidth,
             idealImgWidth = imgContainerClientRect - 20;
 
           if(imgClientRect >= idealImgWidth) {
             e.target.style.width = idealImgWidth + "px";
           }
         };
-        backDiv.querySelector(".gif").setAttribute("src", option.gif_image.image);
+        backDiv.querySelector(".protograph-toQuiz-gif").setAttribute("src", option.gif_image.image);
       } else {
-        backDiv.querySelector(".gif-div").style.display = "none";
+        backDiv.querySelector(".protograph-toQuiz-gif-div").style.display = "none";
       }
 
       if(option.fact) {
-        backDiv.querySelector(".fact").style.display = "block";
-        backDiv.querySelector(".fact").innerHTML = "";
-        backDiv.querySelector(".fact").appendChild(document.createTextNode(option.fact));
+        backDiv.querySelector(".protograph-toQuiz-fact").style.display = "block";
+        backDiv.querySelector(".protograph-toQuiz-fact").innerHTML = "";
+        backDiv.querySelector(".protograph-toQuiz-fact").appendChild(document.createTextNode(option.fact));
       } else {
-        backDiv.querySelector(".fact").style.display = "none";
+        backDiv.querySelector(".protograph-toQuiz-fact").style.display = "none";
       }
     } else {
       if(config.quiz_type === "scoring") {
-        let allOptions = parent.querySelectorAll(".option-div"),
-          frontDiv = parent.querySelector(".front");
+        let allOptions = parent.querySelectorAll(".protograph-toQuiz-option-div"),
+          frontDiv = parent.querySelector(".protograph-toQuiz-front");
 
         for(let j = 0; j < allOptions.length; j++) {
           allOptions[j].style.display = "none";
         }
-        frontDiv.querySelector(".question").style.color = "#a8a8a8";
-        frontDiv.querySelector(".title").style.display = "block";
-        frontDiv.querySelector(".answers-container").style.display = "block";
+        frontDiv.querySelector(".protograph-toQuiz-question").style.color = "#a8a8a8";
+        frontDiv.querySelector(".protograph-toQuiz-title").style.display = "block";
+        frontDiv.querySelector(".protograph-toQuiz-answers-container").style.display = "block";
         if(this.state.isMobile) {
-          frontDiv.querySelector(".swipe-hint-container").style.display = "block";
+          frontDiv.querySelector(".protograph-toQuiz-swipe-hint-container").style.display = "block";
         } else {
-          frontDiv.querySelector(".next-container").style.display = "block";
+          frontDiv.querySelector(".protograph-toQuiz-next-container").style.display = "block";
         }
         if(option.right_or_wrong) {
-          frontDiv.querySelector(".wrong-answer").style.display = "none";
-          frontDiv.querySelector(".correct-answer").classList.remove("deselected");
+          frontDiv.querySelector(".protograph-toQuiz-wrong-answer").style.display = "none";
+          frontDiv.querySelector(".protograph-toQuiz-correct-answer").classList.remove("protograph-toQuiz-deselected");
         } else {
-          frontDiv.querySelector(".wrong-answer").style.display = "block";
-          frontDiv.querySelector('.wrong-answer .option-text').innerHTML = option.option;
-          frontDiv.querySelector(".correct-answer").classList.add("deselected");
+          frontDiv.querySelector(".protograph-toQuiz-wrong-answer").style.display = "block";
+          frontDiv.querySelector('.protograph-toQuiz-wrong-answer .protograph-toQuiz-option-text').innerHTML = option.option;
+          frontDiv.querySelector(".protograph-toQuiz-correct-answer").classList.add("protograph-toQuiz-deselected");
         }
       }
     }
@@ -414,10 +414,10 @@ class Quiz extends React.Component {
       return;
     }
 
-    let qCard = document.querySelector(".question-card.active"),
+    let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
       orderId = +qCard.getAttribute("data-order"),
-      mainContainerWidth = document.querySelector(".main-container").offsetWidth,
-      nextCard = document.querySelector(".question-card[data-order='" + (orderId + 1) + "']"),
+      mainContainerWidth = document.querySelector(".protograph-toQuiz-main-container").offsetWidth,
+      nextCard = document.querySelector(".protograph-toQuiz-question-card[data-order='" + (orderId + 1) + "']"),
       config = this.state.dataJSON.mandatory_config,
       totalQuestions = this.state.totalQuestions,
       backDiv;
@@ -431,34 +431,34 @@ class Quiz extends React.Component {
         this.setState({timerCountValue: this.state.timePerQuestion});
         this.setTimer();
       }
-      nextCard.classList.add("active");
+      nextCard.classList.add("protograph-toQuiz-active");
       if(!(config.quiz_type === "scoring" && !config.flip_card)) {
-        backDiv = nextCard.querySelector(".back");
+        backDiv = nextCard.querySelector(".protograph-toQuiz-back");
         backDiv.style.display = "none";
       }
     } else {
-      document.querySelectorAll(".progress-bar").forEach((e) => {
+      document.querySelectorAll(".protograph-toQuiz-progress-bar").forEach((e) => {
         e.style.display = 'none';
       });
 
       if(!(config.quiz_type === "scoring" && !config.flip_card)) {
-        document.querySelectorAll('.question-card .back .swipe-hint-container').forEach((e) => {
+        document.querySelectorAll('.protograph-toQuiz-question-card .protograph-toQuiz-back .protograph-toQuiz-swipe-hint-container').forEach((e) => {
           e.style.display = 'none';
         });
-        document.querySelectorAll('.question-card .back .next-container').forEach((e) => {
+        document.querySelectorAll('.protograph-toQuiz-question-card .protograph-toQuiz-back .protograph-toQuiz-next-container').forEach((e) => {
           e.style.display = 'none';
         });
       } else {
-        document.querySelectorAll('.question-card .front .swipe-hint-container').forEach((e) => {
+        document.querySelectorAll('.protograph-toQuiz-question-card .protograph-toQuiz-front .protograph-toQuiz-swipe-hint-container').forEach((e) => {
           e.style.display = 'none';
         });
-        document.querySelectorAll('.question-card .front .next-container').forEach((e) => {
+        document.querySelectorAll('.protograph-toQuiz-question-card .protograph-toQuiz-front .protograph-toQuiz-next-container').forEach((e) => {
           e.style.display = 'none';
         });
       }
     }
 
-    qCard.classList.remove("active");
+    qCard.classList.remove("protograph-toQuiz-active");
     switch(direction) {
       case "left":
         qCard.style.left = "-1000px";
@@ -472,7 +472,7 @@ class Quiz extends React.Component {
     }
 
     for(let i = (orderId + 1); i < totalQuestions; i++) {
-      let card = document.querySelector(`.question-card[data-order='${i}']`),
+      let card = document.querySelector(`.protograph-toQuiz-question-card[data-order='${i}']`),
         position = (i - orderId - 1);
 
       card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
@@ -481,7 +481,7 @@ class Quiz extends React.Component {
       }
     }
 
-    let conclusionCard = document.querySelector(".conclusion-card"),
+    let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card"),
       position = totalQuestions - orderId - 1;
     conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
     if((totalQuestions - orderId) < 4) {
@@ -515,22 +515,22 @@ class Quiz extends React.Component {
       revisitAnswers: false
     });
 
-    let qCard = document.querySelector(".question-card.active"),
-      allQuestions = document.querySelectorAll(".question-card"),
+    let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
+      allQuestions = document.querySelectorAll(".protograph-toQuiz-question-card"),
       totalQuestions = this.state.totalQuestions,
       config = this.state.dataJSON.mandatory_config,
       i;
 
     if(qCard) {
-      qCard.classList.remove("active");
+      qCard.classList.remove("protograph-toQuiz-active");
     }
 
     for (i = 0;  i < allQuestions.length; i++) {
       let questionElement = allQuestions[i],
-        frontElement = questionElement.querySelector(".front"),
+        frontElement = questionElement.querySelector(".protograph-toQuiz-front"),
         allOptions;
 
-      questionElement.classList.remove("clicked");
+      questionElement.classList.remove("protograph-toQuiz-clicked");
       questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (i * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
       questionElement.style.display = "block";
       frontElement.style.display = "block";
@@ -543,42 +543,42 @@ class Quiz extends React.Component {
       }
 
       if(config.quiz_type === "scoring" && !config.flip_card) {
-        allOptions = frontElement.querySelectorAll(".option-div");
+        allOptions = frontElement.querySelectorAll(".protograph-toQuiz-option-div");
         for(let j = 0; j < allOptions.length; j++) {
           allOptions[j].style.display = "block";
         }
-        frontElement.querySelector(".question").style.color = "black";
-        frontElement.querySelector(".title").style.display = "none";
-        frontElement.querySelector(".answers-container").style.display = "none";
+        frontElement.querySelector(".protograph-toQuiz-question").style.color = "black";
+        frontElement.querySelector(".protograph-toQuiz-title").style.display = "none";
+        frontElement.querySelector(".protograph-toQuiz-answers-container").style.display = "none";
         if(this.state.isMobile) {
-          frontElement.querySelector(".swipe-hint-container").style.display = "none";
+          frontElement.querySelector(".protograph-toQuiz-swipe-hint-container").style.display = "none";
         } else {
-          frontElement.querySelector(".next-container").style.display = "none";
+          frontElement.querySelector(".protograph-toQuiz-next-container").style.display = "none";
         }
         if(config.timer) {
-          frontElement.querySelector(".timer").style.display = "block";
-          frontElement.querySelector(".timeout-msg").style.display = "none";
+          frontElement.querySelector(".protograph-toQuiz-timer").style.display = "block";
+          frontElement.querySelector(".protograph-toQuiz-timeout-msg").style.display = "none";
         }
       } else {
-        questionElement.querySelector('.back').style.display = 'none';
+        questionElement.querySelector('.protograph-toQuiz-back').style.display = 'none';
         if(this.state.isMobile) {
-          let swipeHint = questionElement.querySelector(".back .swipe-hint-container");
+          let swipeHint = questionElement.querySelector(".protograph-toQuiz-back .protograph-toQuiz-swipe-hint-container");
           swipeHint.style.display = "block";
         } else {
-          let backNext = questionElement.querySelector(".back .next-container");
+          let backNext = questionElement.querySelector(".protograph-toQuiz-back .protograph-toQuiz-next-container");
           backNext.style.display = "block";
         }
         if(config.quiz_type === "scoring" && config.timer) {
-          questionElement.querySelector(".timeout-msg").style.display = "none";
+          questionElement.querySelector(".protograph-toQuiz-timeout-msg").style.display = "none";
         }
       }
     }
 
-    document.querySelector(".question-card[data-order='0']").classList.add('active');
+    document.querySelector(".protograph-toQuiz-question-card[data-order='0']").classList.add('protograph-toQuiz-active');
 
 
-    let conclusionCard = document.querySelector(".conclusion-card"),
-      progressBars = document.querySelectorAll(".progress-bar");
+    let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card"),
+      progressBars = document.querySelectorAll(".protograph-toQuiz-progress-bar");
 
     conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (totalQuestions * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
     if(totalQuestions < 3) {
@@ -614,20 +614,20 @@ class Quiz extends React.Component {
     this.setState({revisitAnswers: true});
 
     //Question-Card
-    document.querySelectorAll('.question-card').forEach((e) => {
+    document.querySelectorAll('.protograph-toQuiz-question-card').forEach((e) => {
       e.setAttribute('data-isNavigable', 0);
     });
   }
 
   slideCallback(value) {
     this.setState({sliderValue: value});
-    let slider = document.querySelector(".card-slider"),
+    let slider = document.querySelector(".protograph-toQuiz-card-slider"),
       sliderWidth = parseFloat(slider.style.width),
-      sliderHint = document.querySelector(".slider-hint"),
-      cardNum = document.querySelector(".slider-card-no"),
+      sliderHint = document.querySelector(".protograph-toQuiz-slider-hint"),
+      cardNum = document.querySelector(".protograph-toQuiz-slider-card-no"),
       totalQuestions = this.state.totalQuestions,
       percent = value / totalQuestions * 100,
-      conclusionCard = document.querySelector(".conclusion-card");
+      conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card");
 
     slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 " + percent + "%, #EEE " + percent + "%)";
 
@@ -638,7 +638,7 @@ class Quiz extends React.Component {
     cardNum.style.left = (value / totalQuestions * (sliderWidth - 16) + 4) + "px";
 
     for(let i = 0; i < totalQuestions; i++) {
-      let qCard = document.querySelector(`.question-card[data-order='${i}']`);
+      let qCard = document.querySelector(`.protograph-toQuiz-question-card[data-order='${i}']`);
       if(i < value) {
         qCard.style.top = "-1000px";
       } else {
@@ -672,16 +672,16 @@ class Quiz extends React.Component {
   }
 
   socialShare(e) {
-    const conclusionCard = document.querySelector('.conclusion-card'),
-      conclusionFront = document.querySelector('.conclusion-front'),
-      conclusionBack = document.querySelector('.conclusion-back');
+    const conclusionCard = document.querySelector('.protograph-toQuiz-conclusion-card'),
+      conclusionFront = document.querySelector('.protograph-toQuiz-conclusion-front'),
+      conclusionBack = document.querySelector('.protograph-toQuiz-conclusion-back');
 
     this.setState({revisitAnswers: false});
 
     if(this.state.revisitAnswers) {
       this.hideSlider();
     }
-    conclusionCard.classList.add("clicked");
+    conclusionCard.classList.add("protograph-toQuiz-clicked");
     setTimeout(function() {
       conclusionFront.style.display = "none";
     }, 300);
@@ -693,7 +693,7 @@ class Quiz extends React.Component {
       this.clearTimer();
     }
     let counter = this.state.timePerQuestion,
-      activeQuestion = document.querySelector('.question-card.active'),
+      activeQuestion = document.querySelector('.protograph-toQuiz-question-card.protograph-toQuiz-active'),
       orderId = +activeQuestion.getAttribute('data-order-id'),
       options = this.state.dataJSON.data.questions[orderId].options,
       questionScore = counter;
@@ -711,9 +711,9 @@ class Quiz extends React.Component {
         this.clearTimer();
         this.flashTimeUpIndicator();
         if(!this.state.dataJSON.mandatory_config.flip_card) {
-          document.querySelector(".question-card.active .front .timer").style.display = "none";
+          document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active .protograph-toQuiz-front .protograph-toQuiz-timer").style.display = "none";
         }
-        document.querySelector(".question-card.active .timeout-msg").style.display = "block";
+        document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active .protograph-toQuiz-timeout-msg").style.display = "block";
         this.addOptionBasedContent(options.filter((e) => { return e.right_or_wrong === true; })[0]);
       }
     }, 1000);
@@ -744,24 +744,24 @@ class Quiz extends React.Component {
 
   sliderMousedownCallback(e) {
     e.stopPropagation();
-    document.querySelector(".slider-hint").style.visibility = "hidden";
-    document.querySelector(".slider-card-no").style.display = "block";
+    document.querySelector(".protograph-toQuiz-slider-hint").style.visibility = "hidden";
+    document.querySelector(".protograph-toQuiz-slider-card-no").style.display = "block";
   }
 
   resetSlider(total_questions) {
-    let slider = document.querySelector(".card-slider");
+    let slider = document.querySelector(".protograph-toQuiz-card-slider");
     slider.setAttribute("value", total_questions);
     slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 100%, #EEE 100%)";
   }
 
   showSlider() {
-    document.querySelector(".card-slider").style.display = "block";
-    document.querySelector(".slider-container").style.display = "block";
+    document.querySelector(".protograph-toQuiz-card-slider").style.display = "block";
+    document.querySelector(".protograph-toQuiz-slider-container").style.display = "block";
   }
 
   hideSlider() {
-    document.querySelector(".card-slider").style.display = "none";
-    document.querySelector(".slider-container").style.display = "none";
+    document.querySelector(".protograph-toQuiz-card-slider").style.display = "none";
+    document.querySelector(".protograph-toQuiz-slider-container").style.display = "none";
   }
 
   flashCorrectIndicator() {
@@ -807,59 +807,59 @@ class Quiz extends React.Component {
     }
 
     return (
-      <div className="intro-container">
+      <div className="protograph-toQuiz-intro-container">
         <div
           id={ this.props.mode === 'screenshot' ? "ProtoScreenshot" : undefined }
-          className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'intro-content with-image' : 'intro-content'}`}>
-          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
+          className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'protograph-toQuiz-intro-content protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-content'}`}>
+          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-header protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-header'}`}>
             {introCardConfigs.quiz_title}
           </div>
-          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'intro-description with-image' : 'intro-description'}`}>
+          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
             {introCardConfigs.introduction}
           </div>
-          <div className="intro-button-div">
-            <button className="intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
+          <div className="protograph-toQuiz-intro-button-div">
+            <button className="protograph-toQuiz-intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
               {introCardConfigs.start_button_text}
             </button>
           </div>
         </div>
-        <div className="intro-cover"></div>
+        <div className="protograph-toQuiz-intro-cover"></div>
       </div>
     );
   }
 
   renderCorrectIndicator() {
     return (
-      <div id="correct_indicator" className="correct-wrong-indicator correct-background">
-        <div className="tick-background">
-          <span className="correct-tick">&#10004;&#xFE0E;</span>
+      <div id="correct_indicator" className="protograph-toQuiz-correct-wrong-indicator protograph-toQuiz-correct-background">
+        <div className="protograph-toQuiz-tick-background">
+          <span className="protograph-toQuiz-correct-tick">&#10004;&#xFE0E;</span>
         </div>
-        <div className="correct-wrong-text">Correct</div>
+        <div className="protograph-toQuiz-correct-wrong-text">Correct</div>
       </div>
     );
   }
 
   renderWrongIndicator() {
     return (
-      <div id="wrong_indicator" className="correct-wrong-indicator wrong-background">
-        <div className="tick-background wrong-tick">
+      <div id="wrong_indicator" className="protograph-toQuiz-correct-wrong-indicator protograph-toQuiz-wrong-background">
+        <div className="protograph-toQuiz-tick-background protograph-toQuiz-wrong-tick">
           <span>&#10007;&#xFE0E;</span>
         </div>
-        <div className="correct-wrong-text wrong">Wrong</div>
+        <div className="protograph-toQuiz-correct-wrong-text protograph-toQuiz-wrong">Wrong</div>
       </div>
     );
   }
 
   renderTimeOutIndicator () {
     return (
-      <div id="time_out_indicator" className="time-out-indicator">
-        <div className="time-out-content">
-          <div className="clock-icon">
+      <div id="time_out_indicator" className="protograph-toQuiz-time-out-indicator">
+        <div className="protograph-toQuiz-time-out-content">
+          <div className="protograph-toQuiz-clock-icon">
             <img src={`${this.props.baseURL}/images/clock-large.png`} />
           </div>
-          <div className="time-value">00:00</div>
-          <div className="oops-msg">Oops!</div>
-          <div className="times-up-msg">Time's up</div>
+          <div className="protograph-toQuiz-time-value">00:00</div>
+          <div className="protograph-toQuiz-oops-msg">Oops!</div>
+          <div className="protograph-toQuiz-times-up-msg">Time's up</div>
         </div>
       </div>
     );
@@ -885,10 +885,10 @@ class Quiz extends React.Component {
     cardConfigs.share_link = data.basic_datapoints.share_link;
 
     return (
-      <div id="protograph_toQuiz" className="quiz-container">
-        <div className="quiz-content">
+      <div id="protograph_toQuiz" className="protograph-toQuiz-quiz-container">
+        <div className="protograph-toQuiz-quiz-content">
           { (this.props.mode === 'laptop' || this.props.mode === 'edit')  && this.renderIntroCard() }
-          <div id="main_container" className="main-container">
+          <div id="main_container" className="protograph-toQuiz-main-container">
             <div id="fb-root"></div>
 
             { this.renderCorrectIndicator() }
@@ -902,10 +902,10 @@ class Quiz extends React.Component {
               isMobile={this.state.isMobile}
             />
 
-            <div id="card_stack" className="card-stack">
+            <div id="card_stack" className="protograph-toQuiz-card-stack">
               {cards}
               {
-                this.state.isMobile ? <div className='help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
+                this.state.isMobile ? <div className='protograph-toQuiz-help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
               }
             </div>
 
@@ -919,11 +919,11 @@ class Quiz extends React.Component {
               baseURL={this.props.baseURL}
             />
 
-            <div className="slider-container">
-              <div className="slider-hint">use slider to move between questions</div>
-              <span className="slider-card-no">5</span>
+            <div className="protograph-toQuiz-slider-container">
+              <div className="protograph-toQuiz-slider-hint">use slider to move between questions</div>
+              <span className="protograph-toQuiz-slider-card-no">5</span>
               <input
-                className="card-slider"
+                className="protograph-toQuiz-card-slider"
                 name="card_slider"
                 type="range"
                 step="1"
@@ -944,9 +944,9 @@ class Quiz extends React.Component {
   renderQuiz() {
     if (this.state.fetchingData) {
       return (
-        <div className='quiz-container'>
-          <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
-            <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
+        <div className='protograph-toQuiz-quiz-container'>
+          <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
+            <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
               Fetching Questions ...
             </span>
           </div>
@@ -1011,9 +1011,9 @@ class Quiz extends React.Component {
   renderScreenshot() {
     if (this.state.fetchingData) {
       return (
-        <div className='quiz-container'>
-          <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
-            <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
+        <div className='protograph-toQuiz-quiz-container'>
+          <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
+            <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
               Fetching Questions ...
             </span>
           </div>
@@ -1021,8 +1021,8 @@ class Quiz extends React.Component {
       )
     } else {
       return (
-        <div className="quiz-container">
-          <div className="quiz-content">
+        <div className="protograph-toQuiz-quiz-container">
+          <div className="protograph-toQuiz-quiz-content">
             { this.renderIntroCard() }
           </div>
         </div>

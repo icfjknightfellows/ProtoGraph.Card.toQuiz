@@ -19,32 +19,32 @@ export default class IntroductionCard extends React.Component {
     }
 
     return (
-      <div className="intro-card" style={introCardStyle}>
-        <div className="content">
-          <div className="intro-front" style={introFrontStyle}>
-            <div className="intro-gradient"></div>
+      <div className="protograph-toQuiz-intro-card" style={introCardStyle}>
+        <div className="protograph-toQuiz-content">
+          <div className="protograph-toQuiz-intro-front" style={introFrontStyle}>
+            <div className="protograph-toQuiz-intro-gradient"></div>
             {
               this.props.isMobile &&
-                <div className={`${this.props.introCardConfigs.background_image ? 'intro-content with-image' : 'intro-content'}`}>
-                  <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-header with-image' : 'intro-header'}`}>
+                <div className={`${this.props.introCardConfigs.background_image ? 'protograph-toQuiz-intro-content protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-content'}`}>
+                  <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'protograph-toQuiz-intro-header protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-header'}`}>
                     {this.props.introCardConfigs.quiz_title}
                   </div>
-                  <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'intro-description with-image' : 'intro-description'}`}>
+                  <div className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
                     {this.props.introCardConfigs.introduction}
                   </div>
-                  <div className="intro-button-div">
-                    <button className="intro-button" onClick={this.props.startQuiz} style={buttonStyle}>
+                  <div className="protograph-toQuiz-intro-button-div">
+                    <button className="protograph-toQuiz-intro-button" onClick={this.props.startQuiz} style={buttonStyle}>
                       {this.props.introCardConfigs.start_button_text}
                     </button>
                   </div>
                 </div>
             }
-            <div className="credits" id="credits"><a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a></div>
+            <div className="protograph-toQuiz-credits" id="credits"><a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a></div>
           </div>
-          <div className="intro-back">
-            <div className="countdown-content">
-              <div className="countdown-text">Starting your quiz in</div>
-              <div className="countdown-counter">3</div>
+          <div className="protograph-toQuiz-intro-back">
+            <div className="protograph-toQuiz-countdown-content">
+              <div className="protograph-toQuiz-countdown-text">Starting your quiz in</div>
+              <div className="protograph-toQuiz-countdown-counter">3</div>
             </div>
           </div>
         </div>
