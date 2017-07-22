@@ -439,6 +439,7 @@ class EditQuiz extends React.Component {
                   formData = {this.getFormData()}
                   uiSchema={this.getUISchemaJSON()}
                 >
+                  <br />
                   <a
                     onClick={((e) => this.onPrevHandler(e))}
                     className={`${this.state.publishing ? 'protograph-disable' : ''}`}

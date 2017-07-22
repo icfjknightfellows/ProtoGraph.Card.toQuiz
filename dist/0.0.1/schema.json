@@ -84,10 +84,16 @@
                                     "title": "Option",
                                     "hideTitle": true,
                                     "properties": {
+                                        "option": {
+                                            "default": "Option",
+                                            "title": "Answer Text",
+                                            "id": "/properties/data/properties/questions/items/properties/options/items/properties/option",
+                                            "type": "string"
+                                        },
                                         "fact": {
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/fact",
                                             "type": "string",
-                                            "title": "Educative Text"
+                                            "title": "Description"
                                         },
                                         "gif_image": {
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/gif_image",
@@ -96,18 +102,12 @@
                                             "properties": {
                                                 "image": {
                                                     "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                                    "title": "Add an educative image",
+                                                    "title": "Upload an image",
                                                     "type": "string",
                                                     "format": "data-url"
                                                 }
                                             },
                                             "condition": [{"element": "quiz_type", "value": "general", "conjunction": "or" }, {"element": "flip_card", "value": true, "conjunction": "or" }]
-                                        },
-                                        "option": {
-                                            "default": "Answer Text",
-                                            "title": "Answer Text",
-                                            "id": "/properties/data/properties/questions/items/properties/options/items/properties/option",
-                                            "type": "string"
                                         },
                                         "right_or_wrong": {
                                             "default": true,
@@ -144,16 +144,29 @@
                     "title": "Related article Links",
                     "items": {
                         "id": "/properties/data/properties/result_card_data/items",
+                        "title": "Link",
+                        "hideTitle": true,
                         "properties": {
+                            "upper_limit_of_score_range": {
+                                "id": "/properties/data/properties/result_card_data/items/properties/upper_limit_of_score_range",
+                                "title": "Maximum score",
+                                "type": "integer",
+                                "condition": { "element": "quiz_type", "value": "scoring" }
+                            },
+                            "message": {
+                                "id": "/properties/data/properties/result_card_data/items/properties/message",
+                                "title": "Result Message",
+                                "type": "string"
+                            },
                             "related_article_links": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/related_article_links",
-                                "title": "Related article link URL",
+                                "title": "Related article link",
                                 "type": "string",
                                 "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                             },
                             "link_description": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/link_description",
-                                "title": "Description on the link",
+                                "title": "Description",
                                 "type": "string"
                             },
                             "link_image": {
@@ -168,17 +181,6 @@
                                         "format": "data-url"
                                     }
                                 }
-                            },
-                            "message": {
-                                "id": "/properties/data/properties/result_card_data/items/properties/message",
-                                "title": "Result Message",
-                                "type": "string"
-                            },
-                            "upper_limit_of_score_range": {
-                                "id": "/properties/data/properties/result_card_data/items/properties/upper_limit_of_score_range",
-                                "title": "Maximum score",
-                                "type": "integer",
-                                "condition": { "element": "quiz_type", "value": "scoring" }
                             }
                         },
                         "required": [
@@ -187,11 +189,9 @@
                             "link_image",
                             "link_description"
                         ],
-                        "minItems" : 1,
                         "addButtonText": "Add a new link",
                         "type": "object"
                     },
-                    "minItems" : 1,
                     "type": "array"
                 }
             },
@@ -251,7 +251,7 @@
                 "social_share": {
                     "id": "/properties/mandatory_config/properties/social_share",
                     "type": "boolean",
-                    "default": true,
+                    "default": false,
                     "title": "Allow users to share this quiz on social media"
                 },
                 "timer": {

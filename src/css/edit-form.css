@@ -62,4 +62,8 @@ option[value=''] {
   display: none !important;
 }
 
+.ui.styled.fluid.accordion:empty {
+    display: none;
+}
+
 /*# sourceMappingURL=master-style.css.map */
