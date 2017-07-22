@@ -103,7 +103,7 @@ class Quiz extends React.Component {
             optionalConfigSchemaJSON: optionalConfigSchema.data
           };
 
-          stateVar.dataJSON.data.result_card_data = stateVar.dataJSON.data.result_card_data ?  this.processResultData(stateVar.dataJSON.data.result_card_data, stateVar.dataJSON.mandatory_config.quiz_type) : undefined;
+          stateVar.dataJSON.data.result_card_data = stateVar.dataJSON.data.result_card_data && stateVar.dataJSON.data.result_card_data.length ?  this.processResultData(stateVar.dataJSON.data.result_card_data, stateVar.dataJSON.mandatory_config.quiz_type) : undefined;
           stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
           stateVar.totalCards = (stateVar.totalQuestions + 2);
           stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);

@@ -116,6 +116,15 @@
           }
         ]
       }
+    ],
+    "result_card_data": [
+      {
+        "upper_limit_of_score_range":40,
+        "message": "Still a scope to improve",
+        "related_article_links": "http://indianexpress.com/article/lifestyle/life-style/human-vision-keeps-developing-until-mid-life-4681081/",
+        "link_description": "Human vision keeps developing until mid-life",
+        "link_image": { "image": "http://images.indianexpress.com/2017/05/brain-759.jpg?w=450" }
+      }
     ]
   },
   "mandatory_config":{
