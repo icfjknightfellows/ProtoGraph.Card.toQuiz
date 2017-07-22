@@ -1,0 +1,140 @@
+{
+  "data":{
+    "basic_datapoints": {
+      "background_image": {
+        "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+      },
+      "quiz_title":"What is this quiz about?",
+      "introduction": "Reasons why the reader should take the quiz. This is optional so you can delete this text and continue.",
+      "start_button_text":"Take our quiz",
+      "share_link":"https://pykih.com",
+      "share_msg":"I found this quiz really informative. Would you like to try it?"
+    },
+    "questions":[
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
+          {
+            "option":"Gives time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Does not give time",
+            "gif_image": {
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            },
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
+          }
+        ]
+      }
+    ],
+    "result_card_data": [
+      {
+        "upper_limit_of_score_range":40,
+        "message": "Still a scope to improve",
+        "related_article_links": "http://indianexpress.com/article/lifestyle/life-style/human-vision-keeps-developing-until-mid-life-4681081/",
+        "link_description": "Human vision keeps developing until mid-life",
+        "link_image": { "image": "http://images.indianexpress.com/2017/05/brain-759.jpg?w=450" }
+      }
+    ]
+  },
+  "mandatory_config":{
+    "language": "english",
+    "quiz_type_form": "scoring",
+    "quiz_type": "scoring",
+    "timer": true,
+    "time_per_question":10,
+    "flip_card": true,
+    "social_share": false,
+    "revisit_answers": true
+  }
+}

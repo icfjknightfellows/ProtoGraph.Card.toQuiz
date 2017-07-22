@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "id": "http://example.com/example.json",
+  "title": "Optional Configurations",
+  "properties": {
+    "start_button_color": {
+      "title": "Color of the start button",
+      "id": "/properties/start_button_color",
+      "type": "string",
+      "format": "color"
+    },
+    "start_button_text_color": {
+      "title": "Color of the start button text",
+      "id": "/properties/start_button_text_color",
+      "type": "string",
+      "format": "color"
+    }
+  },
+  "type": "object"
+}

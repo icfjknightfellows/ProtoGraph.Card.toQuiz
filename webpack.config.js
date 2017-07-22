@@ -1,46 +1,8 @@
-const webpack = require('webpack')
+const webpack = require('webpack');
+const card = require('./webpack.config.card.js');
+const edit_card = require('./webpack.config.edit_card.js');
 
-module.exports = {
-    entry: './main.js',
-    output: {
-        library: 'Quiz',
-        path: './',
-        filename: 'index.js',
-    },
-    // plugins: [
-       // new webpack.optimize.UglifyJsPlugin()
-    // ],
-    node: {
-        net: 'empty',
-        tls: 'empty',
-        fs: 'empty'
-    },
-    devServer: {
-        disableHostCheck: true
-    },
-    module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loader: 'babel',
-                query:
-                {
-                    presets:['react']
-                }
-            },
-            {
-                test: /\.scss$/,
-                loaders: ["style-loader", "css-loader", "sass-loader"]
-            },
-            {
-                test: /\.json$/,
-                loader: 'json-loader'
-            },
-            {
-                test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-                loader: 'file-loader?name=src/fonts/[name].[ext]'
-            }
-        ]
-    }
-};
+module.exports = [
+  card,
+  edit_card
+];

@@ -1,0 +1,287 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {},
+    "id": "http://example.com/example.json",
+    "properties": {
+        "data": {
+            "id": "/properties/data",
+            "properties": {
+                "basic_datapoints": {
+                    "id": "/properties/data/properties/basic_datapoints",
+                    "title": "Introduction Slide",
+                    "subTitle": "Did you know how inviting you make this slide directly determines how many readers will click on the Quiz?",
+                    "properties": {
+                        "background_image": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/background_image",
+                            "type": "object",
+                            "title": "",
+                            "properties": {
+                                "image": {
+                                    "id": "/properties/data/properties/cover_data/properties/logo_image",
+                                    "title": "Upload an image",
+                                    "type": "string",
+                                    "format": "image",
+                                    "ratio": "1/2"
+                                }
+                            }
+                        },
+                        "quiz_title": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/quiz_title",
+                            "type": "string",
+                            "title": "Title",
+                            "default": "What is this quiz about?"
+                        },
+                        "introduction": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/introduction",
+                            "type": "string",
+                            "title": "Context",
+                            "default": "Reasons why the reader should take the quiz. This is optional so you can delete this text and continue."
+                        },
+                        "start_button_text": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/start_button_text",
+                            "type": "string",
+                            "title": "Start Button Text"
+                        },
+                        "share_link": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/share_link",
+                            "type": "string",
+                            "title": "Link URL to share",
+                            "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)",
+                            "condition": {"element": "social_share", "value": true}
+                        },
+                        "share_msg": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/share_msg",
+                            "type": "string",
+                            "title": "Messsage to be shared",
+                            "condition": {"element": "social_share", "value": true}
+                        }
+                    },
+                    "required": [
+                        "start_button_text",
+                        "quiz_title"
+                    ],
+                    "type": "object"
+                },
+                "questions": {
+                    "id": "/properties/data/properties/questions",
+                    "title": "Questions",
+                    "items": {
+                        "id": "/properties/data/properties/questions/items",
+                        "title": "Question",
+                        "hideTitle": true,
+                        "properties": {
+                            "question": {
+                                "default": "This is a sample question?",
+                                "title": "Question",
+                                "id": "/properties/data/properties/questions/items/properties/question",
+                                "type": "string"
+                            },
+                            "options": {
+                                "title": "Answers",
+                                "id": "/properties/data/properties/questions/items/properties/options",
+                                "items": {
+                                    "id": "/properties/data/properties/questions/items/properties/options/items",
+                                    "title": "Option",
+                                    "hideTitle": true,
+                                    "properties": {
+                                        "option": {
+                                            "default": "Option",
+                                            "title": "Answer Text",
+                                            "id": "/properties/data/properties/questions/items/properties/options/items/properties/option",
+                                            "type": "string"
+                                        },
+                                        "fact": {
+                                            "id": "/properties/data/properties/questions/items/properties/options/items/properties/fact",
+                                            "type": "string",
+                                            "title": "Description"
+                                        },
+                                        "gif_image": {
+                                            "id": "/properties/data/properties/questions/items/properties/options/items/properties/gif_image",
+                                            "type": "object",
+                                            "title": "",
+                                            "properties": {
+                                                "image": {
+                                                    "id": "/properties/data/properties/cover_data/properties/logo_image",
+                                                    "title": "Upload an image",
+                                                    "type": "string",
+                                                    "format": "data-url"
+                                                }
+                                            },
+                                            "condition": [{"element": "quiz_type", "value": "general", "conjunction": "or" }, {"element": "flip_card", "value": true, "conjunction": "or" }]
+                                        },
+                                        "right_or_wrong": {
+                                            "default": true,
+                                            "title": "Is this the correct option?",
+                                            "id": "/properties/data/properties/questions/items/properties/options/items/properties/right_or_wrong",
+                                            "type": "boolean",
+                                            "condition": { "element": "quiz_type", "value": "scoring" }
+                                        }
+                                    },
+                                    "required": [
+                                        "option"
+                                    ],
+                                    "minItems" : 1,
+                                    "addButtonText": "Add a new option",
+                                    "type": "object"
+                                },
+                                "minItems" : 1,
+                                "type": "array"
+                            }
+                        },
+                        "required": [
+                            "question",
+                            "options"
+                        ],
+                        "minItems" : 1,
+                        "addButtonText": "Add a new question",
+                        "type": "object"
+                    },
+                    "minItems" : 1,
+                    "type": "array"
+                },
+                "result_card_data": {
+                    "id": "/properties/data/properties/result_card_data",
+                    "title": "Related article Links",
+                    "items": {
+                        "id": "/properties/data/properties/result_card_data/items",
+                        "title": "Link",
+                        "hideTitle": true,
+                        "properties": {
+                            "upper_limit_of_score_range": {
+                                "id": "/properties/data/properties/result_card_data/items/properties/upper_limit_of_score_range",
+                                "title": "Maximum score",
+                                "type": "integer",
+                                "condition": { "element": "quiz_type", "value": "scoring" }
+                            },
+                            "message": {
+                                "id": "/properties/data/properties/result_card_data/items/properties/message",
+                                "title": "Result Message",
+                                "type": "string"
+                            },
+                            "related_article_links": {
+                                "id": "/properties/data/properties/result_card_data/items/properties/related_article_links",
+                                "title": "Related article link",
+                                "type": "string",
+                                "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
+                            },
+                            "link_description": {
+                                "id": "/properties/data/properties/result_card_data/items/properties/link_description",
+                                "title": "Description",
+                                "type": "string"
+                            },
+                            "link_image": {
+                                "id": "/properties/data/properties/result_card_data/items/properties/link_image",
+                                "type": "object",
+                                "title": "",
+                                "properties": {
+                                    "image": {
+                                        "id": "/properties/data/properties/cover_data/properties/logo_image",
+                                        "title": "Upload a article cover image",
+                                        "type": "string",
+                                        "format": "data-url"
+                                    }
+                                }
+                            }
+                        },
+                        "required": [
+                            "related_article_links",
+                            "message",
+                            "link_image",
+                            "link_description"
+                        ],
+                        "addButtonText": "Add a new link",
+                        "type": "object"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "basic_datapoints",
+                "questions",
+                "result_card_data"
+            ],
+            "type": "object"
+        },
+        "mandatory_config": {
+            "id": "/properties/mandatory_config",
+            "title": "What kind of a Quiz do you want?",
+            "properties": {
+                "quiz_type_form": {
+                    "id": "/properties/mandatory_config/properties/quiz_type",
+                    "type": "string",
+                    "default": "Quiz without scores",
+                    "enum": [
+                        "general",
+                        "scoring",
+                        "scoring_and_timer"
+                    ],
+                    "enumNames": [
+                        "Quiz without scores",
+                        "Quiz with scores",
+                        "Timed Quiz with scores"
+                    ],
+                    "title": "Quiz Mode"
+                },
+                "language": {
+                    "id": "/properties/mandatory_config/properties/language",
+                    "type": "string",
+                    "enum": [
+                        "english",
+                        "hindi"
+                    ],
+                    "enumNames": [
+                        "English",
+                        "Hindi"
+                    ],
+                    "title": "Language"
+                },
+                "flip_card": {
+                    "id": "/properties/mandatory_config/properties/flip_card",
+                    "type": "boolean",
+                    "title": "Should the card flip after every answer?",
+                    "default": true,
+                    "condition": {"element": "quiz_type", "value": "scoring"}
+                },
+                "revisit_answers": {
+                    "id": "/properties/mandatory_config/properties/revisit_answers",
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Allow users to revisit answers"
+                },
+                "social_share": {
+                    "id": "/properties/mandatory_config/properties/social_share",
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Allow users to share this quiz on social media"
+                },
+                "timer": {
+                    "id": "/properties/mandatory_config/properties/timer",
+                    "type": "boolean",
+                    "title": "Should the Quiz be timer based?",
+                    "condition": {"element": "quiz_type", "value": "scoring"}
+                },
+                "time_per_question": {
+                    "id": "/properties/mandatory_config/properties/time_per_question",
+                    "type": "integer",
+                    "default": 10,
+                    "condition": {"element": "timer", "value": true},
+                    "title": "Time user shoud spend on each question. (in seconds)"
+                }
+            },
+            "required": [
+                "revisit_answers",
+                "language",
+                "social_share",
+                "timer",
+                "flip_card",
+                "quiz_type"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "mandatory_config",
+        "data"
+    ],
+    "type": "object"
+}
