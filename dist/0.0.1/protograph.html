@@ -46,11 +46,11 @@
 
   </head>
   <body>
-    <div id="mob-justice-div"></div></br>
+    <div id="protograph_toQuiz_root"></div></br>
     <!-- // <script src="lib/oasis.min.js"></script> -->
     <script src = "card.min.js"></script>
     <script type="text/javascript">
-    var x = new ProtoGraph.Card.toMobJustice();
+    var x = new ProtoGraph.Card.toQuiz();
     function findGetParameter(parameterName) {
         var result = null,
             tmp = [],
@@ -74,13 +74,20 @@
       var  data_base_path = base_url + "/" + view_cast_id,
         schema_base_path = base_url + "/" + schema_id;
 
-      x.init({
-        selector: document.querySelector('#mob-justice-div'),
+      let options = {
+        selector: document.querySelector('#protograph_toQuiz_root'),
         data_url: data_base_path + "/data.json",
         schema_url: schema_base_path + "/schema.json",
         configuration_url: data_base_path + "/view_cast.json",
         configuration_schema_url: 'configuration_schema.json',
-      })
+        onClickCallback: function () {
+          let h = x.getData().height;
+          that.send('resize_frame', {width: '100%', height: h})
+        }
+      };
+
+      options.base_url = window.location.href.split("/protograph.html")[0];
+      x.init(options);
       renderWithMode(mode);
     }
 
