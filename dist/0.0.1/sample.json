@@ -2,55 +2,277 @@
   "data":{
     "basic_datapoints": {
       "background_image": {
-        "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+        "image": "https://dkqrqc7q64awx.cloudfront.net/7878f6c6e651/images/cover_image.jpg"
       },
-      "quiz_title":"What is this quiz about?",
-      "introduction": "Reasons why the reader should take the quiz. This is optional so you can delete this text and continue.",
-      "start_button_text":"Take our quiz",
-      "share_link":"https://pykih.com",
-      "share_msg":"I found this quiz really informative. Would you like to try it?"
+      "quiz_title":"The week that was in business",
+      "introduction": "This will be a definitive week for Aadhar, with its hearing in the Supreme Court. Already much has been written and spoken about its use. How much can you remember?",
+      "start_button_text":"Take this Quiz"
     },
     "questions":[
       {
-        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "question":"What is the maximum charge for Aadhaar services?",
+        "question_no":"1",
         "options":[
           {
-            "option":"Gives time",
-            "gif_image": {
-              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            "option":"Rs 25",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
             },
-            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
-            "right_or_wrong":true
+            "fact":"BINGO. This is the maximum amount you need to pay to avail Aadhaar ServiceAn update of either biometric or demographic details requires the aadhaar card holder to pay Rs 25",
+            "right_or_wrong":false
           },
           {
-            "option":"Does not give time",
-            "gif_image": {
-              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
+            "option":"Rs 10",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
             },
-            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "fact":"No, this is not the maximum charge.An update of either biometric or demographic details requires the aadhaar card holder to pay Rs 25",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Rs 15",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
+            },
+            "fact":"No, this is not the maximum charge. An update of either biometric or demographic details requires the aadhaar card holder to pay Rs 25",
+            "right_or_wrong":false
+          },
+          {
+            "option":"No charge",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
+            },
+            "fact":"No, this is not the maximum charge. An update of either biometric or demographic details requires the aadhaar card holder to pay Rs 25",
             "right_or_wrong":false
           }
         ]
-      }
-    ],
-    "result_card_data":[
+      },
       {
-        "upper_limit_of_score_range":40,
-        "message": "Still a scope to improve",
-        "related_article_links": "http://indianexpress.com/article/lifestyle/life-style/human-vision-keeps-developing-until-mid-life-4681081/",
-        "link_description": "Human vision keeps developing until mid-life",
-        "link_image": { "image": "http://images.indianexpress.com/2017/05/brain-759.jpg?w=450" }
+        "question":"When was the concept of unique identity first discussed?",
+        "question_no":"2",
+        "options":[
+          {
+            "option":"2007",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2016/12/aadhaar-630x417.jpg"
+            },
+            "fact":"Ops! Missed it by a year.The concept of unique identity was first discussed when the Department of Information Technology, Ministry of Communications and Information Technology gave approval for the project â€œUnique IDâ€ for BPL families on March 3, 2006",
+            "right_or_wrong":false
+          },
+          {
+            "option":"2009",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2016/12/aadhaar-630x417.jpg"
+            },
+            "fact":"No, you're a little late. The concept of unique identity was first discussed when the Department of Information Technology, Ministry of Communications and Information Technology gave approval for the project â€œUnique IDâ€ for BPL families on March 3, 2007",
+            "right_or_wrong":false
+          },
+          {
+            "option":"2006",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2016/12/aadhaar-630x417.jpg"
+            },
+            "fact":"Perfect! That's eaxctly when the discussion started. The concept of unique identity was first discussed when the Department of Information Technology, Ministry of Communications and Information Technology gave approval for the project â€œUnique IDâ€ for BPL families on March 3, 2008",
+            "right_or_wrong":false
+          },
+          {
+            "option":"1996",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2016/12/aadhaar-630x417.jpg"
+            },
+            "fact":"Oh no, they were discussing about identity numbers but not about Aadhaar. The concept of unique identity was first discussed when the Ministry of Communications and Information Technology gave approval for the project â€œUnique IDâ€ for BPL families on March 3, 2009",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"Aadhaar card has the following details:",
+        "question_no":"3",
+        "options":[
+          {
+            "option":"Demographic",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2016/12/aadhaar-630x417.jpg"
+            },
+            "fact":"No, they have yourt biometric data too.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Biometric",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2016/12/aadhaar-630x417.jpg"
+            },
+            "fact":"No, they have your demographic data as well.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Demographic and Biometric",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2016/12/aadhaar-630x417.jpg"
+            },
+            "fact":"Absolutely correct!Aadhaar card has demographic as well as biometric data of an individual",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"Benefits under the Aadhaar-enabled schemes can be denied to an individual if he/she does not have Aadhaar.",
+        "question_no":"4",
+        "options":[
+          {
+            "option":"TRUE",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/1/8/6/9/RTR3EDRM.jpg"
+            },
+            "fact":"No one can deny you benefits if you do not have Aadhaar. Aadhaar Act states that if subsidy is given from Consolidated Fund of India then beneficiary must have Aadhaar. If they do not, then they must enroll for it and until then alternative means of identification can be used.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"FALSE",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/1/8/6/9/RTR3EDRM.jpg"
+            },
+            "fact":"Correct!. Section 7 of the Aadhaar Act states that if subsidy is given from Consolidated Fund of India then beneficiary must have Aadhaar. If they do not, then they must enroll for Aadhaar and until then alternative means of identification can be used.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"You can cast a vote using Aadhaar.",
+        "question_no":"5",
+        "options":[
+          {
+            "option":"YES",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/1/b/5/8/RTR3EDRN.jpg"
+            },
+            "fact":"Not yet. Voter ID is mandatory for casting a vote. One cannot vote using Aadhaar",
+            "right_or_wrong":false
+          },
+          {
+            "option":"NO",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/1/b/5/8/RTR3EDRN.jpg"
+            },
+            "fact":"Absolutely right!Voter ID is mandatory for casting a vote. One cannot vote using Aadhaar",
+            "right_or_wrong":false
+          },
+          {
+            "option":"I DON'T KNOW",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/1/b/5/8/RTR3EDRN.jpg"
+            },
+            "fact":"No problem. Here's the answer: No, you cannot vote using Aadhaar.Voter ID is mandatory for casting a vote. One cannot vote using Aadhaar",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"Recently, Aadhaar was challenged in Supreme Court because it violated this Right.",
+        "question_no":"6",
+        "options":[
+          {
+            "option":"Right to personal identity",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/04/judiciary-770x433.jpg"
+            },
+            "fact":"Close, but no. On July 12, the Supreme Court agreed to hear all the issues arising out of Aadhar card, especially the concern over whether it breaches the people's right to privacy. SC said that right to privacy is â€˜not absoluteâ€™.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Right to Privacy",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/04/judiciary-770x433.jpg"
+            },
+            "fact":"Correct! On July 12, the Supreme Court agreed to hear all the issues arising out of Aadhar card, especially the concern over whether it breaches the people's right to privacy. SC said that right to privacy is â€˜not absoluteâ€™.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Right to freedom",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/04/judiciary-770x433.jpg"
+            },
+            "fact":"Nope, it did not challenge our fundamental right of freedom.On July 12, the Supreme Court agreed to hear all the issues arising out of Aadhar card, especially the concern over whether it breaches the people's right to privacy. SC said that right to privacy is â€˜not absoluteâ€™.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Right to Individuality",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/04/judiciary-770x433.jpg"
+            },
+            "fact":"Ops! Wrong answer.On July 12, the Supreme Court agreed to hear all the issues arising out of Aadhar card, especially the concern over whether it breaches the people's right to privacy. SC said that right to privacy is â€˜not absoluteâ€™.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"Government officials can rightfully use Aadhaar to track an individual.",
+        "question_no":"7",
+        "options":[
+          {
+            "option":"TRUE",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/9/2/7/6/RTR3EDSU.jpg"
+            },
+            "fact":"No.No one can track an individual using Aadhaar. Any attempt to track an individual through Aadhaar number is an offence under the Aadhaar Act.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"FALSE",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/9/2/7/6/RTR3EDSU.jpg"
+            },
+            "fact":"Right.No one can track an individual using Aadhaar. Any attempt to track an individual through Aadhaar number is an offence under the Aadhaar Act.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"What is the tagline for Aadhaar?",
+        "question_no":"8",
+        "options":[
+          {
+            "option":"Mera Aadhaar, Meri pehchaan",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/0/7/4/f/RTR3EDST.jpg"
+            },
+            "fact":"Correct!In 2016, the tagline â€˜Aam Admi ka Adhikarâ€™ was changed to â€˜Mera Aadhaar, Meri Pehchaanâ€™ following several requests to remove the phrase â€˜aam admiâ€™.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Aadhaar Aam Admi ka Adhikar",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/0/7/4/f/RTR3EDST.jpg"
+            },
+            "fact":"Well, this was the first tagline but it got changed. In 2016, the tagline â€˜Aam Admi ka Adhikarâ€™ was changed to â€˜Mera Aadhaar, Meri Pehchaanâ€™ following several requests to remove the phrase â€˜aam admiâ€™.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Aadhaar is Right of a Common Man",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/0/7/4/f/RTR3EDST.jpg"
+            },
+            "fact":"Not quite.In 2016, the tagline â€˜Aam Admi ka Adhikarâ€™ was changed to â€˜Mera Aadhaar, Meri Pehchaanâ€™ following several requests to remove the phrase â€˜aam admiâ€™.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"One Nation, One Identity",
+            "gif_image":{
+              "image":"http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/0/7/4/f/RTR3EDST.jpg"
+            },
+            "fact":"Not really. In 2016, the tagline â€˜Aam Admi ka Adhikarâ€™ was changed to â€˜Mera Aadhaar, Meri Pehchaanâ€™ following several requests to remove the phrase â€˜aam admiâ€™.",
+            "right_or_wrong":false
+          }
+        ]
       }
     ]
   },
   "mandatory_config":{
     "language": "english",
-    "quiz_type_form": "general",
     "quiz_type": "general",
     "timer": false,
-    "time_per_question":10,
     "flip_card": true,
-    "social_share": true,
+    "social_share": false,
     "revisit_answers": true
   }
 }

@@ -112,7 +112,14 @@ export default class ResultCard extends React.Component {
     let replayStyleCss = '',
       revisitStyleCss = '',
       shareStyleCss = '',
-      {links, message} = this.renderReadingLinks();
+      links,
+      message = 'Thank you!';
+
+      if (this.props.cardConfigs.quiz_type === "scoring") {
+        let output = this.renderReadingLinks();
+        links = output.links;
+        message = output.message;
+      }
 
     conclusionCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - ((+this.props.totalQuestions + 1) * 20) }, ${((+this.props.totalQuestions + 1) * 320 * -1)}, ${(1 + 0.08 * (+this.props.totalQuestions + 1))})`;
     if(+this.props.totalQuestions > 1) {
@@ -178,61 +185,69 @@ export default class ResultCard extends React.Component {
               }
               <div className="clearfix"></div>
             </div>
-            <div className="links-container">
-              <div className="related-links-title">RELATED ARTICLES</div>
-              <div className="related-links-content">
-                { links }
-              </div>
-            </div>
+            {
+              links &&
+                <div className="links-container">
+                  <div className="related-links-title">RELATED ARTICLES</div>
+                  <div className="related-links-content">
+                    { links }
+                  </div>
+                </div>
+            }
             <div id="credits" className="credits" >
               <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
             </div>
           </div>
-          <div className='conclusion-back'>
-            <div className="share-card">
-              <div className="share-image-div" style={{backgroundImage: `url('${this.props.introCardConfigs.background_image}')`}}>
-                <div className="share-title" style={{color: 'white'}}>
-                  {
-                    this.props.introCardConfigs.quiz_title
-                  }
+          {
+            this.props.cardConfigs.social_share &&
+              <div className='conclusion-back'>
+                <div className="share-card">
+                  <div className="share-image-div" style={{backgroundImage: `url('${this.props.introCardConfigs.background_image}')`}}>
+                    <div className="share-title" style={{color: 'white'}}>
+                      {
+                        this.props.introCardConfigs.quiz_title
+                      }
+                    </div>
+                  </div>
+                  <div className="share-msg">
+                    {
+                      this.props.cardConfigs.share_msg.replace(/{score}/g, this.props.score)
+                    }
+                  </div>
+                </div>
+                <div className="share-buttons-div">
+                  <div className='fb-div'>
+                    <div
+                      className="fb-share-button"
+                      data-href={`${this.props.cardConfigs.share_link}`}
+                      data-layout="button"
+                      data-size="large"
+                      data-mobile-iframe="true">
+                      <a
+                        className="fb-xfbml-parse-ignore"
+                        target="_blank"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">
+                        Share
+                      </a>
+                    </div>
+                  </div>
+                  <div className='twitter-div'>
+                    <a
+                      className="twitter-share-button"
+                      href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.props.cardConfigs.share_msg)}&url=${encodeURIComponent(this.props.cardConfigs.share_link)}`}
+                      data-size="large">Tweet
+                    </a>
+                  </div>
+                  <div className="clearfix"></div>
+                </div>
+                <div className="back-link" onClick={(e) => this.goBack(e)}>Go Back</div>
+                <div id="credits" className="credits" >
+                  <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
                 </div>
               </div>
-              <div className="share-msg">
-                {
-                  this.props.cardConfigs.share_msg.replace(/{score}/g, this.props.score)
-                }
-              </div>
-            </div>
-            <div className="share-buttons-div">
-              <div className='fb-div'>
-                <div
-                  className="fb-share-button"
-                  data-href={`${this.props.cardConfigs.share_link}`}
-                  data-layout="button"
-                  data-size="large"
-                  data-mobile-iframe="true">
-                  <a
-                    className="fb-xfbml-parse-ignore"
-                    target="_blank"
-                    href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">
-                    Share
-                  </a>
-                </div>
-              </div>
-              <div className='twitter-div'>
-                <a
-                  className="twitter-share-button"
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(this.props.cardConfigs.share_msg)}&url=${encodeURIComponent(this.props.cardConfigs.share_link)}`}
-                  data-size="large">Tweet
-                </a>
-              </div>
-              <div className="clearfix"></div>
-            </div>
-            <div className="back-link" onClick={(e) => this.goBack(e)}>Go Back</div>
-            <div id="credits" className="credits" >
-              <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
-            </div>
-          </div>
+          }
+
+
         </div>
       </div>
     )
