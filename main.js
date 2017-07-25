@@ -23,6 +23,7 @@ ProtoGraph.Card.toQuiz.prototype.getData = function () {
 
 ProtoGraph.Card.toQuiz.prototype.renderLaptop = function () {
   this.mode = 'laptop';
+  ReactDOM.unmountComponentAtNode(this.options.selector);
   ReactDOM.render(
     <Quiz
       dataURL={this.options.data_url}
@@ -40,6 +41,7 @@ ProtoGraph.Card.toQuiz.prototype.renderLaptop = function () {
 
 ProtoGraph.Card.toQuiz.prototype.renderMobile = function () {
   this.mode = 'mobile';
+  ReactDOM.unmountComponentAtNode(this.options.selector);
   ReactDOM.render(
     <Quiz
       dataURL={this.options.data_url}

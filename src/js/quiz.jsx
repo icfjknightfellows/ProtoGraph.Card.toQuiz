@@ -79,9 +79,11 @@ class Quiz extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      optionalConfigJSON: nextProps.optionalConfigJSON
-    })
+    if (nextProps.optionalConfigJSON) {
+      this.setState({
+        optionalConfigJSON: nextProps.optionalConfigJSON
+      });
+    }
   }
 
   componentDidMount() {
@@ -953,6 +955,7 @@ class Quiz extends React.Component {
         </div>
       )
     } else {
+
       let styles = {},
         x = 140, //(this.state.totalQuestions * 20) - 20,
         y = 0 - 320,
