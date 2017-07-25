@@ -270,6 +270,7 @@
   "mandatory_config":{
     "language": "english",
     "quiz_type": "scoring",
+    "quiz_type_form": "scoring",
     "timer": false,
     "flip_card": true,
     "social_share": false,

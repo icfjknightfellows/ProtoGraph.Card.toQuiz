@@ -77,7 +77,7 @@
                                 "type": "string"
                             },
                             "options": {
-                                "title": "Answers",
+                                "title": "Options",
                                 "id": "/properties/data/properties/questions/items/properties/options",
                                 "items": {
                                     "id": "/properties/data/properties/questions/items/properties/options/items",
@@ -86,9 +86,16 @@
                                     "properties": {
                                         "option": {
                                             "default": "Option",
-                                            "title": "Answer Text",
+                                            "title": "Option",
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/option",
                                             "type": "string"
+                                        },
+                                        "right_or_wrong": {
+                                            "default": true,
+                                            "title": "Is this the correct option?",
+                                            "id": "/properties/data/properties/questions/items/properties/options/items/properties/right_or_wrong",
+                                            "type": "boolean",
+                                            "condition": { "element": "quiz_type", "value": "scoring" }
                                         },
                                         "fact": {
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/fact",
@@ -108,13 +115,6 @@
                                                 }
                                             },
                                             "condition": [{"element": "quiz_type", "value": "general", "conjunction": "or" }, {"element": "flip_card", "value": true, "conjunction": "or" }]
-                                        },
-                                        "right_or_wrong": {
-                                            "default": true,
-                                            "title": "Is this the correct option?",
-                                            "id": "/properties/data/properties/questions/items/properties/options/items/properties/right_or_wrong",
-                                            "type": "boolean",
-                                            "condition": { "element": "quiz_type", "value": "scoring" }
                                         }
                                     },
                                     "required": [
