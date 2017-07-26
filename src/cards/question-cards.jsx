@@ -34,6 +34,7 @@ export default class QuestionCard extends React.Component {
             onTouchStart={ this.props.isMobile && !this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchStart : undefined }
             onTouchMove={ this.props.isMobile && !this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchMove : undefined }
             onTouchEnd={ this.props.isMobile && !this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchEnd : undefined }
+            onClick={ this.props.isMobile && !this.props.cardConfigs.flip_card ? this.props.cardEvents.nextCard : undefined }
             >
             { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer ? this.renderTimer() : undefined }
             { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer && !this.props.cardConfigs.flip_card ?
@@ -87,7 +88,7 @@ export default class QuestionCard extends React.Component {
                   <div className="protograph-toQuiz-swipe-hint-animation" id="swipe_hint_animation">
                     <img src={`${this.props.baseURL}/images/swipe-up.gif`} />
                   </div>
-                  <div className="protograph-toQuiz-swipe-hint-msg" id="swipe_hint_msg">Swipe up for next question</div>
+                  <div className="protograph-toQuiz-swipe-hint-msg" id="swipe_hint_msg">{this.props.languageTexts.swipe}</div>
                 </div>
               :
                 <div className="protograph-toQuiz-next-container">
@@ -108,6 +109,7 @@ export default class QuestionCard extends React.Component {
                 onTouchStart={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchStart : undefined }
                 onTouchMove={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchMove : undefined }
                 onTouchEnd={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.onTouchEnd : undefined }
+                onClick={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.nextCard : undefined }
                 >
                  { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer &&
                       <div className='protograph-toQuiz-timeout-msg'>Timed out!</div>
@@ -147,7 +149,7 @@ export default class QuestionCard extends React.Component {
                       <div className="protograph-toQuiz-swipe-hint-animation" id="swipe_hint_animation">
                         <img src={`${this.props.baseURL}/images/swipe-up.gif`} />
                       </div>
-                      <div className="protograph-toQuiz-swipe-hint-msg" id="swipe_hint_msg">Swipe up for next question</div>
+                      <div className="protograph-toQuiz-swipe-hint-msg" id="swipe_hint_msg">{this.props.languageTexts.swipe}</div>
                     </div>
                   :
                     <div className="protograph-toQuiz-next-container">

@@ -180,8 +180,9 @@ class Quiz extends React.Component {
           ans_title: "उत्तर",
           restart: 'फिर से शुरू करें ↺',
           next: 'अगला प्रश्न ➜',
+          swipe: 'अगले प्रश्न के लिए ऊपर स्वाइप करें या यहां टैप करें'
           // swipe: 'अगले प्रश्न के लिए दाईं ओर स्वाइप करें ➜'हाँ या ना
-          swipe: 'अगले प्रश्न के लिए दाईं या बाईं ओर स्वाइप करें ➜'
+          // swipe: 'अगले प्रश्न के लिए दाईं या बाईं ओर स्वाइप करें ➜'
         }
         break;
       default:
@@ -190,7 +191,7 @@ class Quiz extends React.Component {
           ans_title: "ANSWER",
           restart: 'Good Job! Take the quiz again?',
           next: 'Next Question ➜',
-          swipe: 'Swipe on the card to continue ➜'
+          swipe: 'Swipe up for next question or tap here'
         }
         break;
     }
@@ -314,6 +315,7 @@ class Quiz extends React.Component {
     }
 
     this.addOptionBasedContent(option);
+    e.stopPropagation();
 
     // if (ga) {
     //   ga('pyktracker.send', 'event', {
@@ -985,6 +987,7 @@ class Quiz extends React.Component {
           events.onTouchStart = ((e) => Touch.swipeStart(e));
           events.onTouchMove = ((e) => Touch.swipeMove(e));
           events.onTouchEnd = ((e) => this.touchEndHandler(e));
+          events.nextCard = ((e) => {this.swipeCallback('up'); e.stopPropagation();});
         } else {
           events.nextCard = ((e) => this.swipeCallback('up'));
         }
