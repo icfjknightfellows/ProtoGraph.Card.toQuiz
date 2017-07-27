@@ -178,20 +178,46 @@ class Quiz extends React.Component {
         text_obj = {
           question_title: "प्रश्न ",
           ans_title: "उत्तर",
-          restart: 'फिर से शुरू करें ↺',
-          next: 'अगला प्रश्न ➜',
-          swipe: 'अगले प्रश्न के लिए ऊपर स्वाइप करें या यहां टैप करें'
-          // swipe: 'अगले प्रश्न के लिए दाईं ओर स्वाइप करें ➜'हाँ या ना
-          // swipe: 'अगले प्रश्न के लिए दाईं या बाईं ओर स्वाइप करें ➜'
+          next: 'अगला प्रश्न',
+          swipe: 'अगले प्रश्न के लिए ऊपर स्वाइप करें या यहां टैप करें',
+          revisit_answers: 'उत्तर फिर से देखें',
+          social_share: 'शेयर',
+          go_back: 'वापस',
+          starting_quiz: 'प्रश्नोत्तरी शुरू होता है',
+          related_articles: 'संबंधित आलेख',
+          timed_out: 'समय समााप्त!',
+          correct: 'सही',
+          wrong: 'गलत',
+          message: 'धन्यवाद!',
+          play_again: 'पुनः खेलें',
+          oops: 'उफ़!',
+          times_up: 'समय समाप्त',
+          slider_text: 'प्रश्नों के बीच चलने के लिए स्लाइडर का उपयोग करें',
+          fetching_questions: 'सवाल ला रहा है ...',
+          font: "'Hindi', sans-serif"
         }
         break;
       default:
         text_obj = {
           question_title: "Question ",
           ans_title: "ANSWER",
-          restart: 'Good Job! Take the quiz again?',
-          next: 'Next Question ➜',
-          swipe: 'Swipe up for next question or tap here'
+          next: 'Next',
+          swipe: 'Swipe up for next question or tap here',
+          revisit_answers: 'Revisit Answers',
+          social_share: 'Share',
+          go_back: 'Go Back',
+          starting_quiz: 'Starting your quiz in',
+          related_articles: 'RELATED ARTICLES',
+          timed_out: 'Timed out!',
+          correct: 'Correct',
+          wrong: 'Wrong',
+          message: 'Thank you!',
+          play_again: 'Play Again',
+          oops: 'Oops!',
+          times_up: "Times's up",
+          slider_text: 'use slider to move between questions',
+          fetching_questions: 'Fetching Questions ...',
+          font: "'Helvetica Neue', sans-serif, aerial"
         }
         break;
     }
@@ -838,7 +864,7 @@ class Quiz extends React.Component {
         <div className="protograph-toQuiz-tick-background">
           <span className="protograph-toQuiz-correct-tick">&#10004;&#xFE0E;</span>
         </div>
-        <div className="protograph-toQuiz-correct-wrong-text">Correct</div>
+        <div className="protograph-toQuiz-correct-wrong-text">{this.state.languageTexts.correct}</div>
       </div>
     );
   }
@@ -849,7 +875,7 @@ class Quiz extends React.Component {
         <div className="protograph-toQuiz-tick-background protograph-toQuiz-wrong-tick">
           <span>&#10007;&#xFE0E;</span>
         </div>
-        <div className="protograph-toQuiz-correct-wrong-text protograph-toQuiz-wrong">Wrong</div>
+        <div className="protograph-toQuiz-correct-wrong-text protograph-toQuiz-wrong">{this.state.languageTexts.wrong}</div>
       </div>
     );
   }
@@ -862,8 +888,8 @@ class Quiz extends React.Component {
             <img src={`${this.props.baseURL}/images/clock-large.png`} />
           </div>
           <div className="protograph-toQuiz-time-value">00:00</div>
-          <div className="protograph-toQuiz-oops-msg">Oops!</div>
-          <div className="protograph-toQuiz-times-up-msg">Time's up</div>
+          <div className="protograph-toQuiz-oops-msg">{this.state.languageTexts.oops}</div>
+          <div className="protograph-toQuiz-times-up-msg">{this.state.languageTexts.times_up}</div>
         </div>
       </div>
     );
@@ -889,7 +915,7 @@ class Quiz extends React.Component {
     cardConfigs.share_link = data.basic_datapoints.share_link;
 
     return (
-      <div id="protograph_toQuiz" className="protograph-toQuiz-quiz-container">
+      <div id="protograph_toQuiz" className="protograph-toQuiz-quiz-container" style={{"fontFamily": this.state.languageTexts.font}}>
         <div className="protograph-toQuiz-quiz-content">
           { (this.props.mode === 'laptop' || this.props.mode === 'edit')  && this.renderIntroCard() }
           <div id="main_container" className="protograph-toQuiz-main-container">
@@ -904,6 +930,7 @@ class Quiz extends React.Component {
               startQuiz={((e) => this.startQuiz(e))}
               totalQuestions={this.state.totalQuestions}
               isMobile={this.state.isMobile}
+              languageTexts={this.state.languageTexts}
             />
 
             <div id="card_stack" className="protograph-toQuiz-card-stack">
@@ -918,13 +945,14 @@ class Quiz extends React.Component {
               cardConfigs={this.state.dataJSON.mandatory_config}
               resultCardConfigs={this.state.dataJSON.data.result_card_data}
               totalQuestions={this.state.totalQuestions}
+              languageTexts={this.state.languageTexts}
               score={this.state.score}
               cardEvents={events}
               baseURL={this.props.baseURL}
             />
 
             <div className="protograph-toQuiz-slider-container">
-              <div className="protograph-toQuiz-slider-hint">use slider to move between questions</div>
+              <div className="protograph-toQuiz-slider-hint">{this.state.languageTexts.slider_text}</div>
               <span className="protograph-toQuiz-slider-card-no">5</span>
               <input
                 className="protograph-toQuiz-card-slider"
@@ -948,10 +976,10 @@ class Quiz extends React.Component {
   renderQuiz() {
     if (this.state.fetchingData) {
       return (
-        <div className='protograph-toQuiz-quiz-container'>
+        <div className='protograph-toQuiz-quiz-container' style={{"fontFamily": this.state.languageTexts.font}}>
           <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
-              Fetching Questions ...
+              {this.state.languageTexts.fetching_questions}
             </span>
           </div>
         </div>
@@ -1017,17 +1045,17 @@ class Quiz extends React.Component {
   renderScreenshot() {
     if (this.state.fetchingData) {
       return (
-        <div className='protograph-toQuiz-quiz-container'>
+        <div className='protograph-toQuiz-quiz-container' style={{"fontFamily": this.state.languageTexts.font}}>
           <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
-              Fetching Questions ...
+              {this.state.languageTexts.fetching_questions}
             </span>
           </div>
         </div>
       )
     } else {
       return (
-        <div className="protograph-toQuiz-quiz-container">
+        <div className="protograph-toQuiz-quiz-container" style={{"fontFamily": this.state.languageTexts.font}}>
           <div className="protograph-toQuiz-quiz-content">
             { this.renderIntroCard() }
           </div>

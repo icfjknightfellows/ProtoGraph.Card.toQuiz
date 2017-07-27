@@ -52,7 +52,7 @@ export default class ResultCard extends React.Component {
       config = this.props.cardConfigs;
 
     let links,
-      message = 'Thank you!';
+      message = this.props.languageTexts.message;
 
     if(config.quiz_type === "scoring" && isScoreSpecific) {
       const scoreItem = resultCardConfigs.filter((e) => {
@@ -115,7 +115,8 @@ export default class ResultCard extends React.Component {
       revisitStyleCss = '',
       shareStyleCss = '',
       links,
-      message = 'Thank you!',
+      languageTexts = this.props.languageTexts,
+      message = languageTexts.message,
       readingLinks;
 
     if (this.props.resultCardConfigs && this.props.resultCardConfigs.length) {
@@ -166,7 +167,7 @@ export default class ResultCard extends React.Component {
                 this.props.cardConfigs.revisit_answers ?
                   <div id="revisit" className={`protograph-toQuiz-revisit protograph-toQuiz-card-button ${revisitStyleCss}`} onClick={this.props.cardEvents.revisitAnswers} >
                     <img className="protograph-toQuiz-card-button-img" src={`${this.props.baseURL}/images/revisit-icon.png`} />
-                    <div className="protograph-toQuiz-card-button-text">Revisit Answers</div>
+                    <div className="protograph-toQuiz-card-button-text">{languageTexts.revisit_answers}</div>
                   </div>
                 :
                   undefined
@@ -174,14 +175,14 @@ export default class ResultCard extends React.Component {
 
               <div id="replay" className={`protograph-toQuiz-replay protograph-toQuiz-card-button ${replayStyleCss}`}  onClick={this.props.cardEvents.resetQuiz} >
                 <img className="protograph-toQuiz-card-button-img" src={`${this.props.baseURL}/images/replay.png`} />
-                <div className="protograph-toQuiz-card-button-text">Play Again</div>
+                <div className="protograph-toQuiz-card-button-text">{languageTexts.play_again}</div>
               </div>
 
               {
                 this.props.cardConfigs.social_share ?
                   <div id="share" className={`protograph-toQuiz-share protograph-toQuiz-card-button ${shareStyleCss}`} onClick={this.props.cardEvents.socialShare}>
                     <img className="protograph-toQuiz-card-button-img" src={`${this.props.baseURL}/images/share.png`} />
-                    <div className="protograph-toQuiz-card-button-text">Share</div>
+                    <div className="protograph-toQuiz-card-button-text">{languageTexts.social_share}</div>
                   </div>
                 :
                   undefined
@@ -191,7 +192,7 @@ export default class ResultCard extends React.Component {
             {
               links && links.length > 0 &&
                 <div className="protograph-toQuiz-links-container">
-                  <div className="protograph-toQuiz-related-links-title">RELATED ARTICLES</div>
+                  <div className="protograph-toQuiz-related-links-title">{languageTexts.related_articles}</div>
                   <div className="protograph-toQuiz-related-links-content">
                     { links }
                   </div>
@@ -243,7 +244,7 @@ export default class ResultCard extends React.Component {
                   </div>
                   <div className="protograph-toQuiz-clearfix"></div>
                 </div>
-                <div className="protograph-toQuiz-back-link" onClick={(e) => this.goBack(e)}>Go Back</div>
+                <div className="protograph-toQuiz-back-link" onClick={(e) => this.goBack(e)}>{languageTexts.go_back}</div>
                 <div id="credits" className="protograph-toQuiz-credits" >
                   <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
                 </div>

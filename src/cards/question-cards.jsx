@@ -16,7 +16,7 @@ export default class QuestionCard extends React.Component {
   }
 
   render () {
-    let correctOption;
+    let correctOption, languageTexts = this.props.languageTexts;
     if (this.props.cardConfigs.quiz_type === "scoring") {
       correctOption = this.props.cardData.options.filter((e) => { return e.right_or_wrong === true })[0].option;
     }
@@ -38,7 +38,7 @@ export default class QuestionCard extends React.Component {
             >
             { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer ? this.renderTimer() : undefined }
             { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer && !this.props.cardConfigs.flip_card ?
-                <div className='protograph-toQuiz-timeout-msg'>Timed out!</div>
+                <div className='protograph-toQuiz-timeout-msg'>{languageTexts.timed_out}</div>
               :
                 undefined
             }
@@ -48,7 +48,7 @@ export default class QuestionCard extends React.Component {
             <div className='protograph-toQuiz-question'>{this.props.cardData.question}</div>
             {
               this.props.cardConfigs.quiz_type === "scoring" && !this.props.cardConfigs.flip_card ?
-                <div id={`title_${(this.props.cardNo + 1)}`} className="protograph-toQuiz-title">ANSWER</div>
+                <div id={`title_${(this.props.cardNo + 1)}`} className="protograph-toQuiz-title">{languageTexts.ans_title}</div>
               :
                 undefined
             }
@@ -92,7 +92,7 @@ export default class QuestionCard extends React.Component {
                 </div>
               :
                 <div className="protograph-toQuiz-next-container">
-                  <span id="next" className="protograph-toQuiz-next" onClick={(e) => this.props.cardEvents.nextCard(e)}>Next</span>
+                  <span id="next" className="protograph-toQuiz-next" onClick={(e) => this.props.cardEvents.nextCard(e)}>{languageTexts.next}</span>
                 </div>
             }
             <div className="protograph-toQuiz-progress-bar">
@@ -112,7 +112,7 @@ export default class QuestionCard extends React.Component {
                 onClick={ this.props.isMobile && this.props.cardConfigs.flip_card ? this.props.cardEvents.nextCard : undefined }
                 >
                  { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer &&
-                      <div className='protograph-toQuiz-timeout-msg'>Timed out!</div>
+                      <div className='protograph-toQuiz-timeout-msg'>{languageTexts.timed_out}</div>
                   }
                 <div className='protograph-toQuiz-question-number'>
                   <span className="protograph-toQuiz-current-question">{this.props.questionNo}</span>{`/${this.props.totalQuestions}`}
@@ -153,7 +153,7 @@ export default class QuestionCard extends React.Component {
                     </div>
                   :
                     <div className="protograph-toQuiz-next-container">
-                      <span id="next" className="protograph-toQuiz-next" onClick={(e) => this.props.cardEvents.nextCard(e)}>Next</span>
+                      <span id="next" className="protograph-toQuiz-next" onClick={(e) => this.props.cardEvents.nextCard(e)}>{languageTexts.next}</span>
                     </div>
                 }
                 <div className="protograph-toQuiz-progress-bar">

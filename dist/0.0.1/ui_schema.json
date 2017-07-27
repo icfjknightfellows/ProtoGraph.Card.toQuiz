@@ -18,9 +18,6 @@
   },
   "data": {
     "basic_datapoints": {
-      "start_button_text": {
-        "ui:widget": "hidden"
-      },
       "share_link": {
         "ui:widget": "hidden"
       },

@@ -268,7 +268,7 @@
     ]
   },
   "mandatory_config":{
-    "language": "english",
+    "language": "hindi",
     "quiz_type": "scoring",
     "quiz_type_form": "scoring",
     "timer": false,

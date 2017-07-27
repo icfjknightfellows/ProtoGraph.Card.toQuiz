@@ -2,10 +2,11 @@
 @import url("https://fonts.googleapis.com/css?family=Halant");
 @import url("https://fonts.googleapis.com/css?family=Droid+Serif");
 @import url("https://fonts.googleapis.com/css?family=Mukta+Vaani:500");
-@font-face {
+@import url('https://fonts.googleapis.com/css?family=Hind');
+/*@font-face {
   font-family: "charter";
   src: url("../fonts/charter_regular-webfont.ttf") format("truetype");
-}
+}*/
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -18,7 +19,7 @@ html {
   background: #eee;
   font-size: 16px;
   /*font-family: 'Noto Sans', sans-serif;*/
-  font-family: 'Helvetica Neue', sans-serif, aerial;
+  /*font-family: 'Helvetica Neue', sans-serif, aerial;*/
   color: #333;
 }
 
@@ -238,7 +239,7 @@ html {
 }
 
 .protograph-toQuiz-answers-container {
-  font-family: charter;
+  /*font-family: charter;*/
   font-weight: bold;
   padding: 0px 25px;
   box-sizing: border-box;
@@ -296,7 +297,7 @@ html {
 
 .protograph-toQuiz-next, .protograph-toQuiz-reset, .protograph-toQuiz-help-text {
   cursor: pointer;
-  font-family: sans-serif;
+  /*font-family: sans-serif;*/
 }
 
 .protograph-toQuiz-help-text {
@@ -393,7 +394,7 @@ html {
   font-weight: bold;
   line-height: 1.5em;
   padding-bottom: 15px;
-  font-family: charter;
+  /*font-family: charter;*/
 }
 
 .protograph-toQuiz-intro-header.protograph-toQuiz-with-image {
@@ -432,7 +433,7 @@ html {
   border-radius: 4px;
   background: #1e88e5;
   color: white;
-  font-family: sans-serif;
+  /*font-family: sans-serif;*/
   font-size: 1.2em;
   animation: jiggle 2s infinite ease-in;
 }
@@ -447,7 +448,7 @@ html {
   font-size: 0.55em;
   right: 5px;
   bottom: 5px;
-  font-family: sans-serif;
+  /*font-family: sans-serif;*/
 }
 
 .protograph-toQuiz-credits > a {

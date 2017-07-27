@@ -7,7 +7,8 @@ export default class IntroductionCard extends React.Component {
 
     const buttonStyle = {},
       introCardStyle = {},
-      introFrontStyle = {};
+      introFrontStyle = {},
+      languageTexts = this.props.languageTexts;
 
     this.props.introCardConfigs.start_button_color ? buttonStyle.backgroundColor = this.props.introCardConfigs.start_button_color : undefined;
     this.props.introCardConfigs.start_button_text_color ? buttonStyle.color = this.props.introCardConfigs.start_button_text_color : undefined;
@@ -43,7 +44,7 @@ export default class IntroductionCard extends React.Component {
           </div>
           <div className="protograph-toQuiz-intro-back">
             <div className="protograph-toQuiz-countdown-content">
-              <div className="protograph-toQuiz-countdown-text">Starting your quiz in</div>
+              <div className="protograph-toQuiz-countdown-text">{languageTexts.starting_quiz}</div>
               <div className="protograph-toQuiz-countdown-counter">3</div>
             </div>
           </div>
