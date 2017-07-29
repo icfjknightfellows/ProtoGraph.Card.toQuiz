@@ -27,6 +27,7 @@ class EditQuiz extends React.Component {
       updatingQuiz: false,
       baseURL: this.props.baseURL
     };
+    this.formValidator = this.formValidator.bind(this);
   }
 
   componentDidMount() {
@@ -132,18 +133,46 @@ class EditQuiz extends React.Component {
         text_obj = {
           question_title: "प्रश्न ",
           ans_title: "उत्तर",
-          restart: 'फिर से शुरू करें ↺',
-          next: 'अगला प्रश्न ➜',
-          swipe: 'अगले प्रश्न के लिए दाईं या बाईं ओर स्वाइप करें ➜'
+          next: 'अगला प्रश्न',
+          swipe: 'अगले प्रश्न के लिए ऊपर स्वाइप करें या यहां टैप करें',
+          revisit_answers: 'उत्तर फिर से देखें',
+          social_share: 'शेयर',
+          go_back: 'वापस',
+          starting_quiz: 'प्रश्नोत्तरी शुरू होता है',
+          related_articles: 'संबंधित आलेख',
+          timed_out: 'समय समााप्त!',
+          correct: 'सही',
+          wrong: 'गलत',
+          message: 'धन्यवाद!',
+          play_again: 'पुनः खेलें',
+          oops: 'उफ़!',
+          times_up: 'समय समाप्त',
+          slider_text: 'प्रश्नों के बीच चलने के लिए स्लाइडर का उपयोग करें',
+          fetching_questions: 'सवाल ला रहा है ...',
+          font: "'Hindi', sans-serif"
         }
         break;
       default:
         text_obj = {
           question_title: "Question ",
           ans_title: "ANSWER",
-          restart: 'Good Job! Take the quiz again?',
-          next: 'Next Question ➜',
-          swipe: 'Swipe on the card to continue ➜'
+          next: 'Next',
+          swipe: 'Swipe up for next question or tap here',
+          revisit_answers: 'Revisit Answers',
+          social_share: 'Share',
+          go_back: 'Go Back',
+          starting_quiz: 'Starting your quiz in',
+          related_articles: 'RELATED ARTICLES',
+          timed_out: 'Timed out!',
+          correct: 'Correct',
+          wrong: 'Wrong',
+          message: 'Thank you!',
+          play_again: 'Play Again',
+          oops: 'Oops!',
+          times_up: "Times's up",
+          slider_text: 'use slider to move between questions',
+          fetching_questions: 'Fetching Questions ...',
+          font: "'Helvetica Neue', sans-serif, aerial"
         }
         break;
     }
@@ -250,22 +279,45 @@ class EditQuiz extends React.Component {
     });
   }
 
-  // validateAndSetOptionsValues(questions) {
-  //   questions.forEach((e, i) => {
-  //     let options = e.options,
-  //       isValid;
+  isOptionsValid(options) {
+    var isValid = options.reduce((boolean, current) => {
+        return boolean || current.right_or_wrong;
+      }, false);
 
-  //     isValid = options.reduce((boolean, current) => {
-  //       return boolean || current.right_or_wrong;
-  //     }, false);
-  //     debugger;
-  //     if (!isValid) {
-  //       options[0].right_or_wrong = !options[0].right_or_wrong
-  //     }
-  //   });
-  // }
+    return isValid;
+  }
 
-  onChangeHandler({formData}) {
+  validateOptions(questions, oldQuestions) {
+    questions.forEach((e, i) => {
+      let options = e.options,
+        isValid;
+
+      isValid = this.isOptionsValid(options);
+
+      if (!isValid) {
+        console.log(e.options, i, "OPTIONSSSSSSSS");
+        e.options = oldQuestions[i].options;
+      }
+    });
+  }
+
+  formValidator(formData, errors) {
+    console.log(errors, ";;;;;;;;;;;;;;............................")
+    switch(this.state.step) {
+      case 3:
+        formData.forEach((e, i) => {
+          if (!this.isOptionsValid(e.options)) {
+            errors[i].options.addError("Atleast one option must be true.");
+          }
+        });
+        return errors;
+      default:
+        return errors;
+    }
+  }
+
+  onChangeHandler(changeHandlerData) {
+    let formData = changeHandlerData.formData;
     switch (this.state.step) {
       case 1:
         this.setState((prevStep, prop) => {
@@ -298,10 +350,11 @@ class EditQuiz extends React.Component {
       case 3:
         this.setState((prevStep, prop) => {
           let dataJSON = prevStep.dataJSON;
-          // if (this.state.dataJSON.mandatory_config.quiz_type === "scoring") {
-          //   this.validateAndSetOptionsValues(formData);
-          //   debugger;
-          // }
+          if (this.state.dataJSON.mandatory_config.quiz_type === "scoring") {
+            let errors = this.Form.validate(formData, this.getSchemaJSON());
+            changeHandlerData.errors = errors.errors;
+            changeHandlerData.errorSchema = errors.errorSchema;
+          }
           dataJSON.data.questions = formData;
           return {
             updatingQuiz: true,
@@ -437,6 +490,8 @@ class EditQuiz extends React.Component {
                   referenceFormData={this.getReferenceFormData()}
                   formData = {this.getFormData()}
                   uiSchema={this.getUISchemaJSON()}
+                  validate={this.formValidator}
+                  ref={(e) => {this.Form = e;}}
                 >
                   <br />
                   <a

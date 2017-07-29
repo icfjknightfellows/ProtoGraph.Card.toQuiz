@@ -18,7 +18,8 @@ export default class QuestionCard extends React.Component {
   render () {
     let correctOption, languageTexts = this.props.languageTexts;
     if (this.props.cardConfigs.quiz_type === "scoring") {
-      correctOption = this.props.cardData.options.filter((e) => { return e.right_or_wrong === true })[0].option;
+      correctOption = this.props.cardData.options.filter((e) => { return e.right_or_wrong === true });
+      correctOption = correctOption.length ? correctOption[0].option : undefined;
     }
     return (
       <div

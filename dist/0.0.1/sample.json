@@ -2,265 +2,357 @@
   "data":{
     "basic_datapoints": {
       "background_image": {
-        "image": "https://dkqrqc7q64awx.cloudfront.net/7878f6c6e651/images/cover_image.jpg"
+        "image": "https://dwln9tzsi7g07.cloudfront.net/Assets/quiz-nitish-kumar.png"
       },
-      "quiz_title":"The Aadhaar Conundrum",
-      "introduction": "Even as the chorus around  the mandatory linking of Aadhaar with PAN card and bank account, there are a lot of rules that remain unclear. Find how much you know about Aadhaar.",
+      "quiz_title":"Quiz of the Week",
+      "introduction": "Several developments â€” major and small â€” which may shape the future course occurred this week. Test your knowledge and get your weekly dose of trivia.",
       "start_button_text":"Take this Quiz"
     },
-    "questions":[
+    "questions": [
       {
-        "question":"What is the maximum charge for Aadhaar services?",
-        "question_no":"1",
+        "question":"Which political leader broke his party's alliance with RJD to form a government with BJP in Bihar?",
+        "question_no":1,
         "options":[
           {
-            "option":"Rs 25\r\n",
+            "option":"Tejashwi Yadav",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/1-8-654x435.jpg"
+            },
+            "fact":"Wrong answer. Bihar CM Nitish Kumar broke his alliance with RJD to form a government with BJP.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Nitish Kumar",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/1-8-654x435.jpg"
             },
             "fact":"Correct answer.",
             "right_or_wrong":true
           },
           {
-            "option":"Rs 20\r\n",
+            "option":"Lalu Prasad Yadav",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/1-8-654x435.jpg"
             },
-            "fact":"Wrong answer. An update of either biometric or demographic details requires the Aadhaar card holder to pay Rs 25",
+            "fact":"Wrong answer. Bihar CM Nitish Kumar broke his alliance with RJD to form a government with BJP.",
             "right_or_wrong":false
           },
           {
-            "option":"Rs 10\r\n",
+            "option":"Sushil Modi",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/1-8-654x435.jpg"
             },
-            "fact":"Wrong answer. An update of either biometric or demographic details requires the Aadhaar card holder to pay Rs 26",
-            "right_or_wrong":false
-          },
-          {
-            "option":"No charge",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
-            },
-            "fact":"Wrong answer. An update of either biometric or demographic details requires the Aadhaar card holder to pay Rs 27",
+            "fact":"Wrong answer. Bihar CM Nitish Kumar broke his alliance with RJD to form a government with BJP.",
             "right_or_wrong":false
           }
         ]
       },
       {
-        "question":"When was the concept of unique identity first discussed?",
-        "question_no":"2",
+        "question":"Which document is no longer mandatory to apply for a passport?",
+        "question_no":2,
         "options":[
           {
-            "option":"2009",
+            "option":"Birth Certificate",
             "gif_image":{
-              "image":"http://media2.intoday.in/indiatoday/images/stories/aadhaarsc_story_647_062717045447_071217110737.jpg"
-            },
-            "fact":"Wrong answer. The concept of unique identity was first discussed in 2006 during the approval for the project “Unique ID” for BPL families.",
-            "right_or_wrong":false
-          },
-          {
-            "option":"1996",
-            "gif_image":{
-              "image":"http://media2.intoday.in/indiatoday/images/stories/aadhaarsc_story_647_062717045447_071217110737.jpg"
-            },
-            "fact":"Wrong answer. The concept of unique identity was first discussed in 2006 during the approval for the project “Unique ID” for BPL families.",
-            "right_or_wrong":false
-          },
-          {
-            "option":"2006",
-            "gif_image":{
-              "image":"http://media2.intoday.in/indiatoday/images/stories/aadhaarsc_story_647_062717045447_071217110737.jpg"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/buffer-1143491_1280-e1498549264247-770x433.jpg"
             },
             "fact":"Correct answer.",
             "right_or_wrong":true
           },
           {
-            "option":"2007",
+            "option":"Aadhaar Card",
             "gif_image":{
-              "image":"http://media2.intoday.in/indiatoday/images/stories/aadhaarsc_story_647_062717045447_071217110737.jpg"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/buffer-1143491_1280-e1498549264247-770x433.jpg"
             },
-            "fact":"Wrong answer. The concept of unique identity was first discussed in 2006 during the approval for the project “Unique ID” for BPL families.",
+            "fact":"Wrong answer. Birth Certificate is no longer mandatory to apply for passport.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Driving License",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/buffer-1143491_1280-e1498549264247-770x433.jpg"
+            },
+            "fact":"Wrong answer. Birth Certificate is no longer mandatory to apply for passport.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"PAN card",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/buffer-1143491_1280-e1498549264247-770x433.jpg"
+            },
+            "fact":"Wrong answer. Birth Certificate is no longer mandatory to apply for passport.",
             "right_or_wrong":false
           }
         ]
       },
       {
-        "question":"Aadhaar card has the following details:",
-        "question_no":"3",
+        "question":"Ram Nath Kovind became Indiaâ€™s _________ President.",
+        "question_no":3,
         "options":[
           {
-            "option":"Demographic\r\n",
+            "option":"15th",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/01/aadhaar-630x417.jpg"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3BL0Y-1-e1500561269948-770x433.jpg"
             },
-            "fact":"Wrong answer. Aadhaar card has demographic as well as biometric data of an individual. ",
+            "fact":"Wrong answer. Ram Nath Kovind became Indiaâ€™s 14th President.",
             "right_or_wrong":false
           },
           {
-            "option":" Biometric\r\n",
+            "option":"14th",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/01/aadhaar-630x417.jpg"
-            },
-            "fact":"Wrong answer. Aadhaar card has demographic as well as biometric data of an individual. ",
-            "right_or_wrong":false
-          },
-          {
-            "option":"Demographic and Biometric",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/01/aadhaar-630x417.jpg"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3BL0Y-1-e1500561269948-770x433.jpg"
             },
             "fact":"Correct answer.",
             "right_or_wrong":true
+          },
+          {
+            "option":"13th",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3BL0Y-1-e1500561269948-770x433.jpg"
+            },
+            "fact":"Wrong answer. Ram Nath Kovind became Indiaâ€™s 14th President.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"16th",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3BL0Y-1-e1500561269948-770x433.jpg"
+            },
+            "fact":"Wrong answer. Ram Nath Kovind became Indiaâ€™s 14th President.",
+            "right_or_wrong":false
           }
         ]
       },
       {
-        "question":"Benefits under the Aadhaar-enabled schemes can be denied to an individual if he/she does not have Aadhaar.",
-        "question_no":"4",
+        "question":"Wage Code Bill empowers the Centre to set a minimum wage across all sectors.",
+        "question_no":4,
         "options":[
           {
             "option":"TRUE",
             "gif_image":{
-              "image":"http://static.dnaindia.com/sites/default/files/styles/half/public/2017/06/28/588270-aadhaar-050417.jpg?itok=kGG1vTF3"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/05/indian-rupee-new-currency-money-banned-note-coins-rupee-versus-dollar-savings-770x433.jpg"
             },
-            "fact":"Wrong answer. Section 7 of the Aadhaar Act states that if subsidy is given from Consolidated Fund of India then beneficiary must have Aadhaar. If they do not, then they must enroll for Aadhaar and until then alternative means of identification can be used.",
-            "right_or_wrong":false
+            "fact":"Correct answer.",
+            "right_or_wrong":true
           },
           {
             "option":"FALSE",
             "gif_image":{
-              "image":"http://static.dnaindia.com/sites/default/files/styles/half/public/2017/06/28/588270-aadhaar-050417.jpg?itok=kGG1vTF4"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/05/indian-rupee-new-currency-money-banned-note-coins-rupee-versus-dollar-savings-770x433.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact":"Wrong answer. The Wage Code Bill empowers the Centre to set a minimum wage across all sectors in the country.",
+            "right_or_wrong":false
           }
         ]
       },
       {
-        "question":"You can cast a vote using Aadhaar.",
-        "question_no":"5",
+        "question":"Two former ISRO scientists passed away recently. Name them.",
+        "question_no":5,
         "options":[
           {
-            "option":"   Yes\r\n",
+            "option":"Yash Pal and Bhushan Singh",
             "gif_image":{
-              "image":"http://secure.kashmirmonitor.in/Upload_Images/Upload_Images_Articles/01f59785-54f2-4c77-b93a-49fefeb8732b.JPG"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/UR-Rao-306x435.png"
             },
-            "fact":"Wrong answer. Voter ID is mandatory for casting a vote. One cannot vote using Aadhaar.",
+            "fact":"Wrong answer. India lost Udupi Ramachandra Rao and Yash Pal.",
             "right_or_wrong":false
           },
           {
-            "option":"No\r\n",
+            "option":"Udupi Ramachandra Rao and Yash Pal",
             "gif_image":{
-              "image":"http://secure.kashmirmonitor.in/Upload_Images/Upload_Images_Articles/01f59785-54f2-4c77-b93a-49fefeb8732b.JPG"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/UR-Rao-306x435.png"
             },
             "fact":"Correct answer.",
             "right_or_wrong":true
           },
           {
-            "option":" Under certain circumstances",
+            "option":"K Radhakrishnan and Vikram Sarabhai",
             "gif_image":{
-              "image":"http://secure.kashmirmonitor.in/Upload_Images/Upload_Images_Articles/01f59785-54f2-4c77-b93a-49fefeb8732b.JPG"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/UR-Rao-306x435.png"
             },
-            "fact":"Wrong answer. Voter ID is mandatory for casting a vote. One cannot vote using Aadhaar.",
+            "fact":"Wrong answer. India lost Udupi Ramachandra Rao and Yash Pal.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"UR Rao and  Bhushan Singh",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/UR-Rao-306x435.png"
+            },
+            "fact":"Wrong answer. India lost Udupi Ramachandra Rao and Yash Pal.",
             "right_or_wrong":false
           }
         ]
       },
       {
-        "question":"Recently, Aadhaar was challenged in Supreme Court because it violated this Right.",
-        "question_no":"6",
-        "options":[
-          {
-            "option":" Right to Privacy\r\n",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/04/judiciary-770x433.jpg"
-            },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
-          },
-          {
-            "option":"Right to personal identity\r\n",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/04/judiciary-770x433.jpg"
-            },
-            "fact":"Wrong answer. On July 12, the Supreme Court agreed to hear all the issues arising out of Aadhar card, especially the concern over whether it breaches the people's right to privacy.",
-            "right_or_wrong":false
-          },
-          {
-            "option":"Right to freedom\r\n\n",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/04/judiciary-770x433.jpg"
-            },
-            "fact":"Wrong answer. On July 12, the Supreme Court agreed to hear all the issues arising out of Aadhar card, especially the concern over whether it breaches the people's right to privacy.",
-            "right_or_wrong":false
-          },
-          {
-            "option":"Right to Individuality",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/04/judiciary-770x433.jpg"
-            },
-            "fact":"Wrong answer. On July 12, the Supreme Court agreed to hear all the issues arising out of Aadhar card, especially the concern over whether it breaches the people's right to privacy.",
-            "right_or_wrong":false
-          }
-        ]
-      },
-      {
-        "question":"Government officials can rightfully use Aadhaar to track an individual.",
-        "question_no":"7",
+        "question":"Nifty closed above 10,000 for the first time ever this week.",
+        "question_no":6,
         "options":[
           {
             "option":"TRUE",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Aadhaar-747x435.jpg"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/Market_Sensex_BSE_Traders1-770x433.jpg"
             },
-            "fact":"Wrong answer. No one can track an individual using Aadhaar. Any such attempt, is an offence under the Aadhaar Act.",
-            "right_or_wrong":false
+            "fact":"Correct answer.",
+            "right_or_wrong":true
           },
           {
             "option":"FALSE",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Aadhaar-747x435.jpg"
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/Market_Sensex_BSE_Traders1-770x433.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact":"Wrong answer. Nifty closed above 10,000 for the first time ever this week.",
+            "right_or_wrong":false
           }
         ]
       },
       {
-        "question":" What is the tagline for Aadhaar?",
-        "question_no":"8",
+        "question":"The CBFC cut ___ scenes in the movie â€˜Lipstick Under My Burkhaâ€™.",
+        "question_no":7,
         "options":[
           {
-            "option":" Mera Aadhaar, Meri pehchaan\r\n",
+            "option":"27",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2014/12/aadhaar_91377436.jpg"
+              "image":"https://img.buzzfeed.com/buzzfeed-static/static/2017-07/26/1/asset/buzzfeed-prod-fastlane-03/sub-buzz-17707-1501048538-1.jpg"
             },
             "fact":"Correct answer.",
             "right_or_wrong":true
           },
           {
-            "option":" Aadhaar Aam Admi ka Adhikar\r\n",
+            "option":"24",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2014/12/aadhaar_91377436.jpg"
+              "image":"https://img.buzzfeed.com/buzzfeed-static/static/2017-07/26/1/asset/buzzfeed-prod-fastlane-03/sub-buzz-17707-1501048538-1.jpg"
             },
-            "fact":"Wrong answer. In 2016, the tagline ‘Aam Admi ka Adhikar’ was changed to ‘Mera Aadhaar, Meri Pehchaan’ following several requests to remove the phrase ‘aam admi’.",
+            "fact":"Wrong answer. Censor Board cut 27 scenes in the movie.",
             "right_or_wrong":false
           },
           {
-            "option":"Aadhaar is Right of a Common Man\r\n",
+            "option":"12",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2014/12/aadhaar_91377436.jpg"
+              "image":"https://img.buzzfeed.com/buzzfeed-static/static/2017-07/26/1/asset/buzzfeed-prod-fastlane-03/sub-buzz-17707-1501048538-1.jpg"
             },
-            "fact":"Wrong answer. In 2016, the tagline ‘Aam Admi ka Adhikar’ was changed to ‘Mera Aadhaar, Meri Pehchaan’ following several requests to remove the phrase ‘aam admi’.",
+            "fact":"Wrong answer. Censor Board cut 27 scenes in the movie.",
             "right_or_wrong":false
           },
           {
-            "option":"One India, One Identity",
+            "option":"28",
             "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2014/12/aadhaar_91377436.jpg"
+              "image":"https://img.buzzfeed.com/buzzfeed-static/static/2017-07/26/1/asset/buzzfeed-prod-fastlane-03/sub-buzz-17707-1501048538-1.jpg"
             },
-            "fact":"Wrong answer. In 2016, the tagline ‘Aam Admi ka Adhikar’ was changed to ‘Mera Aadhaar, Meri Pehchaan’ following several requests to remove the phrase ‘aam admi’.",
+            "fact":"Wrong answer. Censor Board cut 27 scenes in the movie.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"Name the futuristic public transportation system that NITI Aayog has approved.",
+        "question_no":8,
+        "options":[
+          {
+            "option":"Skylon",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/hyperloop_1280x720-770x433.jpg"
+            },
+            "fact":"Wrong answer. NITI Aayog approved Hyperloop One.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"SkyTran",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/hyperloop_1280x720-770x433.jpg"
+            },
+            "fact":"Wrong answer. NITI Aayog approved Hyperloop One.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Hyperloop One",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/hyperloop_1280x720-770x433.jpg"
+            },
+            "fact":"Correct answer.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Velo-City",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/hyperloop_1280x720-770x433.jpg"
+            },
+            "fact":"Wrong answer. NITI Aayog approved Hyperloop One.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"Google has removed one of its radical tools. Which one?",
+        "question_no":9,
+        "options":[
+          {
+            "option":"Google Autocomplete",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Capture-4-770x433.png"
+            },
+            "fact":"Wrong answer. Google dropped its â€˜Instant Searchâ€™ option.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Google Instant Search",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Capture-4-770x433.png"
+            },
+            "fact":"Correct answer.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Google Adwords",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Capture-4-770x433.png"
+            },
+            "fact":"Wrong answer. Google dropped its â€˜Instant Searchâ€™ option.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"None of the above",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Capture-4-770x433.png"
+            },
+            "fact":"Wrong answer. Google dropped its â€˜Instant Searchâ€™ option.",
+            "right_or_wrong":false
+          }
+        ]
+      },
+      {
+        "question":"India lost by 9 runs against _____in ICC Women's World Cup 2017 final.",
+        "question_no":10,
+        "options":[
+          {
+            "option":"England",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3CAEO-719x435.jpg"
+            },
+            "fact":"Correct answer.",
+            "right_or_wrong":true
+          },
+          {
+            "option":"Australia",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3CAEO-719x435.jpg"
+            },
+            "fact":"Wrong answer. India faced England and fell 9 runs shy of the total in the nail-biting encounter at Lord's.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"Pakistan",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3CAEO-719x435.jpg"
+            },
+            "fact":"Wrong answer. India faced England and fell 9 runs shy of the total in the nail-biting encounter at Lord's.",
+            "right_or_wrong":false
+          },
+          {
+            "option":"South Africa",
+            "gif_image":{
+              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3CAEO-719x435.jpg"
+            },
+            "fact":"Wrong answer. India faced England and fell 9 runs shy of the total in the nail-biting encounter at Lord's.",
             "right_or_wrong":false
           }
         ]
@@ -268,7 +360,7 @@
     ]
   },
   "mandatory_config":{
-    "language": "hindi",
+    "language": "english",
     "quiz_type": "scoring",
     "quiz_type_form": "scoring",
     "timer": false,
