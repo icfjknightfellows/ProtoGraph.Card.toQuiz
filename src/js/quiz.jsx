@@ -359,6 +359,8 @@ class Quiz extends React.Component {
       orderId = qCard.getAttribute("data-order"),
       config = this.state.dataJSON.mandatory_config;
 
+    option = option || {};
+
     qCard.setAttribute('data-isNavigable', 1);
     if(!(config.quiz_type === "scoring" && !config.flip_card)) {
       let backDiv = parent.querySelector(".protograph-toQuiz-back");

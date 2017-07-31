@@ -66,4 +66,40 @@ option[value=''] {
     display: none;
 }
 
+#protograph_embed_editQuiz {
+  position: relative;
+}
+
+.protograph-toQuiz-overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  background-color: #000;
+  opacity: 0.6;
+  /*pointer-events: none;*/
+}
+
+.protograph-toQuiz-rerender-quiz {
+  display: none !important;
+  z-index: 1050 !important;
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  pointer-events: all;
+  animation: jiggle 2s infinite ease-in;
+}
+
+.protograph-toQuiz-no-pointerEvents {
+  pointer-events: none;
+}
+
+.protograph-toQuiz-overlay.active, .protograph-toQuiz-rerender-quiz.active {
+  display: block !important;
+}
+
+
 /*# sourceMappingURL=master-style.css.map */
