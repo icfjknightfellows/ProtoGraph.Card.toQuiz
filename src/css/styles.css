@@ -293,6 +293,7 @@ html {
   line-height: 1.5em;
   font-size: 0.85em;
   overflow: hidden;
+  word-wrap: break-word;
 }
 
 .protograph-toQuiz-next, .protograph-toQuiz-reset, .protograph-toQuiz-help-text {
