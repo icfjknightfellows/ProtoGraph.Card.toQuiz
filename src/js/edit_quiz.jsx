@@ -25,9 +25,11 @@ class EditQuiz extends React.Component {
       resultCardData: {},
       step: 1,
       updatingQuiz: false,
-      baseURL: this.props.baseURL
+      baseURL: this.props.baseURL,
+      renderOverlay: false
     };
     this.formValidator = this.formValidator.bind(this);
+    this.setDataJSON = this.setDataJSON.bind(this);
   }
 
   componentDidMount() {
@@ -295,29 +297,30 @@ class EditQuiz extends React.Component {
       isValid = this.isOptionsValid(options);
 
       if (!isValid) {
-        console.log(e.options, i, "OPTIONSSSSSSSS");
         e.options = oldQuestions[i].options;
       }
     });
   }
 
   formValidator(formData, errors) {
-    console.log(errors, ";;;;;;;;;;;;;;............................")
-    switch(this.state.step) {
-      case 3:
-        formData.forEach((e, i) => {
-          if (!this.isOptionsValid(e.options)) {
-            errors[i].options.addError("Atleast one option must be true.");
-          }
-        });
-        return errors;
-      default:
-        return errors;
+    if (this.state.dataJSON.mandatory_config.quiz_type === "scoring") {
+      switch(this.state.step) {
+        case 3:
+          formData.forEach((e, i) => {
+            if (!this.isOptionsValid(e.options)) {
+              // errors[i].options.addError("Atleast one option must be true.");
+              errors[i].addError("Atleast one options must be true.");
+            }
+          });
+          return errors;
+        default:
+          return errors;
+      }
     }
+    return errors;
   }
 
-  onChangeHandler(changeHandlerData) {
-    let formData = changeHandlerData.formData;
+  onChangeHandler({formData}) {
     switch (this.state.step) {
       case 1:
         this.setState((prevStep, prop) => {
@@ -350,13 +353,9 @@ class EditQuiz extends React.Component {
       case 3:
         this.setState((prevStep, prop) => {
           let dataJSON = prevStep.dataJSON;
-          if (this.state.dataJSON.mandatory_config.quiz_type === "scoring") {
-            let errors = this.Form.validate(formData, this.getSchemaJSON());
-            changeHandlerData.errors = errors.errors;
-            changeHandlerData.errorSchema = errors.errorSchema;
-          }
           dataJSON.data.questions = formData;
           return {
+            renderOverlay: true,
             updatingQuiz: true,
             dataJSON: dataJSON,
             totalQuestions: dataJSON.data.questions.length
@@ -429,6 +428,15 @@ class EditQuiz extends React.Component {
 
   renderQuiz() {
     if (this.shouldQuizRender) {
+      if (this.state.renderOverlay) {
+        return (
+          <div className="protograph-toQuiz-overlay-container">
+            <div className={`protograph-toQuiz-overlay ${this.state.renderOverlay ? 'active' : ''}`} />
+            <button className={`ui primary button protograph-toQuiz-rerender-quiz  ${this.state.renderOverlay ? 'active' : ''}`} onClick={this.setDataJSON}>Refresh Quiz</button>
+          </div>
+        );
+      }
+
       return <Quiz
         mode='laptop'
         dataJSON={this.state.dataJSON}
@@ -459,6 +467,10 @@ class EditQuiz extends React.Component {
     }
   }
 
+  setDataJSON() {
+    this.setState({renderOverlay: false});
+  }
+
   render(e) {
     if (this.state.fetchingData) {
       return (
@@ -471,6 +483,10 @@ class EditQuiz extends React.Component {
         </div>
       )
     } else {
+      let style = {};
+      if (this.state.renderOverlay) {
+        style["display"] = 'block !important';
+      }
       return (
         <div className="proto-container">
           <div className="ui grid form-layout">
@@ -491,6 +507,7 @@ class EditQuiz extends React.Component {
                   formData = {this.getFormData()}
                   uiSchema={this.getUISchemaJSON()}
                   validate={this.formValidator}
+                  liveValidate={this.state.step === 3 && this.state.dataJSON.mandatory_config.quiz_type === "scoring" ? true : false}
                   ref={(e) => {this.Form = e;}}
                 >
                   <br />
@@ -508,7 +525,7 @@ class EditQuiz extends React.Component {
                   </button>
                 </JSONSchemaForm>
               </div>
-              <div id="protograph_embed_editQuiz" className="twelve wide column proto-card-preview proto-share-card-div">
+              <div id="protograph_embed_editQuiz" className={`twelve wide column proto-card-preview proto-share-card-div ${this.state.renderOverlay ? 'protograph-toQuiz-no-pointerEvents' : ''}`}>
                 { this.renderQuiz() }
               </div>
             </div>
