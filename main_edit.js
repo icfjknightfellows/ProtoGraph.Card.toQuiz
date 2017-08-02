@@ -13,6 +13,11 @@ ProtoGraph.Card.toQuiz.prototype.getData = function () {
   return this.containerInstance.exportData();
 }
 
+ProtoGraph.Card.toQuiz.prototype.renderSEO = function (data) {
+  this.renderMode = 'SEO';
+  return this.containerInstance.renderSEO();
+}
+
 ProtoGraph.Card.toQuiz.prototype.renderEdit = function (onPublishCallback) {
   this.mode = 'edit';
   ReactDOM.render(

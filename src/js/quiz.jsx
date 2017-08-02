@@ -978,10 +978,10 @@ class Quiz extends React.Component {
   renderQuiz() {
     if (this.state.fetchingData) {
       return (
-        <div className='protograph-toQuiz-quiz-container' style={{"fontFamily": this.state.languageTexts.font}}>
+        <div className='protograph-toQuiz-quiz-container' style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
           <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
-              {this.state.languageTexts.fetching_questions}
+              Fetching Questions ...
             </span>
           </div>
         </div>
@@ -1047,10 +1047,10 @@ class Quiz extends React.Component {
   renderScreenshot() {
     if (this.state.fetchingData) {
       return (
-        <div className='protograph-toQuiz-quiz-container' style={{"fontFamily": this.state.languageTexts.font}}>
+        <div className='protograph-toQuiz-quiz-container' style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
           <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
-              {this.state.languageTexts.fetching_questions}
+              Fetching Questions ...
             </span>
           </div>
         </div>

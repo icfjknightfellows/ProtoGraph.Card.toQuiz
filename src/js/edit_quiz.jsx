@@ -23,6 +23,7 @@ class EditQuiz extends React.Component {
       optionalConfigSchemaJSON: {},
       uiSchemaJSON: {},
       resultCardData: {},
+      errorOnFetchingData: undefined,
       step: 1,
       updatingQuiz: false,
       baseURL: this.props.baseURL,
@@ -62,7 +63,12 @@ class EditQuiz extends React.Component {
           }
 
           this.setState(stateVar);
-        }));
+        }))
+        .catch((error) => {
+          this.setState({
+            errorOnFetchingData: true
+          })
+        });
     }
   }
 
@@ -471,13 +477,27 @@ class EditQuiz extends React.Component {
     this.setState({renderOverlay: false});
   }
 
+  renderSEO() {
+    return `<blockquote><h3>${this.state.dataJSON.data.basic_datapoints.quiz_title}</h3><p>${this.state.dataJSON.data.basic_datapoints.introduction}</p></blockquote>`;
+  }
+
   render(e) {
     if (this.state.fetchingData) {
       return (
         <div className='quiz-container'>
           <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
-              Fetching Questions ...
+              {
+                !this.state.errorOnFetchingData ?
+                  "Fetching Questions ..."
+                :
+                  <div className="ui negative message">
+                    <div className="header">
+                      Failed to load resources
+                    </div>
+                    <p>Try to clear your browser cache and refresh the page. <a href="#" onClick={(e) => {location.reload(true)}}>Reload</a></p>
+                  </div>
+              }
             </span>
           </div>
         </div>
