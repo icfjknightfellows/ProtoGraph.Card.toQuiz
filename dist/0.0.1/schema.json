@@ -92,7 +92,7 @@
                                             "type": "string"
                                         },
                                         "right_or_wrong": {
-                                            "default": true,
+                                            "default": false,
                                             "title": "Is this the correct option?",
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/right_or_wrong",
                                             "type": "boolean",
@@ -179,7 +179,8 @@
                                         "id": "/properties/data/properties/cover_data/properties/logo_image",
                                         "title": "Upload a article cover image",
                                         "type": "string",
-                                        "format": "data-url"
+                                        "format": "data-url",
+                                        "sizeLimit": 100.0
                                     }
                                 }
                             }

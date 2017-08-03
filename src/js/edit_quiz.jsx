@@ -486,16 +486,16 @@ class EditQuiz extends React.Component {
       return (
         <div className='quiz-container'>
           <div className="loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
-            <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
+            <span className="loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)'}}>
               {
                 !this.state.errorOnFetchingData ?
                   "Fetching Questions ..."
                 :
-                  <div className="ui negative message">
+                  <div className="ui basic message">
                     <div className="header">
                       Failed to load resources
                     </div>
-                    <p>Try to clear your browser cache and refresh the page. <a href="#" onClick={(e) => {location.reload(true)}}>Reload</a></p>
+                    <p>Try clearing your browser cache and refresh the page.</p>
                   </div>
               }
             </span>
