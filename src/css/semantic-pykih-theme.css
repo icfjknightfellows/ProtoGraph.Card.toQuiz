@@ -1,0 +1,83 @@
+.protograph-card{
+    padding: 20px;
+}
+
+sup{
+  color: gray;
+  text-transform: uppercase !important;
+}
+
+.protograph-margin{
+  margin-bottom: 20px !important;
+}
+
+.protograph-read-more{
+    width: 100%;
+    border: 1px solid #ececec!important;
+    padding: 8px 0px;
+    font-size: 12px;
+    background: #fafafa !important;
+    margin-bottom: 10px;
+    transition: 0.2s ease-in-out;
+}
+
+.protograph-read-more:hover{
+    background: #333 !important;
+    border: 1px solid #333 !important;
+    color: white;
+}
+
+h1.ui.header, h2.ui.header, h3.ui.header, h4.ui.header, h5.ui.header, h6.ui.header{
+  margin-bottom: 5px;
+  padding-bottom: 0px;
+  margin-top: 5px;
+  padding-top: 0px;
+}
+
+h6{font-weight: 400 !important; font-size: 0.8em; color: gray !important;}
+
+.protograph-card{
+    transition: 0.2s ease-in-out;
+}
+
+.protograph-card:hover{
+    background: #fafafa;
+}
+
+.protograph-card > .protograph-footer{
+    display: inline-block;
+    width: 100%;
+}
+
+.protograph-card > .protograph-footer > .protograph-source{
+  padding: 0px;
+  font-size: 10px;
+  color: transparent;
+  display: inline;
+  float: left;
+  transition: 0.2s ease-in-out;
+}
+
+.protograph-card:hover > .protograph-footer > .protograph-source{
+  color: #7a7a7a;
+}
+
+.protograph-card > .protograph-footer > .protograph-credits{
+  color: transparent;
+  float: right;
+  font-size: 10px;
+  display: inline;
+  transition: 0.2s ease-in-out;
+}
+
+.protograph-card:hover > .protograph-footer > .protograph-credits{
+  color: #7a7a7a;
+}
+
+.protograph-card:hover > .protograph-footer > .protograph-source:hover{
+  color: blue;
+}
+
+.protograph-card:hover > .protograph-footer > .protograph-credits:hover{
+  color: blue;
+}
