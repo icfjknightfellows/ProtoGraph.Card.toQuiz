@@ -1,12 +1,4 @@
-/*@import url('https://fonts.googleapis.com/css?family=Noto+Sans');*/
-/*@import url("https://fonts.googleapis.com/css?family=Halant");
-@import url("https://fonts.googleapis.com/css?family=Droid+Serif");
-@import url("https://fonts.googleapis.com/css?family=Mukta+Vaani:500");
-@import url('https://fonts.googleapis.com/css?family=Hind');*/
-/*@font-face {
-  font-family: "charter";
-  src: url("../fonts/charter_regular-webfont.ttf") format("truetype");
-}*/
+@import url('https://fonts.googleapis.com/css?family=Hind');
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
