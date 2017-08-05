@@ -511,7 +511,7 @@ html {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -55%);
-  /*font-size: 100px;*/
+  font-size: 50px;
 }
 
 .protograph-toQuiz-correct-tick {
@@ -695,7 +695,7 @@ html {
 }
 
 .protograph-toQuiz-countdown-counter {
-  /*font-size: 80px;*/
+  font-size: 50px !important;
   font-weight: bold;
   margin-top: 20px;
 }
