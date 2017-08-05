@@ -286,7 +286,7 @@ class Quiz extends React.Component {
       for(let i = 1; i < totalQuestions; i++) {
         let card = document.querySelector(`.protograph-toQuiz-question-card[data-order='${i}']`);
 
-        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (i * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (i * 13)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
         if(i > 2) {
           card.style.opacity = 0;
         } else {
@@ -295,7 +295,7 @@ class Quiz extends React.Component {
       }
 
       let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card");
-      conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+      conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions) * 13)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
       if(totalQuestions < 3) {
         conclusionCard.style.opacity = 1;
       }
@@ -509,7 +509,7 @@ class Quiz extends React.Component {
       let card = document.querySelector(`.protograph-toQuiz-question-card[data-order='${i}']`),
         position = (i - orderId - 1);
 
-      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (position * 13)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
       if((i - orderId) < 4) {
         card.style.opacity = 1;
       }
@@ -517,7 +517,7 @@ class Quiz extends React.Component {
 
     let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card"),
       position = totalQuestions - orderId - 1;
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (position * 13)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
     if((totalQuestions - orderId) < 4) {
       conclusionCard.style.opacity = 1;
     }
@@ -565,7 +565,7 @@ class Quiz extends React.Component {
         allOptions;
 
       questionElement.classList.remove("protograph-toQuiz-clicked");
-      questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (i * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+      questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (i * 13)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
       questionElement.style.display = "block";
       frontElement.style.display = "block";
       questionElement.style.top = "0px";
@@ -614,7 +614,7 @@ class Quiz extends React.Component {
     let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card"),
       progressBars = document.querySelectorAll(".protograph-toQuiz-progress-bar");
 
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (totalQuestions * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (totalQuestions * 13)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
     if(totalQuestions < 3) {
       conclusionCard.style.opacity = 1;
     } else {
@@ -677,7 +677,7 @@ class Quiz extends React.Component {
         qCard.style.top = "-1000px";
       } else {
         let position = i - value;
-        qCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160  - (position * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * position)})`;
+        qCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160  - (position * 13)}, ${(i * 320 * -1)}, ${(1 + 0.08 * position)})`;
         qCard.style.display = "block";
         // q_card.style.left = "50%";
         qCard.style.top = "0px";
@@ -693,7 +693,7 @@ class Quiz extends React.Component {
       }
     }
 
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions - value) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * (totalQuestions - value))})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions - value) * 13)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * (totalQuestions - value))})`;
     if((totalQuestions - value) < 3) {
       setTimeout(function() {
         conclusionCard.style.opacity = 1;
@@ -995,7 +995,7 @@ class Quiz extends React.Component {
     } else {
 
       let styles = {},
-        x = 140, //(this.state.totalQuestions * 20) - 20,
+        x = 147, //(this.state.totalQuestions * 20) - 20,
         y = 0 - 320,
         z = 1 + 0.08,
         questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],
@@ -1014,7 +1014,7 @@ class Quiz extends React.Component {
           style.opacity = 0;
         }
 
-        x = x - 20;
+        x = x - 13;
         y = y - 320;
         z = z + 0.08;
 

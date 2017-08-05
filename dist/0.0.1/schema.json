@@ -285,5 +285,9 @@
         "mandatory_config",
         "data"
     ],
-    "type": "object"
+    "type": "object",
+    "images": [
+        "data/basic_datapoints/background_image/image",
+        "data/questions/items/options/items/gif_image/image"
+    ]
 }

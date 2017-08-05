@@ -125,7 +125,7 @@ export default class ResultCard extends React.Component {
       message = readingLinks.message;
     }
 
-    conclusionCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - ((+this.props.totalQuestions + 1) * 20) }, ${((+this.props.totalQuestions + 1) * 320 * -1)}, ${(1 + 0.08 * (+this.props.totalQuestions + 1))})`;
+    conclusionCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - ((+this.props.totalQuestions + 1) * 13) }, ${((+this.props.totalQuestions + 1) * 320 * -1)}, ${(1 + 0.08 * (+this.props.totalQuestions + 1))})`;
     if(+this.props.totalQuestions > 1) {
       conclusionCardStyle.opacity = 0;
     }
