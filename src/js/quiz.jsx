@@ -30,7 +30,9 @@ class Quiz extends React.Component {
       questionScore: 1,
       timer: undefined,
       revisitingAnswers: false,
-      isMobile: this.props.mode === 'mobile' ? true : false
+      isMobile: this.props.mode === 'mobile' ? true : false,
+      creditMessage: "toQuiz",
+      creditLink: "https://protograph.pykih.com/card/toquiz"
     };
 
 
@@ -217,7 +219,7 @@ class Quiz extends React.Component {
           times_up: "Times's up",
           slider_text: 'use slider to move between questions',
           fetching_questions: 'Fetching Questions ...',
-          font: "'Helvetica Neue', sans-serif, aerial"
+          font: undefined
         }
         break;
     }
@@ -265,7 +267,7 @@ class Quiz extends React.Component {
     document.querySelector(".protograph-toQuiz-intro-back").style.display = "block";
 
     if(!this.state.isMobile) {
-      e.target.style.visibility = "hidden";
+      button.style.visibility = "hidden";
       document.querySelector(".protograph-toQuiz-intro-cover").style.display = "block";
     }
     introCard.classList.add("protograph-toQuiz-clicked");
@@ -284,7 +286,7 @@ class Quiz extends React.Component {
       for(let i = 1; i < totalQuestions; i++) {
         let card = document.querySelector(`.protograph-toQuiz-question-card[data-order='${i}']`);
 
-        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (i * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+        card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (i * 13)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
         if(i > 2) {
           card.style.opacity = 0;
         } else {
@@ -293,7 +295,7 @@ class Quiz extends React.Component {
       }
 
       let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card");
-      conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+      conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions) * 13)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
       if(totalQuestions < 3) {
         conclusionCard.style.opacity = 1;
       }
@@ -507,7 +509,7 @@ class Quiz extends React.Component {
       let card = document.querySelector(`.protograph-toQuiz-question-card[data-order='${i}']`),
         position = (i - orderId - 1);
 
-      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+      card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (position * 13)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
       if((i - orderId) < 4) {
         card.style.opacity = 1;
       }
@@ -515,7 +517,7 @@ class Quiz extends React.Component {
 
     let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card"),
       position = totalQuestions - orderId - 1;
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (position * 20)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (position * 13)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
     if((totalQuestions - orderId) < 4) {
       conclusionCard.style.opacity = 1;
     }
@@ -563,7 +565,7 @@ class Quiz extends React.Component {
         allOptions;
 
       questionElement.classList.remove("protograph-toQuiz-clicked");
-      questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (i * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
+      questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (i * 13)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
       questionElement.style.display = "block";
       frontElement.style.display = "block";
       questionElement.style.top = "0px";
@@ -612,7 +614,7 @@ class Quiz extends React.Component {
     let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card"),
       progressBars = document.querySelectorAll(".protograph-toQuiz-progress-bar");
 
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (totalQuestions * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (totalQuestions * 13)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
     if(totalQuestions < 3) {
       conclusionCard.style.opacity = 1;
     } else {
@@ -675,7 +677,7 @@ class Quiz extends React.Component {
         qCard.style.top = "-1000px";
       } else {
         let position = i - value;
-        qCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160  - (position * 20)}, ${(i * 320 * -1)}, ${(1 + 0.08 * position)})`;
+        qCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160  - (position * 13)}, ${(i * 320 * -1)}, ${(1 + 0.08 * position)})`;
         qCard.style.display = "block";
         // q_card.style.left = "50%";
         qCard.style.top = "0px";
@@ -691,7 +693,7 @@ class Quiz extends React.Component {
       }
     }
 
-    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions - value) * 20)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * (totalQuestions - value))})`;
+    conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - ((totalQuestions - value) * 13)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * (totalQuestions - value))})`;
     if((totalQuestions - value) < 3) {
       setTimeout(function() {
         conclusionCard.style.opacity = 1;
@@ -843,15 +845,15 @@ class Quiz extends React.Component {
         <div
           id={ this.props.mode === 'screenshot' ? "ProtoScreenshot" : undefined }
           className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'protograph-toQuiz-intro-content protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-content'}`}>
-          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-header protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-header'}`}>
+          <h1 className={`${introCardConfigs.background_image && this.state.isMobile ? 'ui header protograph-toQuiz-intro-header protograph-toQuiz-with-image' : 'ui header protograph-toQuiz-intro-header'}`}>
             {introCardConfigs.quiz_title}
-          </div>
-          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
+          </h1>
+          <p className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
             {introCardConfigs.introduction}
-          </div>
+          </p>
           <div className="protograph-toQuiz-intro-button-div">
             <button className="protograph-toQuiz-intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
-              {introCardConfigs.start_button_text}
+              <h3 className="ui header" style={buttonStyle}>{introCardConfigs.start_button_text}</h3>
             </button>
           </div>
         </div>
@@ -863,9 +865,9 @@ class Quiz extends React.Component {
   renderCorrectIndicator() {
     return (
       <div id="correct_indicator" className="protograph-toQuiz-correct-wrong-indicator protograph-toQuiz-correct-background">
-        <div className="protograph-toQuiz-tick-background">
+        <h1 className="ui header protograph-toQuiz-tick-background">
           <span className="protograph-toQuiz-correct-tick">&#10004;&#xFE0E;</span>
-        </div>
+        </h1>
         <div className="protograph-toQuiz-correct-wrong-text">{this.state.languageTexts.correct}</div>
       </div>
     );
@@ -874,9 +876,9 @@ class Quiz extends React.Component {
   renderWrongIndicator() {
     return (
       <div id="wrong_indicator" className="protograph-toQuiz-correct-wrong-indicator protograph-toQuiz-wrong-background">
-        <div className="protograph-toQuiz-tick-background protograph-toQuiz-wrong-tick">
+        <h1 className="ui header protograph-toQuiz-tick-background protograph-toQuiz-wrong-tick">
           <span>&#10007;&#xFE0E;</span>
-        </div>
+        </h1>
         <div className="protograph-toQuiz-correct-wrong-text protograph-toQuiz-wrong">{this.state.languageTexts.wrong}</div>
       </div>
     );
@@ -933,6 +935,8 @@ class Quiz extends React.Component {
               totalQuestions={this.state.totalQuestions}
               isMobile={this.state.isMobile}
               languageTexts={this.state.languageTexts}
+              creditLink={this.state.creditLink}
+              creditMessage={this.state.creditMessage}
             />
 
             <div id="card_stack" className="protograph-toQuiz-card-stack">
@@ -951,6 +955,8 @@ class Quiz extends React.Component {
               score={this.state.score}
               cardEvents={events}
               baseURL={this.props.baseURL}
+              creditLink={this.state.creditLink}
+              creditMessage={this.state.creditMessage}
             />
 
             <div className="protograph-toQuiz-slider-container">
@@ -989,7 +995,7 @@ class Quiz extends React.Component {
     } else {
 
       let styles = {},
-        x = 140, //(this.state.totalQuestions * 20) - 20,
+        x = 147, //(this.state.totalQuestions * 20) - 20,
         y = 0 - 320,
         z = 1 + 0.08,
         questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],
@@ -1008,7 +1014,7 @@ class Quiz extends React.Component {
           style.opacity = 0;
         }
 
-        x = x - 20;
+        x = x - 13;
         y = y - 320;
         z = z + 0.08;
 
@@ -1036,6 +1042,8 @@ class Quiz extends React.Component {
             isMobile={this.state.isMobile}
             timerValue={this.calculateTime(this.state.timerCountValue)}
             baseURL={this.props.baseURL}
+            creditLink={this.state.creditLink}
+            creditMessage={this.state.creditMessage}
           />
         )
       });

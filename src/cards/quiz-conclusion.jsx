@@ -125,7 +125,7 @@ export default class ResultCard extends React.Component {
       message = readingLinks.message;
     }
 
-    conclusionCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - ((+this.props.totalQuestions + 1) * 20) }, ${((+this.props.totalQuestions + 1) * 320 * -1)}, ${(1 + 0.08 * (+this.props.totalQuestions + 1))})`;
+    conclusionCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - ((+this.props.totalQuestions + 1) * 13) }, ${((+this.props.totalQuestions + 1) * 320 * -1)}, ${(1 + 0.08 * (+this.props.totalQuestions + 1))})`;
     if(+this.props.totalQuestions > 1) {
       conclusionCardStyle.opacity = 0;
     }
@@ -199,7 +199,7 @@ export default class ResultCard extends React.Component {
                 </div>
             }
             <div id="credits" className="protograph-toQuiz-credits" >
-              <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+              <a href={this.props.creditLink} target="blank">{this.props.creditMessage}</a>
             </div>
           </div>
           {
@@ -246,7 +246,7 @@ export default class ResultCard extends React.Component {
                 </div>
                 <div className="protograph-toQuiz-back-link" onClick={(e) => this.goBack(e)}>{languageTexts.go_back}</div>
                 <div id="credits" className="protograph-toQuiz-credits" >
-                  <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+                  <a href={this.props.creditLink} target="blank">{this.props.creditMessage}</a>
                 </div>
               </div>
           }

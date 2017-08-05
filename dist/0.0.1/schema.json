@@ -18,11 +18,9 @@
                             "properties": {
                                 "image": {
                                     "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                    "title": "Upload an image",
+                                    "title": "Cover image",
                                     "type": "string",
-                                    "format": "image",
-                                    "ratio": "1/2",
-                                    "sizeLimit": 100.0
+                                    "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                                 }
                             }
                         },
@@ -110,9 +108,9 @@
                                             "properties": {
                                                 "image": {
                                                     "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                                    "title": "Upload an image",
+                                                    "title": "Option image",
                                                     "type": "string",
-                                                    "format": "data-url"
+                                                    "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                                                 }
                                             },
                                             "condition": [{"element": "quiz_type", "value": "general", "conjunction": "or" }, {"element": "flip_card", "value": true, "conjunction": "or" }]
@@ -177,10 +175,9 @@
                                 "properties": {
                                     "image": {
                                         "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                        "title": "Upload a article cover image",
+                                        "title": "Article image",
                                         "type": "string",
-                                        "format": "data-url",
-                                        "sizeLimit": 100.0
+                                        "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                                     }
                                 }
                             }
@@ -285,5 +282,9 @@
         "mandatory_config",
         "data"
     ],
-    "type": "object"
+    "type": "object",
+    "images": [
+        "data/basic_datapoints/background_image/image",
+        "data/questions/items/options/items/gif_image/image"
+    ]
 }

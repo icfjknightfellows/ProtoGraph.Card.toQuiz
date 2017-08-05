@@ -31,6 +31,7 @@ class EditQuiz extends React.Component {
     };
     this.formValidator = this.formValidator.bind(this);
     this.setDataJSON = this.setDataJSON.bind(this);
+    this.transformErrors = this.transformErrors.bind(this);
   }
 
   componentDidMount() {
@@ -250,6 +251,24 @@ class EditQuiz extends React.Component {
         break;
     }
   }
+
+  transformErrors(errors) {
+    switch(this.state.step) {
+      case 2:
+      case 3:
+      case 4:
+        return errors.map(error => {
+          if (error.name === "pattern") {
+            error.message = "Invalid image URL."
+          }
+          return error;
+        });
+        break;
+      default:
+        return errors;
+    }
+  }
+
 
   showLinkText() {
     switch(this.state.step) {
@@ -529,6 +548,7 @@ class EditQuiz extends React.Component {
                   validate={this.formValidator}
                   liveValidate={this.state.step === 3 && this.state.dataJSON.mandatory_config.quiz_type === "scoring" ? true : false}
                   ref={(e) => {this.Form = e;}}
+                  transformErrors={this.transformErrors}
                 >
                   <br />
                   <a
