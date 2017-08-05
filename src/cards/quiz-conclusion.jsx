@@ -199,7 +199,7 @@ export default class ResultCard extends React.Component {
                 </div>
             }
             <div id="credits" className="protograph-toQuiz-credits" >
-              <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+              <a href={this.props.creditLink} target="blank">{this.props.creditMessage}</a>
             </div>
           </div>
           {
@@ -246,7 +246,7 @@ export default class ResultCard extends React.Component {
                 </div>
                 <div className="protograph-toQuiz-back-link" onClick={(e) => this.goBack(e)}>{languageTexts.go_back}</div>
                 <div id="credits" className="protograph-toQuiz-credits" >
-                  <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+                  <a href={this.props.creditLink} target="blank">{this.props.creditMessage}</a>
                 </div>
               </div>
           }

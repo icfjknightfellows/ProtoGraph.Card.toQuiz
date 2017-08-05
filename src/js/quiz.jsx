@@ -30,7 +30,9 @@ class Quiz extends React.Component {
       questionScore: 1,
       timer: undefined,
       revisitingAnswers: false,
-      isMobile: this.props.mode === 'mobile' ? true : false
+      isMobile: this.props.mode === 'mobile' ? true : false,
+      creditMessage: "toQuiz",
+      creditLink: "https://protograph.pykih.com/card/toquiz"
     };
 
 
@@ -217,7 +219,7 @@ class Quiz extends React.Component {
           times_up: "Times's up",
           slider_text: 'use slider to move between questions',
           fetching_questions: 'Fetching Questions ...',
-          font: "'Helvetica Neue', sans-serif, aerial"
+          font: undefined
         }
         break;
     }
@@ -265,7 +267,7 @@ class Quiz extends React.Component {
     document.querySelector(".protograph-toQuiz-intro-back").style.display = "block";
 
     if(!this.state.isMobile) {
-      e.target.style.visibility = "hidden";
+      button.style.visibility = "hidden";
       document.querySelector(".protograph-toQuiz-intro-cover").style.display = "block";
     }
     introCard.classList.add("protograph-toQuiz-clicked");
@@ -843,15 +845,15 @@ class Quiz extends React.Component {
         <div
           id={ this.props.mode === 'screenshot' ? "ProtoScreenshot" : undefined }
           className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'protograph-toQuiz-intro-content protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-content'}`}>
-          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-header protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-header'}`}>
+          <h1 className={`${introCardConfigs.background_image && this.state.isMobile ? 'ui header protograph-toQuiz-intro-header protograph-toQuiz-with-image' : 'ui header protograph-toQuiz-intro-header'}`}>
             {introCardConfigs.quiz_title}
-          </div>
-          <div className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
+          </h1>
+          <p className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
             {introCardConfigs.introduction}
-          </div>
+          </p>
           <div className="protograph-toQuiz-intro-button-div">
             <button className="protograph-toQuiz-intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
-              {introCardConfigs.start_button_text}
+              <h3 className="ui header" style={buttonStyle}>{introCardConfigs.start_button_text}</h3>
             </button>
           </div>
         </div>
@@ -863,9 +865,9 @@ class Quiz extends React.Component {
   renderCorrectIndicator() {
     return (
       <div id="correct_indicator" className="protograph-toQuiz-correct-wrong-indicator protograph-toQuiz-correct-background">
-        <div className="protograph-toQuiz-tick-background">
+        <h1 className="ui header protograph-toQuiz-tick-background">
           <span className="protograph-toQuiz-correct-tick">&#10004;&#xFE0E;</span>
-        </div>
+        </h1>
         <div className="protograph-toQuiz-correct-wrong-text">{this.state.languageTexts.correct}</div>
       </div>
     );
@@ -874,9 +876,9 @@ class Quiz extends React.Component {
   renderWrongIndicator() {
     return (
       <div id="wrong_indicator" className="protograph-toQuiz-correct-wrong-indicator protograph-toQuiz-wrong-background">
-        <div className="protograph-toQuiz-tick-background protograph-toQuiz-wrong-tick">
+        <h1 className="ui header protograph-toQuiz-tick-background protograph-toQuiz-wrong-tick">
           <span>&#10007;&#xFE0E;</span>
-        </div>
+        </h1>
         <div className="protograph-toQuiz-correct-wrong-text protograph-toQuiz-wrong">{this.state.languageTexts.wrong}</div>
       </div>
     );
@@ -933,6 +935,8 @@ class Quiz extends React.Component {
               totalQuestions={this.state.totalQuestions}
               isMobile={this.state.isMobile}
               languageTexts={this.state.languageTexts}
+              creditLink={this.state.creditLink}
+              creditMessage={this.state.creditMessage}
             />
 
             <div id="card_stack" className="protograph-toQuiz-card-stack">
@@ -951,6 +955,8 @@ class Quiz extends React.Component {
               score={this.state.score}
               cardEvents={events}
               baseURL={this.props.baseURL}
+              creditLink={this.state.creditLink}
+              creditMessage={this.state.creditMessage}
             />
 
             <div className="protograph-toQuiz-slider-container">
@@ -1036,6 +1042,8 @@ class Quiz extends React.Component {
             isMobile={this.state.isMobile}
             timerValue={this.calculateTime(this.state.timerCountValue)}
             baseURL={this.props.baseURL}
+            creditLink={this.state.creditLink}
+            creditMessage={this.state.creditMessage}
           />
         )
       });

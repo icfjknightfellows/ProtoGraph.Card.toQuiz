@@ -43,13 +43,13 @@ export default class QuestionCard extends React.Component {
               :
                 undefined
             }
-            <div className='protograph-toQuiz-question-number'>
+            <h6 className='ui header protograph-toQuiz-question-number'>
               <span className="protograph-toQuiz-current-question">{this.props.questionNo}</span>{`/${this.props.totalQuestions}`}
-            </div>
-            <div className='protograph-toQuiz-question'>{this.props.cardData.question}</div>
+            </h6>
+            <h3 className='ui header protograph-toQuiz-question'>{this.props.cardData.question}</h3>
             {
               this.props.cardConfigs.quiz_type === "scoring" && !this.props.cardConfigs.flip_card ?
-                <div id={`title_${(this.props.cardNo + 1)}`} className="protograph-toQuiz-title">{languageTexts.ans_title}</div>
+                <p id={`title_${(this.props.cardNo + 1)}`} className="protograph-toQuiz-title">{languageTexts.ans_title}</p>
               :
                 undefined
             }
@@ -100,7 +100,7 @@ export default class QuestionCard extends React.Component {
               <div className="protograph-toQuiz-progress-indicator" style={{width: (+this.props.questionNo * 100 / +this.props.totalQuestions) + "%"  }}></div>
             </div>
             <div id="credits" className="protograph-toQuiz-credits" >
-              <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+              <a href={this.props.creditLink} target="blank">{this.props.creditMessage}</a>
             </div>
           </div>
           {
@@ -115,12 +115,12 @@ export default class QuestionCard extends React.Component {
                  { this.props.cardConfigs.quiz_type === "scoring" && this.props.cardConfigs.timer &&
                       <div className='protograph-toQuiz-timeout-msg'>{languageTexts.timed_out}</div>
                   }
-                <div className='protograph-toQuiz-question-number'>
+                <h6 className='ui header protograph-toQuiz-question-number'>
                   <span className="protograph-toQuiz-current-question">{this.props.questionNo}</span>{`/${this.props.totalQuestions}`}
-                </div>
-                <div className="protograph-toQuiz-title">
+                </h6>
+                <p className="protograph-toQuiz-title">
                   {this.props.cardData.question}
-                </div>
+                </p>
                 <div className="protograph-toQuiz-gif-div">
                   <img className="protograph-toQuiz-gif" />
                 </div>
@@ -143,7 +143,7 @@ export default class QuestionCard extends React.Component {
                 }
                 <div className="protograph-toQuiz-clear-both"></div>
                 <div className="protograph-toQuiz-answer"></div>
-                <div className="protograph-toQuiz-fact"></div>
+                <p className="protograph-toQuiz-fact"></p>
                 {
                   this.props.isMobile ?
                     <div className="protograph-toQuiz-swipe-hint-container" id="swipe_hint_container">
@@ -157,11 +157,8 @@ export default class QuestionCard extends React.Component {
                       <span id="next" className="protograph-toQuiz-next" onClick={(e) => this.props.cardEvents.nextCard(e)}>{languageTexts.next}</span>
                     </div>
                 }
-                <div className="protograph-toQuiz-progress-bar">
-                  <div className="protograph-toQuiz-progress-indicator" style={{width: (+this.props.questionNo * 100 / +this.props.totalQuestions) + "%"  }}></div>
-                </div>
                 <div id="credits" className="protograph-toQuiz-credits" >
-                  <a href="https://pykih.com/open-tools/quizjs" target="blank">Created by : ICFJ | Pykih</a>
+                  <a href={this.props.creditLink} target="blank">{this.props.creditMessage}</a>
                 </div>
               </div>
           }
