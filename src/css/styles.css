@@ -933,9 +933,8 @@ html {
 }
 
 #ProtoScreenshot {
-  width: 450px;
-  padding: 10px 15px;
-  margin-left: 20px;
   height: 450px;
+  width: 450px;
+  position: relative;
   overflow: hidden;
 }

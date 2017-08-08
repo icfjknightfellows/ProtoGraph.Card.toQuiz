@@ -1064,10 +1064,23 @@ class Quiz extends React.Component {
         </div>
       )
     } else {
+      const data = this.state.dataJSON.data,
+      introCardConfigs = {
+        background_image: data.basic_datapoints.background_image.image,
+        quiz_title: data.basic_datapoints.quiz_title,
+        introduction: data.basic_datapoints.introduction,
+        start_button_text: data.basic_datapoints.start_button_text,
+        start_button_color: this.state.optionalConfigJSON.start_button_color,
+        start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
+      };
       return (
-        <div className="protograph-toQuiz-quiz-container" style={{"fontFamily": this.state.languageTexts.font}}>
-          <div className="protograph-toQuiz-quiz-content">
-            { this.renderIntroCard() }
+        <div id="ProtoScreenshot" style={{"fontFamily": this.state.languageTexts.font}}>
+          <div style={{padding:10}}>
+            <h1 style={{paddingTop:15, paddingLeft: 15}}>{introCardConfigs.quiz_title}</h1>
+            <p style={{paddingLeft: 15}}>{introCardConfigs.introduction}</p>
+            <button className="protograph-toQuiz-intro-button" style={{marginLeft: 15}}>
+              <h3 className="ui header" style={{color: 'white'}}>{introCardConfigs.start_button_text}</h3>
+            </button>
           </div>
         </div>
       )
