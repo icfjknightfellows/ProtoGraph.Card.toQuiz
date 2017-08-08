@@ -13,13 +13,6 @@
     overflow: hidden;
     border-radius: 50px; }
 
-.form-label{
-  margin-top: 15px;
-}
-.form-group{
-  margin-bottom:0px !important;
-}
-
 .form-layout .proto-card-form {
   padding-top: 15px; }
 .form-layout .proto-card-preview {
