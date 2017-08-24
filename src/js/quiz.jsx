@@ -256,12 +256,14 @@ class Quiz extends React.Component {
 
   // EVENTS
   startQuiz(e) {
+    console.log("Start quiz")
+    addEvent("quiz", "start")
     let button = document.querySelector(".protograph-toQuiz-intro-button"),
-      introCard = document.querySelector(".protograph-toQuiz-intro-card"),
-      introFront = document.querySelector(".protograph-toQuiz-intro-front"),
-      firstQCard = document.querySelector(".protograph-toQuiz-question-card[data-order='0']"),
-      totalQuestions = this.state.totalQuestions,
-      config = this.state.dataJSON.mandatory_config;
+        introCard = document.querySelector(".protograph-toQuiz-intro-card"),
+        introFront = document.querySelector(".protograph-toQuiz-intro-front"),
+        firstQCard = document.querySelector(".protograph-toQuiz-question-card[data-order='0']"),
+        totalQuestions = this.state.totalQuestions,
+        config = this.state.dataJSON.mandatory_config;
 
     introFront.style.display = "none";
     document.querySelector(".protograph-toQuiz-intro-back").style.display = "block";
@@ -542,6 +544,7 @@ class Quiz extends React.Component {
   }
 
   resetQuiz(e) {
+    addEvent("quiz", "reset")
     this.setState({
       right_counter: 0,
       score: 0,
@@ -550,10 +553,10 @@ class Quiz extends React.Component {
     });
 
     let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
-      allQuestions = document.querySelectorAll(".protograph-toQuiz-question-card"),
-      totalQuestions = this.state.totalQuestions,
-      config = this.state.dataJSON.mandatory_config,
-      i;
+        allQuestions = document.querySelectorAll(".protograph-toQuiz-question-card"),
+        totalQuestions = this.state.totalQuestions,
+        config = this.state.dataJSON.mandatory_config,
+        i;
 
     if(qCard) {
       qCard.classList.remove("protograph-toQuiz-active");
@@ -643,6 +646,7 @@ class Quiz extends React.Component {
   }
 
   revisitAnswers(e) {
+    addEvent("quiz", "revisit answers")
     this.showSlider();
     this.slideCallback(0);
     this.setState({revisitAnswers: true});
