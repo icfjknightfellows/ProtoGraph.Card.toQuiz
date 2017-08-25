@@ -4,6 +4,13 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.form-label{
+  margin-top: 15px;
+}
+.form-group{
+  margin-bottom:0px !important;
+}
+
 .protograph-toQuiz-quiz-container {
   position: relative;
   width: 100%;
@@ -933,9 +940,8 @@ html {
 }
 
 #ProtoScreenshot {
-  width: 450px;
-  padding: 10px 15px;
-  margin-left: 20px;
   height: 450px;
+  width: 450px;
+  position: relative;
   overflow: hidden;
 }

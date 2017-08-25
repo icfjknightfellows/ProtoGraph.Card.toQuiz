@@ -497,7 +497,16 @@ class EditQuiz extends React.Component {
   }
 
   renderSEO() {
-    return `<blockquote><h3>${this.state.dataJSON.data.basic_datapoints.quiz_title}</h3><p>${this.state.dataJSON.data.basic_datapoints.introduction}</p></blockquote>`;
+    const data = this.state.dataJSON.data;
+    let intro_card = `<h3>${data.basic_datapoints.quiz_title}</h3><p>${data.basic_datapoints.introduction}</p>`
+    let questions = data.questions.map((d,i) => {
+      let options = d.options.map((opt, i) => {
+        return `<p><p>${opt.option}</p></p>`
+      })
+      return `<h3>${d.question}</h3>${options}`
+    })
+    let seo_blockquote = '<blockquote>' + intro_card + questions.join() + '</blockquote>'
+    return seo_blockquote;
   }
 
   render(e) {
