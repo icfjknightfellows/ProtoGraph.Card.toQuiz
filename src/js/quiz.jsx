@@ -460,12 +460,13 @@ class Quiz extends React.Component {
       return;
     }
 
+    qCard.classList.remove("protograph-toQuiz-active");
     if(nextCard) {
+      nextCard.classList.add("protograph-toQuiz-active");
       if(config.quiz_type === "scoring" && config.timer) {
         this.setState({timerCountValue: this.state.timePerQuestion});
         this.setTimer();
       }
-      nextCard.classList.add("protograph-toQuiz-active");
       if(!(config.quiz_type === "scoring" && !config.flip_card)) {
         backDiv = nextCard.querySelector(".protograph-toQuiz-back");
         backDiv.style.display = "none";
@@ -492,7 +493,6 @@ class Quiz extends React.Component {
       }
     }
 
-    qCard.classList.remove("protograph-toQuiz-active");
     switch(direction) {
       case "left":
         qCard.style.left = "-1000px";
@@ -726,6 +726,7 @@ class Quiz extends React.Component {
     if(this.state.timer) {
       this.clearTimer();
     }
+
     let counter = this.state.timePerQuestion,
       activeQuestion = document.querySelector('.protograph-toQuiz-question-card.protograph-toQuiz-active'),
       orderId = +activeQuestion.getAttribute('data-order'),
