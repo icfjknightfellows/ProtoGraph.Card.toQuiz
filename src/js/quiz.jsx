@@ -728,7 +728,7 @@ class Quiz extends React.Component {
     }
     let counter = this.state.timePerQuestion,
       activeQuestion = document.querySelector('.protograph-toQuiz-question-card.protograph-toQuiz-active'),
-      orderId = +activeQuestion.getAttribute('data-order-id'),
+      orderId = +activeQuestion.getAttribute('data-order'),
       options = this.state.dataJSON.data.questions[orderId].options,
       questionScore = counter;
 
