@@ -256,14 +256,14 @@ class Quiz extends React.Component {
 
   // EVENTS
   startQuiz(e) {
-    console.log("Start quiz")
-    addEvent("quiz", "start")
-    let button = document.querySelector(".protograph-toQuiz-intro-button"),
-        introCard = document.querySelector(".protograph-toQuiz-intro-card"),
-        introFront = document.querySelector(".protograph-toQuiz-intro-front"),
-        firstQCard = document.querySelector(".protograph-toQuiz-question-card[data-order='0']"),
-        totalQuestions = this.state.totalQuestions,
-        config = this.state.dataJSON.mandatory_config;
+      console.log("Start quiz")
+      addEvent("quiz", "start", "nitish-kumar-to-take-oath-as-bihar-chief-minister-at-10-am-on-thursday")
+      let button = document.querySelector(".protograph-toQuiz-intro-button"),
+          introCard = document.querySelector(".protograph-toQuiz-intro-card"),
+          introFront = document.querySelector(".protograph-toQuiz-intro-front"),
+          firstQCard = document.querySelector(".protograph-toQuiz-question-card[data-order='0']"),
+          totalQuestions = this.state.totalQuestions,
+          config = this.state.dataJSON.mandatory_config;
 
     introFront.style.display = "none";
     document.querySelector(".protograph-toQuiz-intro-back").style.display = "block";
@@ -544,8 +544,8 @@ class Quiz extends React.Component {
   }
 
   resetQuiz(e) {
-    addEvent("quiz", "reset")
-    this.setState({
+    addEvent("quiz", "reset", "nitish-kumar-to-take-oath-as-bihar-chief-minister-at-10-am-on-thursday")
+    th.setState({
       right_counter: 0,
       score: 0,
       timer: undefined,
