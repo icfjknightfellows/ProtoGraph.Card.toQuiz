@@ -145,7 +145,7 @@ export default class ResultCard extends React.Component {
     }
 
     return (
-      <div className="protograph-toQuiz-conclusion-card" style={conclusionCardStyle}>
+      <div className={`protograph-toQuiz-conclusion-card ${this.props.isMobile ? 'protograph-toQuiz-mobile-conclusion-card' : ''}`} style={conclusionCardStyle}>
         <div className='protograph-toQuiz-content'>
           <div className='protograph-toQuiz-conclusion-front'>
             <div id="result_container" className="protograph-toQuiz-result-container">

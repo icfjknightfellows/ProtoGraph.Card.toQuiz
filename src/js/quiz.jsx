@@ -846,10 +846,10 @@ class Quiz extends React.Component {
         <div
           id={ this.props.mode === 'screenshot' ? "ProtoScreenshot" : undefined }
           className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'protograph-toQuiz-intro-content protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-content'}`}>
-          <h1 className={`${introCardConfigs.background_image && this.state.isMobile ? 'ui header protograph-toQuiz-intro-header protograph-toQuiz-with-image' : 'ui header protograph-toQuiz-intro-header'}`}>
+          <h1 className={`${introCardConfigs.background_image && this.state.isMobile ? 'ui header protograph-toQuiz-intro-header protograph-toQuiz-mobile-intro-header protograph-toQuiz-with-image' : 'ui header protograph-toQuiz-intro-header'}`}>
             {introCardConfigs.quiz_title}
           </h1>
-          <p className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
+          <p className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-mobile-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
             {introCardConfigs.introduction}
           </p>
           <div className="protograph-toQuiz-intro-button-div">
@@ -920,10 +920,10 @@ class Quiz extends React.Component {
     cardConfigs.share_link = data.basic_datapoints.share_link;
 
     return (
-      <div id="protograph_toQuiz" className="protograph-toQuiz-quiz-container" style={{"fontFamily": this.state.languageTexts.font}}>
-        <div className="protograph-toQuiz-quiz-content">
+      <div id="protograph_toQuiz" className={`protograph-toQuiz-quiz-container ${this.state.isMobile ? 'protograph-toQuiz-mobile-quiz-container' : ''}`} style={{"fontFamily": this.state.languageTexts.font}}>
+        <div className={`protograph-toQuiz-quiz-content ${this.state.isMobile ? 'protograph-toQuiz-mobile-quiz-content' : ''}`}>
           { (this.props.mode === 'laptop' || this.props.mode === 'edit')  && this.renderIntroCard() }
-          <div id="main_container" className="protograph-toQuiz-main-container">
+          <div id="main_container" className={`protograph-toQuiz-main-container ${this.state.isMobile ? 'protograph-toQuiz-mobile-main-container' : ''}`}>
             <div id="fb-root"></div>
 
             { this.renderCorrectIndicator() }
@@ -940,10 +940,10 @@ class Quiz extends React.Component {
               creditMessage={this.state.creditMessage}
             />
 
-            <div id="card_stack" className="protograph-toQuiz-card-stack">
+            <div id="card_stack" className={`protograph-toQuiz-card-stack ${this.state.isMobile ? 'protograph-toQuiz-mobile-card-stack' : ''}`}>
               {cards}
               {
-                this.state.isMobile ? <div className='protograph-toQuiz-help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
+                this.state.isMobile ? <div className='protograph-toQuiz-help-text protograph-toQuiz-mobile-help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
               }
             </div>
 
@@ -985,7 +985,7 @@ class Quiz extends React.Component {
   renderQuiz() {
     if (this.state.fetchingData) {
       return (
-        <div className='protograph-toQuiz-quiz-container' style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
+        <div className={`protograph-toQuiz-quiz-container ${this.state.isMobile ? 'protograph-toQuiz-mobile-quiz-container' : ''}`} style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
           <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
               Fetching Questions ...
@@ -1056,7 +1056,7 @@ class Quiz extends React.Component {
   renderScreenshot() {
     if (this.state.fetchingData) {
       return (
-        <div className='protograph-toQuiz-quiz-container' style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
+        <div className={`protograph-toQuiz-quiz-container ${this.state.isMobile ? 'protograph-toQuiz-mobile-quiz-container' : ''}`} style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
           <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
             <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
               Fetching Questions ...

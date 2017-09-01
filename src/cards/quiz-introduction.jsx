@@ -20,17 +20,17 @@ export default class IntroductionCard extends React.Component {
     }
 
     return (
-      <div className="protograph-toQuiz-intro-card" style={introCardStyle}>
+      <div className={`protograph-toQuiz-intro-card ${this.props.isMobile ? 'protograph-toQuiz-mobile-intro-card' : ''}`} style={introCardStyle}>
         <div className="protograph-toQuiz-content">
           <div className="protograph-toQuiz-intro-front" style={introFrontStyle}>
-            <div className="protograph-toQuiz-intro-gradient"></div>
+            <div className={`protograph-toQuiz-intro-gradient ${this.props.isMobile ? 'protograph-toQuiz-mobile-intro-gradient' : ''}`}></div>
             {
               this.props.isMobile &&
                 <div className={`${this.props.introCardConfigs.background_image ? 'protograph-toQuiz-intro-content protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-content'}`}>
-                  <h1 className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'ui header protograph-toQuiz-intro-header protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-header'}`}>
+                  <h1 className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'ui header protograph-toQuiz-intro-header protograph-toQuiz-mobile-intro-header protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-header'}`}>
                     {this.props.introCardConfigs.quiz_title}
                   </h1>
-                  <p className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
+                  <p className={`${this.props.introCardConfigs.background_image && this.props.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-mobile-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
                     {this.props.introCardConfigs.introduction}
                   </p>
                   <div className="protograph-toQuiz-intro-button-div">

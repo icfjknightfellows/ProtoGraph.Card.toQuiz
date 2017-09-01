@@ -23,7 +23,7 @@ export default class QuestionCard extends React.Component {
     }
     return (
       <div
-        className={this.props.cardNo === 0 ? 'protograph-toQuiz-question-card protograph-toQuiz-active' : 'protograph-toQuiz-question-card'}
+        className={this.props.cardNo === 0 ? `protograph-toQuiz-question-card ${this.props.isMobile ? 'protograph-toQuiz-mobile-question-card' : ''} protograph-toQuiz-active` : `protograph-toQuiz-question-card ${this.props.isMobile ? 'protograph-toQuiz-mobile-question-card' : ''}`}
         data-order={this.props.cardNo}
         style={this.props.cardStyle}
         data-card-type={this.props.cardType}
