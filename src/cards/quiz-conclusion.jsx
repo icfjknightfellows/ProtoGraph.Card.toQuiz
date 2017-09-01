@@ -51,27 +51,25 @@ export default class ResultCard extends React.Component {
       isScoreSpecific = false,
       config = this.props.cardConfigs;
 
-    let links;
-    resultCardConfigs.map((e) => {
-      const relatedLinks = e.related_articles.length > 2 ? e.related_articles.slice(0, 2) : e.related_articles;
-      links = relatedLinks.map(function(d, i) {
-        return (
-          <div key={i} className='protograph-toQuiz-single-link-container' >
-            <a className='protograph-toQuiz-single-link' href={`${d.related_article_links}`} target='blank'>
-              {
-                d.related_article_links ?
-                  <img src={`${d.link_image.image}`} className='protograph-toQuiz-link-img' />
-                :
-                  undefined
-              }
-              <div className={`protograph-toQuiz-link-info ${!d.related_article_links ? 'protograph-toQuiz-link-info-full-width' : ''}`} >
-                <div className="protograph-toQuiz-link-title">{d.link_description}</div>
-              </div>
-            </a>
-            <div className='protograph-toQuiz-clearfix'></div>
-          </div>
-        )
-      });
+    const relatedLinks = resultCardConfigs.length > 2 ? resultCardConfigs.slice(0, 2) : resultCardConfigs;
+
+    let links = relatedLinks.map((d, i) => {
+      return (
+        <div key={i} className='protograph-toQuiz-single-link-container' >
+          <a className='protograph-toQuiz-single-link' href={`${d.related_article_links}`} target='blank'>
+            {
+              d.related_article_links ?
+                <img src={`${d.link_image.image}`} className='protograph-toQuiz-link-img' />
+              :
+                undefined
+            }
+            <div className={`protograph-toQuiz-link-info ${!d.related_article_links ? 'protograph-toQuiz-link-info-full-width' : ''}`} >
+              <div className="protograph-toQuiz-link-title">{d.link_description}</div>
+            </div>
+          </a>
+          <div className='protograph-toQuiz-clearfix'></div>
+        </div>
+      )
     });
 
     return links;

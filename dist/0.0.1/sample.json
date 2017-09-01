@@ -1,372 +1,405 @@
 {
-  "data":{
+  "data": {
     "basic_datapoints": {
       "background_image": {
-        "image": "https://dwln9tzsi7g07.cloudfront.net/Assets/quiz-nitish-kumar.png"
+        "image": "https://s3.ap-south-1.amazonaws.com/cdn.protograph/Assets/4thAug2017-QuizOfTheWeek.png"
       },
-      "quiz_title":"Quiz of the Week",
-      "introduction": "Several developments â€” major and small â€” which may shape the future course occurred this week. Test your knowledge and get your weekly dose of trivia.",
-      "start_button_text":"Take this Quiz"
+      "quiz_title": "Quiz of the Week",
+      "introduction": "Several developments — major and small — which may shape the future course occurred this week. Test your knowledge and get your weekly dose of trivia.",
+      "start_button_text": "Take our quiz",
+      "share_link": "https://pykih.com",
+      "share_msg": "I found this quiz really informative. Would you like to try it?"
     },
     "questions": [
       {
-        "question":"Which political leader broke his party's alliance with RJD to form a government with BJP in Bihar?",
-        "question_no":1,
-        "options":[
+        "question": "What is the current repo rate?",
+        "question_no": "1",
+        "options": [
           {
-            "option":"Tejashwi Yadav",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/1-8-654x435.jpg"
+            "option": "6.25%",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/03/rbi-reserve-bank-of-india-logo-770x433.jpg"
             },
-            "fact":"Wrong answer. Bihar CM Nitish Kumar broke his alliance with RJD to form a government with BJP.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. The current repo rate is 6%.",
+            "right_or_wrong": false
           },
           {
-            "option":"Nitish Kumar",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/1-8-654x435.jpg"
+            "option": "6%",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/03/rbi-reserve-bank-of-india-logo-770x433.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact": "Correct answer.",
+            "right_or_wrong": true
           },
           {
-            "option":"Lalu Prasad Yadav",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/1-8-654x435.jpg"
+            "option": "6.50%",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/03/rbi-reserve-bank-of-india-logo-770x433.jpg"
             },
-            "fact":"Wrong answer. Bihar CM Nitish Kumar broke his alliance with RJD to form a government with BJP.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. The current repo rate is 6%.",
+            "right_or_wrong": false
           },
           {
-            "option":"Sushil Modi",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/1-8-654x435.jpg"
+            "option": "6.75%",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/03/rbi-reserve-bank-of-india-logo-770x433.jpg"
             },
-            "fact":"Wrong answer. Bihar CM Nitish Kumar broke his alliance with RJD to form a government with BJP.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. The current repo rate is 6%.",
+            "right_or_wrong": false
           }
         ]
       },
       {
-        "question":"Which document is no longer mandatory to apply for a passport?",
-        "question_no":2,
-        "options":[
+        "question": "A merger between two ecommerce firms was called off. Name them.",
+        "question_no": "2",
+        "options": [
           {
-            "option":"Birth Certificate",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/buffer-1143491_1280-e1498549264247-770x433.jpg"
+            "option": "Flipkart and Snapdeal\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/05/2017-04-04T050831Z_1_LYNXMPED33077_RTROPTP_3_SNAPDEAL-MANAGEMENT-1-770x433.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact": "Correct answer. ",
+            "right_or_wrong": true
           },
           {
-            "option":"Aadhaar Card",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/buffer-1143491_1280-e1498549264247-770x433.jpg"
+            "option": "Amazon and Paytm\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/05/2017-04-04T050831Z_1_LYNXMPED33077_RTROPTP_3_SNAPDEAL-MANAGEMENT-1-770x433.jpg"
             },
-            "fact":"Wrong answer. Birth Certificate is no longer mandatory to apply for passport.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Snapdeal terminated talks for a deal with Flipkart.",
+            "right_or_wrong": false
           },
           {
-            "option":"Driving License",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/buffer-1143491_1280-e1498549264247-770x433.jpg"
+            "option": "Snapdeal and Amazon\r\n\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/05/2017-04-04T050831Z_1_LYNXMPED33077_RTROPTP_3_SNAPDEAL-MANAGEMENT-1-770x433.jpg"
             },
-            "fact":"Wrong answer. Birth Certificate is no longer mandatory to apply for passport.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Snapdeal terminated talks for a deal with Flipkart.",
+            "right_or_wrong": false
           },
           {
-            "option":"PAN card",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/06/buffer-1143491_1280-e1498549264247-770x433.jpg"
+            "option": "Flipkart and Paytm\r\n\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/05/2017-04-04T050831Z_1_LYNXMPED33077_RTROPTP_3_SNAPDEAL-MANAGEMENT-1-770x433.jpg"
             },
-            "fact":"Wrong answer. Birth Certificate is no longer mandatory to apply for passport.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Snapdeal terminated talks for a deal with Flipkart.",
+            "right_or_wrong": false
           }
         ]
       },
       {
-        "question":"Ram Nath Kovind became Indiaâ€™s _________ President.",
-        "question_no":3,
-        "options":[
+        "question": "Rail passengers can book Tatkal tickets on IRCTC and pay later. ",
+        "question_no": "3",
+        "options": [
           {
-            "option":"15th",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3BL0Y-1-e1500561269948-770x433.jpg"
+            "option": "TRUE",
+            "gif_image": {
+              "image": ""
             },
-            "fact":"Wrong answer. Ram Nath Kovind became Indiaâ€™s 14th President.",
-            "right_or_wrong":false
+            "fact": "Correct answer.",
+            "right_or_wrong": true
           },
           {
-            "option":"14th",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3BL0Y-1-e1500561269948-770x433.jpg"
+            "option": "FALSE",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/04/railways-770x433.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
-          },
-          {
-            "option":"13th",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3BL0Y-1-e1500561269948-770x433.jpg"
-            },
-            "fact":"Wrong answer. Ram Nath Kovind became Indiaâ€™s 14th President.",
-            "right_or_wrong":false
-          },
-          {
-            "option":"16th",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3BL0Y-1-e1500561269948-770x433.jpg"
-            },
-            "fact":"Wrong answer. Ram Nath Kovind became Indiaâ€™s 14th President.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Passengers can book Tatkal tickets on IRCTC and pay later under its ‘book now, pay later’ feature.",
+            "right_or_wrong": false
           }
         ]
       },
       {
-        "question":"Wage Code Bill empowers the Centre to set a minimum wage across all sectors.",
-        "question_no":4,
-        "options":[
+        "question": "A Niti Aayog official resigned this week. Name him.",
+        "question_no": "4",
+        "options": [
           {
-            "option":"TRUE",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/05/indian-rupee-new-currency-money-banned-note-coins-rupee-versus-dollar-savings-770x433.jpg"
+            "option": "Arvind Subramanian\r\n",
+            "gif_image": {
+              "image": ""
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact": "Wrong answer. Arvind Panagariya resigned as the Vice Chairman of NITI Aayog.",
+            "right_or_wrong": false
           },
           {
-            "option":"FALSE",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/05/indian-rupee-new-currency-money-banned-note-coins-rupee-versus-dollar-savings-770x433.jpg"
+            "option": "Arvind Panagariya\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Arvind-Panagariya-770x433.jpg"
             },
-            "fact":"Wrong answer. The Wage Code Bill empowers the Centre to set a minimum wage across all sectors in the country.",
-            "right_or_wrong":false
+            "fact": "Correct answer. ",
+            "right_or_wrong": true
+          },
+          {
+            "option": "Amitabh Kant\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Arvind-Panagariya-770x433.jpg"
+            },
+            "fact": "Wrong answer. Arvind Panagariya resigned as the Vice Chairman of NITI Aayog.",
+            "right_or_wrong": false
+          },
+          {
+            "option": "Bibek Debroy\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Arvind-Panagariya-770x433.jpg"
+            },
+            "fact": "Wrong answer. Arvind Panagariya resigned as the Vice Chairman of NITI Aayog.",
+            "right_or_wrong": false
           }
         ]
       },
       {
-        "question":"Two former ISRO scientists passed away recently. Name them.",
-        "question_no":5,
-        "options":[
+        "question": "US President Donald Trump sacked _____ as the White House communications director.",
+        "question_no": "5",
+        "options": [
           {
-            "option":"Yash Pal and Bhushan Singh",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/UR-Rao-306x435.png"
+            "option": "Anthony Scaramucci \r\n\r\n\r\n",
+            "gif_image": {
+              "image": ""
             },
-            "fact":"Wrong answer. India lost Udupi Ramachandra Rao and Yash Pal.",
-            "right_or_wrong":false
+            "fact": "Correct answer.",
+            "right_or_wrong": true
           },
           {
-            "option":"Udupi Ramachandra Rao and Yash Pal",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/UR-Rao-306x435.png"
+            "option": "Reince Priebus\r\n\r\n",
+            "gif_image": {
+              "image": ""
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
-          },
-          {
-            "option":"K Radhakrishnan and Vikram Sarabhai",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/UR-Rao-306x435.png"
-            },
-            "fact":"Wrong answer. India lost Udupi Ramachandra Rao and Yash Pal.",
-            "right_or_wrong":false
-          },
-          {
-            "option":"UR Rao and  Bhushan Singh",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/UR-Rao-306x435.png"
-            },
-            "fact":"Wrong answer. India lost Udupi Ramachandra Rao and Yash Pal.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. US President Donald Trump sacked Anthony Scaramucci as the White House communications director.",
+            "right_or_wrong": false
           }
         ]
       },
       {
-        "question":"Nifty closed above 10,000 for the first time ever this week.",
-        "question_no":6,
-        "options":[
+        "question": "What is the revised deadline to file income tax return?",
+        "question_no": "6",
+        "options": [
           {
-            "option":"TRUE",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/Market_Sensex_BSE_Traders1-770x433.jpg"
+            "option": "August 6",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Filing-your-income-tax-returns-770x433.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact": "Wrong answer. The revised deadline to file income tax return is August 5.",
+            "right_or_wrong": false
           },
           {
-            "option":"FALSE",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/Market_Sensex_BSE_Traders1-770x433.jpg"
+            "option": "August 31",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Filing-your-income-tax-returns-770x433.jpg"
             },
-            "fact":"Wrong answer. Nifty closed above 10,000 for the first time ever this week.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. The revised deadline to file income tax return is August 5.",
+            "right_or_wrong": false
+          },
+          {
+            "option": "August 15",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Filing-your-income-tax-returns-770x433.jpg"
+            },
+            "fact": "Wrong answer. The revised deadline to file income tax return is August 5.",
+            "right_or_wrong": false
+          },
+          {
+            "option": "August 5",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Filing-your-income-tax-returns-770x433.jpg"
+            },
+            "fact": "Correct answer.",
+            "right_or_wrong": true
           }
         ]
       },
       {
-        "question":"The CBFC cut ___ scenes in the movie â€˜Lipstick Under My Burkhaâ€™.",
-        "question_no":7,
-        "options":[
+        "question": "India’s first bullet train will connect these two cities. ",
+        "question_no": "7",
+        "options": [
           {
-            "option":"27",
-            "gif_image":{
-              "image":"https://img.buzzfeed.com/buzzfeed-static/static/2017-07/26/1/asset/buzzfeed-prod-fastlane-03/sub-buzz-17707-1501048538-1.jpg"
+            "option": "Mumbai-Delhi\r\n",
+            "gif_image": {
+              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/f/5/RTSKS22.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact": "Wrong answer. India’s first bullet train will connect Mumbai and Ahmedabad.",
+            "right_or_wrong": false
           },
           {
-            "option":"24",
-            "gif_image":{
-              "image":"https://img.buzzfeed.com/buzzfeed-static/static/2017-07/26/1/asset/buzzfeed-prod-fastlane-03/sub-buzz-17707-1501048538-1.jpg"
+            "option": "Delhi-Gujarat\r\n\r\n",
+            "gif_image": {
+              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/f/5/RTSKS22.jpg"
             },
-            "fact":"Wrong answer. Censor Board cut 27 scenes in the movie.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. India’s first bullet train will connect Mumbai and Ahmedabad.",
+            "right_or_wrong": false
           },
           {
-            "option":"12",
-            "gif_image":{
-              "image":"https://img.buzzfeed.com/buzzfeed-static/static/2017-07/26/1/asset/buzzfeed-prod-fastlane-03/sub-buzz-17707-1501048538-1.jpg"
+            "option": "Mumbai-Ahmedabad\r\n",
+            "gif_image": {
+              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/f/5/RTSKS22.jpg"
             },
-            "fact":"Wrong answer. Censor Board cut 27 scenes in the movie.",
-            "right_or_wrong":false
+            "fact": "Correct answer.",
+            "right_or_wrong": true
           },
           {
-            "option":"28",
-            "gif_image":{
-              "image":"https://img.buzzfeed.com/buzzfeed-static/static/2017-07/26/1/asset/buzzfeed-prod-fastlane-03/sub-buzz-17707-1501048538-1.jpg"
+            "option": "Kolkata-Delhi",
+            "gif_image": {
+              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/f/5/RTSKS22.jpg"
             },
-            "fact":"Wrong answer. Censor Board cut 27 scenes in the movie.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. India’s first bullet train will connect Mumbai and Ahmedabad.",
+            "right_or_wrong": false
           }
         ]
       },
       {
-        "question":"Name the futuristic public transportation system that NITI Aayog has approved.",
-        "question_no":8,
-        "options":[
+        "question": "By when can you link Aadhaar with PAN card?",
+        "question_no": "8",
+        "options": [
           {
-            "option":"Skylon",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/hyperloop_1280x720-770x433.jpg"
+            "option": "August 6",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
             },
-            "fact":"Wrong answer. NITI Aayog approved Hyperloop One.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. The deadline to file Aadhaar with PAN card is August 31.",
+            "right_or_wrong": false
           },
           {
-            "option":"SkyTran",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/hyperloop_1280x720-770x433.jpg"
+            "option": "August 31",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
             },
-            "fact":"Wrong answer. NITI Aayog approved Hyperloop One.",
-            "right_or_wrong":false
+            "fact": "Correct answer.",
+            "right_or_wrong": true
           },
           {
-            "option":"Hyperloop One",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/hyperloop_1280x720-770x433.jpg"
+            "option": "August 15",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact": "Wrong answer. The deadline to file Aadhaar with PAN card is August 31.",
+            "right_or_wrong": false
           },
           {
-            "option":"Velo-City",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/03/hyperloop_1280x720-770x433.jpg"
+            "option": "August 5",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
             },
-            "fact":"Wrong answer. NITI Aayog approved Hyperloop One.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. The deadline to file Aadhaar with PAN card is August 31.",
+            "right_or_wrong": false
           }
         ]
       },
       {
-        "question":"Google has removed one of its radical tools. Which one?",
-        "question_no":9,
-        "options":[
+        "question": "Which footballer is set to join Paris Saint-Germain for a record transfer fee of €222 million?",
+        "question_no": "9",
+        "options": [
           {
-            "option":"Google Autocomplete",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Capture-4-770x433.png"
+            "option": "Lionel Messi\r\n",
+            "gif_image": {
+              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/d/d/RTX3CJC8.jpg"
             },
-            "fact":"Wrong answer. Google dropped its â€˜Instant Searchâ€™ option.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Neymer is set to join Paris Saint-Germain for a record transfer fee of 222 million euros.",
+            "right_or_wrong": false
           },
           {
-            "option":"Google Instant Search",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Capture-4-770x433.png"
+            "option": "Cristiano Ronaldo\r\n",
+            "gif_image": {
+              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/d/d/RTX3CJC8.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact": "Wrong answer. Neymer is set to join Paris Saint-Germain for a record transfer fee of 222 million euros.",
+            "right_or_wrong": false
           },
           {
-            "option":"Google Adwords",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Capture-4-770x433.png"
+            "option": "Neymar da Silva Santos Júnior",
+            "gif_image": {
+              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/d/d/RTX3CJC8.jpg"
             },
-            "fact":"Wrong answer. Google dropped its â€˜Instant Searchâ€™ option.",
-            "right_or_wrong":false
+            "fact": "Correct answer. ",
+            "right_or_wrong": true
           },
           {
-            "option":"None of the above",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/Capture-4-770x433.png"
+            "option": "Sunil Chhetri\r\n\r\n",
+            "gif_image": {
+              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/d/d/RTX3CJC8.jpg"
             },
-            "fact":"Wrong answer. Google dropped its â€˜Instant Searchâ€™ option.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Neymer is set to join Paris Saint-Germain for a record transfer fee of 222 million euros.",
+            "right_or_wrong": false
           }
         ]
       },
       {
-        "question":"India lost by 9 runs against _____in ICC Women's World Cup 2017 final.",
-        "question_no":10,
-        "options":[
+        "question": "The final candidates for the vice presidential election 2017 are ___.",
+        "question_no": "10",
+        "options": [
           {
-            "option":"England",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3CAEO-719x435.jpg"
+            "option": "Venkaiah Naidu and Gopalkrishna Gandhi\r\n\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/UK-election.jpg"
             },
-            "fact":"Correct answer.",
-            "right_or_wrong":true
+            "fact": "Correct answer.",
+            "right_or_wrong": true
           },
           {
-            "option":"Australia",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3CAEO-719x435.jpg"
+            "option": "Venkaiah Naidu and Meira Kumar",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/UK-election.jpg"
             },
-            "fact":"Wrong answer. India faced England and fell 9 runs shy of the total in the nail-biting encounter at Lord's.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Venkaiah Naidu and Gopalkrishna Gandhi are the final candidates for the election.",
+            "right_or_wrong": false
           },
           {
-            "option":"Pakistan",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3CAEO-719x435.jpg"
+            "option": "Meira Kumar and Gopalkrishna Gandhi\r\n",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/UK-election.jpg"
             },
-            "fact":"Wrong answer. India faced England and fell 9 runs shy of the total in the nail-biting encounter at Lord's.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Venkaiah Naidu and Gopalkrishna Gandhi are the final candidates for the election.",
+            "right_or_wrong": false
           },
           {
-            "option":"South Africa",
-            "gif_image":{
-              "image":"http://static-news.moneycontrol.com/static-mcnews/2017/07/RTX3CAEO-719x435.jpg"
+            "option": "Gopalkrishna Gandhi and Hamid Ansari",
+            "gif_image": {
+              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/UK-election.jpg"
             },
-            "fact":"Wrong answer. India faced England and fell 9 runs shy of the total in the nail-biting encounter at Lord's.",
-            "right_or_wrong":false
+            "fact": "Wrong answer. Venkaiah Naidu and Gopalkrishna Gandhi are the final candidates for the election.",
+            "right_or_wrong": false
           }
         ]
       }
+    ],
+    "result_card_data": [
+      {
+        "upper_limit_of_score_range": 10,
+        "message": "Well done!",
+        "related_article_links": "http://www.moneycontrol.com/news/india/rbi-monetary-policy-mpc-cuts-repo-rate-by-25-basis-points-2342965.html",
+        "link_description": "RBI cuts repo rate by 25 bps: Industrial outlook bearish, low inflation could be transient",
+        "link_image": {
+          "image": ""
+        }
+      },
+      {
+        "upper_limit_of_score_range": 10,
+        "message": "Well done",
+        "related_article_links": "http://www.moneycontrol.com/news/business/startup/snapdeal-flipkart-merger-called-off-plan-b-comes-into-force-2340319.html",
+        "link_description": "Snapdeal-Flipkart merger called off! Plan B comes into force",
+        "link_image": {
+          "image": ""
+        }
+      },
+      {
+        "upper_limit_of_score_range": 10,
+        "message": "Well done!",
+        "related_article_links": "http://www.moneycontrol.com/news/trends/current-affairs-trends/booking-tatkal-railway-tickets-now-easy-under-irctcs-book-now-pay-later-option-2344017.html",
+        "link_description": "Booking tatkal railway tickets now easy under IRCTC's 'book now, pay later' option",
+        "link_image": {
+          "image": ""
+        }
+      }
     ]
   },
-  "mandatory_config":{
-    "language": "english",
-    "quiz_type": "scoring",
+  "mandatory_config": {
     "quiz_type_form": "scoring",
-    "timer": false,
+    "language": "english",
     "flip_card": true,
-    "social_share": false,
     "revisit_answers": true,
-    "time_per_question": 1000000
+    "social_share": false,
+    "timer": false,
+    "time_per_question": 10,
+    "quiz_type": "scoring",
+    "share_msg": "I found this quiz really informative. Would you like to try it?",
+    "share_link": "https://pykih.com"
   }
 }

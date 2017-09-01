@@ -107,7 +107,6 @@ class Quiz extends React.Component {
             optionalConfigSchemaJSON: optionalConfigSchema.data
           };
 
-          // stateVar.dataJSON.data.result_card_data = stateVar.dataJSON.data.result_card_data && stateVar.dataJSON.data.result_card_data.length ?  this.processResultData(stateVar.dataJSON.data.result_card_data, stateVar.dataJSON.mandatory_config.quiz_type) : undefined;
           stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
           stateVar.totalCards = (stateVar.totalQuestions + 2);
           stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
@@ -118,56 +117,6 @@ class Quiz extends React.Component {
           }
           this.setState(stateVar);
         }));
-    }
-  }
-
-  processResultData(resultCardData, quizType) {
-    let processedData = [];
-    if(quizType === "scoring" && resultCardData[0].upper_limit_of_score_range) {
-      let groupedData = Utility.groupBy(resultCardData, "upper_limit_of_score_range"),
-        keys = Object.keys(groupedData);
-
-      keys.forEach(key => {
-        let tempObj = {};
-        groupedData[key].forEach(datum => {
-          if(Object.keys(tempObj).length) {
-            tempObj.related_articles.push({
-              "related_article_links": datum.related_article_links,
-              "link_description": datum.link_description,
-              "link_image": datum.link_image
-            });
-          } else {
-            tempObj = {
-              "upper_limit_of_score_range": datum.upper_limit_of_score_range,
-              "message": datum.message,
-              "related_articles": [{
-                "related_article_links": datum.related_article_links,
-                "link_description": datum.link_description,
-                "link_image": datum.link_image
-              }]
-            };
-          }
-        });
-        processedData.push(tempObj);
-      });
-
-      processedData.sort(function(a, b) {
-        return a.upper_limit_of_score_range - b.upper_limit_of_score_range;
-      });
-
-      return processedData;
-    } else {
-      processedData.push({
-        "message": resultCardData[0].message,
-        "related_articles": resultCardData.map(function(datum) {
-          return {
-            "related_article_links": datum.related_article_links,
-            "link_description": datum.link_description,
-            "link_image": datum.link_image
-          };
-        })
-      });
-      return processedData;
     }
   }
 
