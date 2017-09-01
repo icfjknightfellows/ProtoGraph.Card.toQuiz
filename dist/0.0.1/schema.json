@@ -146,17 +146,6 @@
                         "title": "Link",
                         "hideTitle": true,
                         "properties": {
-                            "upper_limit_of_score_range": {
-                                "id": "/properties/data/properties/result_card_data/items/properties/upper_limit_of_score_range",
-                                "title": "Maximum score",
-                                "type": "integer",
-                                "condition": { "element": "quiz_type", "value": "scoring" }
-                            },
-                            "message": {
-                                "id": "/properties/data/properties/result_card_data/items/properties/message",
-                                "title": "Result Message",
-                                "type": "string"
-                            },
                             "related_article_links": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/related_article_links",
                                 "title": "Related article link",
@@ -184,7 +173,6 @@
                         },
                         "required": [
                             "related_article_links",
-                            "message",
                             "link_image",
                             "link_description"
                         ],

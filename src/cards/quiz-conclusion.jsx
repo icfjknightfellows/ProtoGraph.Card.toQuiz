@@ -48,65 +48,33 @@ export default class ResultCard extends React.Component {
 
   renderReadingLinks() {
     const resultCardConfigs = this.props.resultCardConfigs,
-      isScoreSpecific = resultCardConfigs[0].upper_limit_of_score_range,
+      isScoreSpecific = false,
       config = this.props.cardConfigs;
 
-    let links,
-      message = this.props.languageTexts.message;
-
-    if(config.quiz_type === "scoring" && isScoreSpecific) {
-      const scoreItem = resultCardConfigs.filter((e) => {
-        return this.props.score <= e.upper_limit_of_score_range;
-      })[0];
-
-      if (scoreItem) {
-        message =  scoreItem.message;
-
-        const relatedLinks = scoreItem.related_articles.length > 2 ? scoreItem.related_articles.slice(0, 2) : scoreItem.related_articles;
-
-        links = relatedLinks.map(function(d, i) {
-          return (
-            <div key={i} className='protograph-toQuiz-single-link-container' >
-              <a className='protograph-toQuiz-single-link' href={`${d.related_article_links}`} target='blank'>
-                {
-                  d.related_article_links ?
-                    <img src={`${d.link_image.image}`} className='protograph-toQuiz-link-img' />
-                  :
-                    undefined
-                }
-                <div className={`protograph-toQuiz-link-info ${!d.related_article_links ? 'protograph-toQuiz-link-info-full-width' : ''}`} >
-                  <div className="protograph-toQuiz-link-title">{d.link_description}</div>
-                </div>
-              </a>
-              <div className='protograph-toQuiz-clearfix'></div>
-            </div>
-          )
-        });
-      }
-    } else {
-      resultCardConfigs.map((e) => {
-        const relatedLinks = e.related_articles.length > 2 ? e.related_articles.slice(0, 2) : e.related_articles;
-        links = relatedLinks.map(function(d, i) {
-          return (
-            <div key={i} className='protograph-toQuiz-single-link-container' >
-              <a className='protograph-toQuiz-single-link' href={`${d.related_article_links}`} target='blank'>
-                {
-                  d.related_article_links ?
-                    <img src={`${d.link_image.image}`} className='protograph-toQuiz-link-img' />
-                  :
-                    undefined
-                }
-                <div className={`protograph-toQuiz-link-info ${!d.related_article_links ? 'protograph-toQuiz-link-info-full-width' : ''}`} >
-                  <div className="protograph-toQuiz-link-title">{d.link_description}</div>
-                </div>
-              </a>
-              <div className='protograph-toQuiz-clearfix'></div>
-            </div>
-          )
-        });
+    let links;
+    resultCardConfigs.map((e) => {
+      const relatedLinks = e.related_articles.length > 2 ? e.related_articles.slice(0, 2) : e.related_articles;
+      links = relatedLinks.map(function(d, i) {
+        return (
+          <div key={i} className='protograph-toQuiz-single-link-container' >
+            <a className='protograph-toQuiz-single-link' href={`${d.related_article_links}`} target='blank'>
+              {
+                d.related_article_links ?
+                  <img src={`${d.link_image.image}`} className='protograph-toQuiz-link-img' />
+                :
+                  undefined
+              }
+              <div className={`protograph-toQuiz-link-info ${!d.related_article_links ? 'protograph-toQuiz-link-info-full-width' : ''}`} >
+                <div className="protograph-toQuiz-link-title">{d.link_description}</div>
+              </div>
+            </a>
+            <div className='protograph-toQuiz-clearfix'></div>
+          </div>
+        )
       });
-    }
-    return {links: links, message: message};
+    });
+
+    return links;
   }
 
   render() {
@@ -120,9 +88,7 @@ export default class ResultCard extends React.Component {
       readingLinks;
 
     if (this.props.resultCardConfigs && this.props.resultCardConfigs.length) {
-      readingLinks = this.renderReadingLinks();
-      links = readingLinks.links;
-      message = readingLinks.message;
+      links = this.renderReadingLinks();
     }
 
     conclusionCardStyle.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - ((+this.props.totalQuestions + 1) * 13) }, ${((+this.props.totalQuestions + 1) * 320 * -1)}, ${(1 + 0.08 * (+this.props.totalQuestions + 1))})`;

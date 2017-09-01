@@ -363,10 +363,10 @@
     "language": "english",
     "quiz_type": "scoring",
     "quiz_type_form": "scoring",
-    "timer": true,
+    "timer": false,
     "flip_card": true,
     "social_share": false,
     "revisit_answers": true,
-    "time_per_question": 10
+    "time_per_question": 1000000
   }
 }
