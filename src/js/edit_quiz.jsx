@@ -340,7 +340,7 @@ class EditQuiz extends React.Component {
         this.setState((prevStep, prop) => {
           let resultCardData = formData,
             dataJSON = prevStep.dataJSON;
-          dataJSON.data.result_card_data = resultCardData && resultCardData.length ? this.processResultData(resultCardData, dataJSON.mandatory_config.quiz_type) : [];
+          dataJSON.data.result_card_data = resultCardData && resultCardData.length ? resultCardData : [];
           return {
             updatingQuiz: true,
             dataJSON: dataJSON,
