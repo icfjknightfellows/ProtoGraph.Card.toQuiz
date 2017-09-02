@@ -403,6 +403,7 @@ html {
 .protograph-toQuiz-intro-container .protograph-toQuiz-intro-content {
   bottom: 15%;
   width: 100%;
+  position: absolute;
 }
 
 .protograph-toQuiz-intro-header {
