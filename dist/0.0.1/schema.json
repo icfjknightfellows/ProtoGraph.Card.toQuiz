@@ -18,7 +18,7 @@
                             "properties": {
                                 "image": {
                                     "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                    "title": "Cover image",
+                                    "title": "Cover Image URL",
                                     "type": "string",
                                     "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                                 }
@@ -33,7 +33,7 @@
                         "introduction": {
                             "id": "/properties/data/properties/basic_datapoints/properties/introduction",
                             "type": "string",
-                            "title": "Context",
+                            "title": "Description",
                             "default": "Reasons why the reader should take the quiz. This is optional so you can delete this text and continue."
                         },
                         "start_button_text": {
@@ -68,6 +68,7 @@
                         "id": "/properties/data/properties/questions/items",
                         "title": "Question",
                         "hideTitle": true,
+                        "separator":"#",
                         "properties": {
                             "question": {
                                 "default": "This is a sample question?",
@@ -76,11 +77,12 @@
                                 "type": "string"
                             },
                             "options": {
-                                "title": "Options",
+                                "title": "Answer Options",
                                 "id": "/properties/data/properties/questions/items/properties/options",
                                 "items": {
                                     "id": "/properties/data/properties/questions/items/properties/options/items",
                                     "title": "Option",
+                                    "separator":"#",
                                     "hideTitle": true,
                                     "properties": {
                                         "option": {
@@ -94,12 +96,13 @@
                                             "title": "Is this the correct option?",
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/right_or_wrong",
                                             "type": "boolean",
+                                            "enumNames":["Yes","No"],
                                             "condition": { "element": "quiz_type", "value": "scoring" }
                                         },
                                         "fact": {
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/fact",
                                             "type": "string",
-                                            "title": "Description"
+                                            "title": "Explain the answer"
                                         },
                                         "gif_image": {
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/gif_image",
@@ -108,7 +111,7 @@
                                             "properties": {
                                                 "image": {
                                                     "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                                    "title": "Option image",
+                                                    "title": "Answer Image URL",
                                                     "type": "string",
                                                     "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                                                 }
@@ -148,13 +151,13 @@
                         "properties": {
                             "related_article_links": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/related_article_links",
-                                "title": "Related article link",
+                                "title": "Related article URL",
                                 "type": "string",
                                 "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                             },
                             "link_description": {
                                 "id": "/properties/data/properties/result_card_data/items/properties/link_description",
-                                "title": "Description",
+                                "title": "Headline of Related article",
                                 "type": "string"
                             },
                             "link_image": {
@@ -164,7 +167,7 @@
                                 "properties": {
                                     "image": {
                                         "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                        "title": "Article image",
+                                        "title": "Cover Image URL of Related article",
                                         "type": "string",
                                         "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                                     }
@@ -173,12 +176,15 @@
                         },
                         "required": [
                             "related_article_links",
+                            "message",
                             "link_image",
                             "link_description"
                         ],
                         "addButtonText": "Add a new link",
+                        "maxItems":2,
                         "type": "object"
                     },
+                    "maxItems":2,
                     "type": "array"
                 }
             },
@@ -207,7 +213,7 @@
                         "Quiz with scores",
                         "Timed Quiz with scores"
                     ],
-                    "title": "Quiz Mode"
+                    "title": "Mode"
                 },
                 "language": {
                     "id": "/properties/mandatory_config/properties/language",
@@ -220,6 +226,7 @@
                         "English",
                         "Hindi"
                     ],
+                    "default":"English",
                     "title": "Language"
                 },
                 "flip_card": {
@@ -257,7 +264,6 @@
             },
             "required": [
                 "revisit_answers",
-                "language",
                 "social_share",
                 "timer",
                 "flip_card",
