@@ -28,6 +28,10 @@
        siteId = '1';
        base_url = origin;
      }
+     // Uncomment below lines for use in production
+     /* siteId = 2;
+      * base_url = "https://dnt71st2q6cqr.cloudfront.net"
+      */
      if(siteId){
        var _paq = _paq || [];
        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
@@ -51,7 +55,7 @@
   <body>
     <div id="protograph_toQuiz_root"></div>
     <script src="https://dwln9tzsi7g07.cloudfront.net/lib/protograph-core.min.js"></script>
-    <script src = "card.min.js"></script>
+    <script src = "./card.min.js"></script>
     <script type="text/javascript">
      var x = new ProtoGraph.Card.toQuiz();
      function findGetParameter(parameterName) {
@@ -86,14 +90,11 @@
              let options = {
                viewCastId: view_cast_id,
                selector: document.querySelector('#protograph_toQuiz_root'),
-               /* data_url: data_base_path + "/data.json",
-                * schema_url: schema_base_path + "/schema.json",
-                * configuration_url: data_base_path + "/view_cast.json",
-                * configuration_schema_url: 'configuration_schema.json',*/
-               data_url: './dist/0.0.1/sample.json',
-               schema_url: './dist/0.0.1/schema.json',
-               configuration_url: './dist/0.0.1/configuration_sample.json', //will come from local folder
-               configuration_schema_url: './dist/0.0.1/configuration_schema.json', //will come from local folder
+               data_url: data_base_path + "/data.json",
+               schema_url: schema_base_path + "/schema.json",
+               configuration_url: data_base_path + "/view_cast.json",
+               configuration_schema_url: 'configuration_schema.json',
+               // configuration_url: './configuration_sample.json', //will come from local folder
                ui_schema_url: './dist/0.0.1/ui_schema.json',
                base_url: "http://localhost:8080/",
                piwikCallback: function (category, action, name) {

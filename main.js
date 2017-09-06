@@ -26,6 +26,8 @@ ProtoGraph.Card.toQuiz.prototype.renderLaptop = function () {
   ReactDOM.unmountComponentAtNode(this.options.selector);
   ReactDOM.render(
     <Quiz
+      viewCastId={this.options.viewCastId}
+      piwikCallback={this.options.piwikCallback}
       dataURL={this.options.data_url}
       schemaURL={this.options.schema_url}
       configURL={this.options.configuration_url}
@@ -44,6 +46,8 @@ ProtoGraph.Card.toQuiz.prototype.renderMobile = function () {
   ReactDOM.unmountComponentAtNode(this.options.selector);
   ReactDOM.render(
     <Quiz
+      viewCastId={this.options.viewCastId}
+      piwikCallback={this.options.piwikCallback}
       dataURL={this.options.data_url}
       schemaURL={this.options.schema_url}
       configURL={this.options.configuration_url}
@@ -61,6 +65,8 @@ ProtoGraph.Card.toQuiz.prototype.renderScreenshot = function () {
   this.mode = 'screenshot';
   ReactDOM.render(
     <Quiz
+      viewCastId={this.options.viewCastId}
+      piwikCallback={this.options.piwikCallback}
       dataURL={this.options.data_url}
       schemaURL={this.options.schema_url}
       configURL={this.options.configuration_url}

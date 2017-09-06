@@ -257,6 +257,7 @@ class Quiz extends React.Component {
   // EVENTS
   startQuiz(e) {
     if (typeof this.props.piwikCallback === "function") {
+      console.log("asd");
       this.props.piwikCallback('toQuiz', 'start', this.props.viewCastId);
     }
     let button = document.querySelector(".protograph-toQuiz-intro-button"),
@@ -548,7 +549,7 @@ class Quiz extends React.Component {
     if (typeof this.props.piwikCallback === "function") {
       this.props.piwikCallback('toQuiz', 'reset', this.props.viewCastId);
     }
-    th.setState({
+    this.setState({
       right_counter: 0,
       score: 0,
       timer: undefined,
