@@ -96,28 +96,28 @@ class Quiz extends React.Component {
         axios.get(this.props.configURL),
         axios.get(this.props.configSchemaURL)
       ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema) => {
-          let stateVar = {
-            fetchingData: false,
-            dataJSON: {
-              data: cardData.data.data,
-              mandatory_config: cardData.data.mandatory_config
-            },
-            schemaJSON: cardSchema.data,
-            optionalConfigJSON: optionalConfig.data,
-            optionalConfigSchemaJSON: optionalConfigSchema.data
-          };
+        let stateVar = {
+          fetchingData: false,
+          dataJSON: {
+            data: cardData.data.data,
+            mandatory_config: cardData.data.mandatory_config
+          },
+          schemaJSON: cardSchema.data,
+          optionalConfigJSON: optionalConfig.data,
+          optionalConfigSchemaJSON: optionalConfigSchema.data
+        };
 
-          stateVar.dataJSON.data.result_card_data = stateVar.dataJSON.data.result_card_data && stateVar.dataJSON.data.result_card_data.length ?  this.processResultData(stateVar.dataJSON.data.result_card_data, stateVar.dataJSON.mandatory_config.quiz_type) : undefined;
-          stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
-          stateVar.totalCards = (stateVar.totalQuestions + 2);
-          stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
+        stateVar.dataJSON.data.result_card_data = stateVar.dataJSON.data.result_card_data && stateVar.dataJSON.data.result_card_data.length ?  this.processResultData(stateVar.dataJSON.data.result_card_data, stateVar.dataJSON.mandatory_config.quiz_type) : undefined;
+        stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
+        stateVar.totalCards = (stateVar.totalQuestions + 2);
+        stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
 
-          if (stateVar.dataJSON.mandatory_config.time_per_question) {
-            stateVar.timePerQuestion = stateVar.dataJSON.mandatory_config.time_per_question;
-            stateVar.timerCountValue = stateVar.dataJSON.mandatory_config.time_per_question;
-          }
-          this.setState(stateVar);
-        }));
+        if (stateVar.dataJSON.mandatory_config.time_per_question) {
+          stateVar.timePerQuestion = stateVar.dataJSON.mandatory_config.time_per_question;
+          stateVar.timerCountValue = stateVar.dataJSON.mandatory_config.time_per_question;
+        }
+        this.setState(stateVar);
+      }));
     }
   }
 
@@ -125,7 +125,7 @@ class Quiz extends React.Component {
     let processedData = [];
     if(quizType === "scoring" && resultCardData[0].upper_limit_of_score_range) {
       let groupedData = Utility.groupBy(resultCardData, "upper_limit_of_score_range"),
-        keys = Object.keys(groupedData);
+          keys = Object.keys(groupedData);
 
       keys.forEach(key => {
         let tempObj = {};
@@ -173,7 +173,7 @@ class Quiz extends React.Component {
 
   getLanguageTexts(languageConfig) {
     let language = languageConfig ? languageConfig : "english",
-      text_obj;
+        text_obj;
 
     switch(language.toLowerCase()) {
       case "hindi":
@@ -239,8 +239,8 @@ class Quiz extends React.Component {
 
   startCountdown() {
     let countdownValue = document.querySelector(".protograph-toQuiz-intro-card .protograph-toQuiz-countdown-counter"),
-      countdownInterval,
-      counter = 3;
+        countdownInterval,
+        counter = 3;
 
     countdownInterval = setInterval(function() {
       counter--;
@@ -256,14 +256,15 @@ class Quiz extends React.Component {
 
   // EVENTS
   startQuiz(e) {
-      console.log("Start quiz")
-      addEvent("quiz", "start", "nitish-kumar-to-take-oath-as-bihar-chief-minister-at-10-am-on-thursday")
-      let button = document.querySelector(".protograph-toQuiz-intro-button"),
-          introCard = document.querySelector(".protograph-toQuiz-intro-card"),
-          introFront = document.querySelector(".protograph-toQuiz-intro-front"),
-          firstQCard = document.querySelector(".protograph-toQuiz-question-card[data-order='0']"),
-          totalQuestions = this.state.totalQuestions,
-          config = this.state.dataJSON.mandatory_config;
+    if (typeof this.props.piwikCallback === "function") {
+      this.props.piwikCallback('toQuiz', 'start', this.props.viewCastId);
+    }
+    let button = document.querySelector(".protograph-toQuiz-intro-button"),
+        introCard = document.querySelector(".protograph-toQuiz-intro-card"),
+        introFront = document.querySelector(".protograph-toQuiz-intro-front"),
+        firstQCard = document.querySelector(".protograph-toQuiz-question-card[data-order='0']"),
+        totalQuestions = this.state.totalQuestions,
+        config = this.state.dataJSON.mandatory_config;
 
     introFront.style.display = "none";
     document.querySelector(".protograph-toQuiz-intro-back").style.display = "block";
@@ -319,10 +320,10 @@ class Quiz extends React.Component {
 
   optionClicked(e) {
     let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
-      config = this.state.dataJSON.mandatory_config,
-      totalQuestions = this.state.totalQuestions,
-      cardData = this.state.dataJSON.data.questions[+qCard.getAttribute('data-order')],
-      option = cardData.options[+e.target.getAttribute('data-option-id')];
+        config = this.state.dataJSON.mandatory_config,
+        totalQuestions = this.state.totalQuestions,
+        cardData = this.state.dataJSON.data.questions[+qCard.getAttribute('data-order')],
+        option = cardData.options[+e.target.getAttribute('data-option-id')];
 
     if(config.quiz_type === "scoring") {
       if(config.timer) {
@@ -359,9 +360,9 @@ class Quiz extends React.Component {
 
   addOptionBasedContent(option) {
     let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
-      parent = qCard.querySelector(".protograph-toQuiz-content"),
-      orderId = qCard.getAttribute("data-order"),
-      config = this.state.dataJSON.mandatory_config;
+        parent = qCard.querySelector(".protograph-toQuiz-content"),
+        orderId = qCard.getAttribute("data-order"),
+        config = this.state.dataJSON.mandatory_config;
 
     option = option || {};
 
@@ -398,8 +399,8 @@ class Quiz extends React.Component {
         backDiv.querySelector(".protograph-toQuiz-gif-div").style.display = "block";
         backDiv.querySelector(".protograph-toQuiz-gif").onload = function (e) {
           let imgClientRect = e.target.offsetWidth,
-            imgContainerClientRect = backDiv.querySelector(".protograph-toQuiz-gif-div").offsetWidth,
-            idealImgWidth = imgContainerClientRect - 20;
+              imgContainerClientRect = backDiv.querySelector(".protograph-toQuiz-gif-div").offsetWidth,
+              idealImgWidth = imgContainerClientRect - 20;
 
           if(imgClientRect >= idealImgWidth) {
             e.target.style.width = idealImgWidth + "px";
@@ -420,7 +421,7 @@ class Quiz extends React.Component {
     } else {
       if(config.quiz_type === "scoring") {
         let allOptions = parent.querySelectorAll(".protograph-toQuiz-option-div"),
-          frontDiv = parent.querySelector(".protograph-toQuiz-front");
+            frontDiv = parent.querySelector(".protograph-toQuiz-front");
 
         for(let j = 0; j < allOptions.length; j++) {
           allOptions[j].style.display = "none";
@@ -451,12 +452,12 @@ class Quiz extends React.Component {
     }
 
     let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
-      orderId = +qCard.getAttribute("data-order"),
-      mainContainerWidth = document.querySelector(".protograph-toQuiz-main-container").offsetWidth,
-      nextCard = document.querySelector(".protograph-toQuiz-question-card[data-order='" + (orderId + 1) + "']"),
-      config = this.state.dataJSON.mandatory_config,
-      totalQuestions = this.state.totalQuestions,
-      backDiv;
+        orderId = +qCard.getAttribute("data-order"),
+        mainContainerWidth = document.querySelector(".protograph-toQuiz-main-container").offsetWidth,
+        nextCard = document.querySelector(".protograph-toQuiz-question-card[data-order='" + (orderId + 1) + "']"),
+        config = this.state.dataJSON.mandatory_config,
+        totalQuestions = this.state.totalQuestions,
+        backDiv;
 
     if (!+qCard.getAttribute('data-isNavigable')) {
       return;
@@ -509,7 +510,7 @@ class Quiz extends React.Component {
 
     for(let i = (orderId + 1); i < totalQuestions; i++) {
       let card = document.querySelector(`.protograph-toQuiz-question-card[data-order='${i}']`),
-        position = (i - orderId - 1);
+          position = (i - orderId - 1);
 
       card.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${ 160 - (position * 13)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
       if((i - orderId) < 4) {
@@ -518,7 +519,7 @@ class Quiz extends React.Component {
     }
 
     let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card"),
-      position = totalQuestions - orderId - 1;
+        position = totalQuestions - orderId - 1;
     conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (position * 13)}, ${(position * 320 * -1)}, ${(1 + 0.08 * position)})`;
     if((totalQuestions - orderId) < 4) {
       conclusionCard.style.opacity = 1;
@@ -536,15 +537,17 @@ class Quiz extends React.Component {
 
   touchEndHandler(event) {
     Touch.swipeEnd(event,
-      ((e) => { console.log("swipeLeft"); }),
-      ((e) => { console.log("swipeRight"); }),
-      ((e) => { this.swipeCallback("up"); }),
-      ((e) => { console.log("swipeRight"); })
+                   ((e) => { console.log("swipeLeft"); }),
+                   ((e) => { console.log("swipeRight"); }),
+                   ((e) => { this.swipeCallback("up"); }),
+                   ((e) => { console.log("swipeRight"); })
     );
   }
 
   resetQuiz(e) {
-    addEvent("quiz", "reset", "nitish-kumar-to-take-oath-as-bihar-chief-minister-at-10-am-on-thursday")
+    if (typeof this.props.piwikCallback === "function") {
+      this.props.piwikCallback('toQuiz', 'reset', this.props.viewCastId);
+    }
     th.setState({
       right_counter: 0,
       score: 0,
@@ -564,8 +567,8 @@ class Quiz extends React.Component {
 
     for (i = 0;  i < allQuestions.length; i++) {
       let questionElement = allQuestions[i],
-        frontElement = questionElement.querySelector(".protograph-toQuiz-front"),
-        allOptions;
+          frontElement = questionElement.querySelector(".protograph-toQuiz-front"),
+          allOptions;
 
       questionElement.classList.remove("protograph-toQuiz-clicked");
       questionElement.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (i * 13)}, ${(i * 320 * -1)}, ${(1 + 0.08 * i)})`;
@@ -615,7 +618,7 @@ class Quiz extends React.Component {
 
 
     let conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card"),
-      progressBars = document.querySelectorAll(".protograph-toQuiz-progress-bar");
+        progressBars = document.querySelectorAll(".protograph-toQuiz-progress-bar");
 
     conclusionCard.style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${160 - (totalQuestions * 13)}, ${(totalQuestions * 320 * -1)}, ${(1 + 0.08 * totalQuestions)})`;
     if(totalQuestions < 3) {
@@ -646,7 +649,9 @@ class Quiz extends React.Component {
   }
 
   revisitAnswers(e) {
-    addEvent("quiz", "revisit answers")
+    if (typeof this.props.piwikCallback === "function") {
+      this.props.piwikCallback('toQuiz', 'revisit_answers', this.props.viewCastId);
+    }
     this.showSlider();
     this.slideCallback(0);
     this.setState({revisitAnswers: true});
@@ -660,12 +665,12 @@ class Quiz extends React.Component {
   slideCallback(value) {
     this.setState({sliderValue: value});
     let slider = document.querySelector(".protograph-toQuiz-card-slider"),
-      sliderWidth = parseFloat(slider.style.width),
-      sliderHint = document.querySelector(".protograph-toQuiz-slider-hint"),
-      cardNum = document.querySelector(".protograph-toQuiz-slider-card-no"),
-      totalQuestions = this.state.totalQuestions,
-      percent = value / totalQuestions * 100,
-      conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card");
+        sliderWidth = parseFloat(slider.style.width),
+        sliderHint = document.querySelector(".protograph-toQuiz-slider-hint"),
+        cardNum = document.querySelector(".protograph-toQuiz-slider-card-no"),
+        totalQuestions = this.state.totalQuestions,
+        percent = value / totalQuestions * 100,
+        conclusionCard = document.querySelector(".protograph-toQuiz-conclusion-card");
 
     slider.style.background = "linear-gradient(to right, #D6EDFF 0%, #168BE5 " + percent + "%, #EEE " + percent + "%)";
 
@@ -711,8 +716,8 @@ class Quiz extends React.Component {
 
   socialShare(e) {
     const conclusionCard = document.querySelector('.protograph-toQuiz-conclusion-card'),
-      conclusionFront = document.querySelector('.protograph-toQuiz-conclusion-front'),
-      conclusionBack = document.querySelector('.protograph-toQuiz-conclusion-back');
+          conclusionFront = document.querySelector('.protograph-toQuiz-conclusion-front'),
+          conclusionBack = document.querySelector('.protograph-toQuiz-conclusion-back');
 
     this.setState({revisitAnswers: false});
 
@@ -732,10 +737,10 @@ class Quiz extends React.Component {
     }
 
     let counter = this.state.timePerQuestion,
-      activeQuestion = document.querySelector('.protograph-toQuiz-question-card.protograph-toQuiz-active'),
-      orderId = +activeQuestion.getAttribute('data-order'),
-      options = this.state.dataJSON.data.questions[orderId].options,
-      questionScore = counter;
+        activeQuestion = document.querySelector('.protograph-toQuiz-question-card.protograph-toQuiz-active'),
+        orderId = +activeQuestion.getAttribute('data-order'),
+        options = this.state.dataJSON.data.questions[orderId].options,
+        questionScore = counter;
 
     this.setState({ questionScore: counter });
     const timeInterval = setInterval(() => {
@@ -771,9 +776,9 @@ class Quiz extends React.Component {
 
   calculateTime(seconds) {
     let out = {
-        sec: 30,
-        min: 0
-      };
+      sec: 30,
+      min: 0
+    };
     if(typeof seconds === "number") {
       out.sec = this.formatNumber(seconds % 60);
       out.min = this.formatNumber((Math.floor(seconds / 60)) % 60);
@@ -826,17 +831,17 @@ class Quiz extends React.Component {
 
   renderIntroCard() {
     const buttonStyle = {},
-      introFrontStyle = {};
+          introFrontStyle = {};
 
     const data = this.state.dataJSON.data,
-      introCardConfigs = {
-        background_image: data.basic_datapoints.background_image.image,
-        quiz_title: data.basic_datapoints.quiz_title,
-        introduction: data.basic_datapoints.introduction,
-        start_button_text: data.basic_datapoints.start_button_text,
-        start_button_color: this.state.optionalConfigJSON.start_button_color,
-        start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
-      };
+          introCardConfigs = {
+            background_image: data.basic_datapoints.background_image.image,
+            quiz_title: data.basic_datapoints.quiz_title,
+            introduction: data.basic_datapoints.introduction,
+            start_button_text: data.basic_datapoints.start_button_text,
+            start_button_color: this.state.optionalConfigJSON.start_button_color,
+            start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
+          };
 
     introCardConfigs.start_button_color ? buttonStyle.backgroundColor = introCardConfigs.start_button_color : undefined;
     introCardConfigs.start_button_text_color ? buttonStyle.color = introCardConfigs.start_button_text_color : undefined;
@@ -910,16 +915,16 @@ class Quiz extends React.Component {
       revisitAnswers: ((e) => this.revisitAnswers(e)),
       socialShare: ((e) => this.socialShare(e))
     },
-    data = this.state.dataJSON.data,
-    introCardConfigs = {
-      background_image: data.basic_datapoints.background_image.image,
-      quiz_title: data.basic_datapoints.quiz_title,
-      introduction: data.basic_datapoints.introduction,
-      start_button_text: data.basic_datapoints.start_button_text,
-      start_button_color: this.state.optionalConfigJSON.start_button_color,
-      start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
-    },
-    cardConfigs = this.state.dataJSON.mandatory_config;
+          data = this.state.dataJSON.data,
+          introCardConfigs = {
+            background_image: data.basic_datapoints.background_image.image,
+            quiz_title: data.basic_datapoints.quiz_title,
+            introduction: data.basic_datapoints.introduction,
+            start_button_text: data.basic_datapoints.start_button_text,
+            start_button_color: this.state.optionalConfigJSON.start_button_color,
+            start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
+          },
+          cardConfigs = this.state.dataJSON.mandatory_config;
     cardConfigs.share_msg = data.basic_datapoints.share_msg;
     cardConfigs.share_link = data.basic_datapoints.share_link;
 
@@ -1000,15 +1005,15 @@ class Quiz extends React.Component {
     } else {
 
       let styles = {},
-        x = 147, //(this.state.totalQuestions * 20) - 20,
-        y = 0 - 320,
-        z = 1 + 0.08,
-        questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],
-        qCards;
+          x = 147, //(this.state.totalQuestions * 20) - 20,
+          y = 0 - 320,
+          z = 1 + 0.08,
+          questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],
+          qCards;
 
       qCards = questionsData.map((card, i) => {
         const style = {},
-          events = {};
+              events = {};
 
         style.zIndex = this.state.totalQuestions - i;
         style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
@@ -1070,14 +1075,14 @@ class Quiz extends React.Component {
       )
     } else {
       const data = this.state.dataJSON.data,
-      introCardConfigs = {
-        background_image: data.basic_datapoints.background_image.image,
-        quiz_title: data.basic_datapoints.quiz_title,
-        introduction: data.basic_datapoints.introduction,
-        start_button_text: data.basic_datapoints.start_button_text,
-        start_button_color: this.state.optionalConfigJSON.start_button_color,
-        start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
-      };
+            introCardConfigs = {
+              background_image: data.basic_datapoints.background_image.image,
+              quiz_title: data.basic_datapoints.quiz_title,
+              introduction: data.basic_datapoints.introduction,
+              start_button_text: data.basic_datapoints.start_button_text,
+              start_button_color: this.state.optionalConfigJSON.start_button_color,
+              start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
+            };
       return (
         <div id="ProtoScreenshot" style={{"fontFamily": this.state.languageTexts.font}}>
           <div style={{padding:10}}>
