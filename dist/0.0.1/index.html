@@ -4,7 +4,7 @@
     <meta charset = "UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>toQuiz Card</title>
-    <link rel="stylesheet" type="text/css" href="https://dwln9tzsi7g07.cloudfront.net/Assets/semantic.min.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="https://cdn.protograph.pykih.com/Assets/semantic.min.css" media="screen">
     <link rel="stylesheet" type="text/css" href="card.min.css" media="screen">
     <script type="text/javascript">
       var siteId, origin, base_url;
@@ -51,7 +51,7 @@
   </head>
   <body>
     <div id="protograph_toQuiz_root"></div>
-    <script src="https://dwln9tzsi7g07.cloudfront.net/lib/protograph-core.min.js"></script>
+    <script src="https://cdn.protograph.pykih.com/lib/protograph-core.min.js"></script>
     <script src = "card.min.js"></script>
     <script type="text/javascript">
     var x = new ProtoGraph.Card.toQuiz();
@@ -107,14 +107,16 @@
         get_size: function(){
           var that = this;
           var intervalId = setInterval(function(){
-              console.log(that, document.querySelector('#protograph_toQuiz'), "that in get size")
-            clientRect = x.getData();
-            if(clientRect.height){
-              var height = clientRect.height,
-                width = clientRect.width;
-              that.send("resize_frame", {height: height, width: width});
-              clearInterval(intervalId);
+            try {
+              clientRect = x.getData();
+              if(clientRect.height){
+                var height = clientRect.height,
+                  width = clientRect.width;
+                that.send("resize_frame", {height: height, width: width});
+                clearInterval(intervalId);
+              }
             }
+            catch (err) {}
           }, 1000)
         },
         change_mode: function(mode){
