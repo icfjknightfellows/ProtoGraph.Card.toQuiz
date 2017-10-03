@@ -31,6 +31,8 @@ p{
   margin: 0 auto;
   /*width: 640px;*/
   width: 540px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .protograph-toQuiz-main-container {
