@@ -403,6 +403,7 @@ p{
   position: absolute;
   bottom: 27px;
   width: 100%;
+  padding: 10px;
 }
 
 .protograph-toQuiz-intro-container .protograph-toQuiz-intro-content {
@@ -884,10 +885,14 @@ p{
 .protograph-toQuiz-mobile-intro-description {
   margin-bottom: 30px;
   color: white;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .protograph-toQuiz-mobile-intro-header {
   color: white !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
 }
 
 .protograph-toQuiz-mobile-help-text, .protograph-toQuiz-mobile-reset {
