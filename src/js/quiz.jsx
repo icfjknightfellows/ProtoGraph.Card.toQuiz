@@ -32,7 +32,7 @@ class Quiz extends React.Component {
       revisitingAnswers: false,
       isMobile: this.props.mode === 'mobile' ? true : false,
       creditMessage: "toQuiz",
-      creditLink: "https://protograph.pykih.com/card/toquiz"
+      creditLink: "https://protograph.pykih.com/cards/to-quiz"
     };
 
 
