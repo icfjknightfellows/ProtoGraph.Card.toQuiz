@@ -74,6 +74,9 @@
       schema_id = findGetParameter('schema_id'),
       mode = findGetParameter('mode');
 
+    if (siteId && view_cast_id) {
+      _paq.push(['trackEvent', 'toQuiz', 'page_view', view_cast_id]);
+    }
 
     var ReceiverConsumer = Oasis.Consumer.extend({
       requests: {
