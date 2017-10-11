@@ -19,6 +19,7 @@
     "browserify": "^11.2.0",
     "browserify-shim": "^3.8.10",
     "cross-env": "^5.0.1",
+    "minifier": "^0.8.1",
     "css-loader": "^0.26.1",
     "file-loader": "^0.11.2",
     "json-loader": "^0.5.4",

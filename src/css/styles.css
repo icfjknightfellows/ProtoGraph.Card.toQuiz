@@ -4,6 +4,10 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+p{
+  font-size: 14px !important;
+}
+
 .form-label{
   margin-top: 15px;
 }
@@ -25,7 +29,10 @@ html {
 .protograph-toQuiz-quiz-content {
   height: 100%;
   margin: 0 auto;
-  width: 640px;
+  /*width: 640px;*/
+  width: 540px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .protograph-toQuiz-main-container {
@@ -46,7 +53,7 @@ html {
   position: relative;
   float: left;
   height: 420px;
-  width: 300px;
+  width: 180px;
   word-wrap: break-word;
 }
 
@@ -398,6 +405,7 @@ html {
   position: absolute;
   bottom: 27px;
   width: 100%;
+  /*padding: 10px;*/
 }
 
 .protograph-toQuiz-intro-container .protograph-toQuiz-intro-content {
@@ -407,12 +415,8 @@ html {
 }
 
 .protograph-toQuiz-intro-header {
-  padding: 0px 20px !important;
-  /*font-size: 1.5em;*/
-  /*font-weight: bold;*/
-  /*line-height: 1.5em;*/
+  /*padding: 0px 20px !important;*/
   padding-bottom: 15px;
-  /*font-family: charter;*/
 }
 
 .protograph-toQuiz-intro-header.protograph-toQuiz-with-image {
@@ -425,10 +429,8 @@ html {
 }
 
 .protograph-toQuiz-intro-description {
-  padding: 10px 20px 0px;
+  /*padding: 10px 20px 0px;*/
   margin-bottom: 35px;
-  /*line-height: 1.5em;*/
-  /*font-size: 1em;*/
 }
 
 .protograph-toQuiz-intro-description.protograph-toQuiz-with-image {
@@ -441,7 +443,7 @@ html {
 
 .protograph-toQuiz-intro-container .protograph-toQuiz-intro-button-div {
   text-align: left;
-  padding: 0px 20px;
+  /*padding: 0px 20px;*/
 }
 
 .protograph-toQuiz-intro-button {
@@ -885,10 +887,14 @@ html {
 .protograph-toQuiz-mobile-intro-description {
   margin-bottom: 30px;
   color: white;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .protograph-toQuiz-mobile-intro-header {
   color: white !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
 }
 
 .protograph-toQuiz-mobile-help-text, .protograph-toQuiz-mobile-reset {
