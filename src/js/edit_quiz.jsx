@@ -41,8 +41,9 @@ class EditQuiz extends React.Component {
         axios.get(this.props.schemaURL),
         axios.get(this.props.configURL),
         axios.get(this.props.configSchemaURL),
-        axios.get(this.props.uiSchemaURL)
-      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema, uiSchema) => {
+        axios.get(this.props.uiSchemaURL),
+        axios.get(this.props.siteConfigURL)
+      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema, uiSchema, site_configs) => {
           let stateVar = {
             fetchingData: false,
             dataJSON: cardData.data,
@@ -51,8 +52,10 @@ class EditQuiz extends React.Component {
             optionalConfigSchemaJSON: optionalConfigSchema.data,
             resultCardData: cardData.data.data.result_card_data,
             uiSchemaJSON: uiSchema.data,
+            siteConfigs: site_configs.data
           };
 
+          stateVar.dataJSON.mandatory_config.language = stateVar.siteConfigs.primary_language.toLowerCase();
           stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
           stateVar.totalCards = (stateVar.totalQuestions + 2);
           stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
@@ -62,6 +65,8 @@ class EditQuiz extends React.Component {
             stateVar.timerCountValue = stateVar.dataJSON.mandatory_config.time_per_question;
           }
 
+          stateVar.optionalConfigJSON.start_button_color = stateVar.siteConfigs.house_colour;
+          stateVar.optionalConfigJSON.start_button_text_color = stateVar.siteConfigs.font_colour;
           this.setState(stateVar);
         }))
         .catch((error) => {
@@ -158,9 +163,6 @@ class EditQuiz extends React.Component {
       case 4:
         return this.state.schemaJSON.properties.data.properties.result_card_data;
         break;
-      case 5:
-        return this.state.optionalConfigSchemaJSON;
-        break;
     }
   }
 
@@ -177,9 +179,6 @@ class EditQuiz extends React.Component {
         break;
       case 4:
         return this.state.resultCardData;
-        break;
-      case 5:
-        return this.state.optionalConfigJSON;
         break;
     }
   }
@@ -227,7 +226,6 @@ class EditQuiz extends React.Component {
       case 2:
       case 3:
       case 4:
-      case 5:
         return '< Back';
         break;
     }
@@ -238,10 +236,9 @@ class EditQuiz extends React.Component {
       case 1:
       case 2:
       case 3:
-      case 4:
         return 'Next';
         break;
-      case 5:
+      case 4:
         return 'Publish';
         break;
     }
@@ -348,13 +345,6 @@ class EditQuiz extends React.Component {
           }
         });
         break;
-      case 5:
-        this.setState((prevStep, prop) => {
-          return {
-            optionalConfigJSON: formData
-          }
-        });
-        break;
     }
   }
 
@@ -363,14 +353,13 @@ class EditQuiz extends React.Component {
       case 1:
       case 2:
       case 3:
-      case 4:
         this.setState((prevStep, prop) => {
           return {
             step: prevStep.step + 1
           }
         });
         break;
-      case 5:
+      case 4:
         if (typeof this.props.onPublishCallback === "function") {
           this.setState({ publishing: true });
           let publishCallback = this.props.onPublishCallback();
@@ -423,6 +412,7 @@ class EditQuiz extends React.Component {
         timePerQuestion={this.state.timePerQuestion}
         timerCountValue={this.state.timerCountValue}
         baseURL={this.state.baseURL}
+        siteConfigs={this.state.siteConfigs}
       />
     } else {
       return <div />

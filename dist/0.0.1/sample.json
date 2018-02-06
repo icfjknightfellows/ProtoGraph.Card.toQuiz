@@ -348,26 +348,7 @@
         ]
       }
     ],
-    "result_card_data": [
-      {
-        "upper_limit_of_score_range": 10,
-        "message": "Well done!",
-        "related_article_links": "http://www.moneycontrol.com/news/india/rbi-monetary-policy-mpc-cuts-repo-rate-by-25-basis-points-2342965.html",
-        "link_description": "RBI cuts repo rate by 25 bps: Industrial outlook bearish, low inflation could be transient",
-        "link_image": {
-          "image": ""
-        }
-      },
-      {
-        "upper_limit_of_score_range": 10,
-        "message": "Well done",
-        "related_article_links": "http://www.moneycontrol.com/news/business/startup/snapdeal-flipkart-merger-called-off-plan-b-comes-into-force-2340319.html",
-        "link_description": "Snapdeal-Flipkart merger called off! Plan B comes into force",
-        "link_image": {
-          "image": ""
-        }
-      }
-    ]
+    "result_card_data": []
   },
   "mandatory_config": {
     "quiz_type_form": "scoring_and_timer",

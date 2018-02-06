@@ -27,6 +27,7 @@ ProtoGraph.Card.toQuiz.prototype.renderEdit = function (onPublishCallback) {
       configURL={this.options.configuration_url}
       configSchemaURL={this.options.configuration_schema_url}
       uiSchemaURL={this.options.ui_schema_url}
+      siteConfigURL={this.options.site_config_url}
       baseURL={this.options.base_url}
       mode={this.mode}
       onPublishCallback={onPublishCallback}

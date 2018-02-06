@@ -94,8 +94,9 @@ class Quiz extends React.Component {
         axios.get(this.props.dataURL),
         axios.get(this.props.schemaURL),
         axios.get(this.props.configURL),
-        axios.get(this.props.configSchemaURL)
-      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema) => {
+        axios.get(this.props.configSchemaURL),
+        axios.get(this.props.siteConfigURL)
+      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema, site_configs) => {
           let stateVar = {
             fetchingData: false,
             dataJSON: {
@@ -104,9 +105,11 @@ class Quiz extends React.Component {
             },
             schemaJSON: cardSchema.data,
             optionalConfigJSON: optionalConfig.data,
-            optionalConfigSchemaJSON: optionalConfigSchema.data
+            optionalConfigSchemaJSON: optionalConfigSchema.data,
+            siteConfigs: site_configs.data
           };
 
+          stateVar.dataJSON.mandatory_config.language = stateVar.siteConfigs.primary_language.toLowerCase();
           stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
           stateVar.totalCards = (stateVar.totalQuestions + 2);
           stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
@@ -115,6 +118,9 @@ class Quiz extends React.Component {
             stateVar.timePerQuestion = stateVar.dataJSON.mandatory_config.time_per_question;
             stateVar.timerCountValue = stateVar.dataJSON.mandatory_config.time_per_question;
           }
+
+          stateVar.optionalConfigJSON.start_button_color = stateVar.siteConfigs.house_colour;
+          stateVar.optionalConfigJSON.start_button_text_color = stateVar.siteConfigs.font_colour;
           this.setState(stateVar);
         }));
     }
