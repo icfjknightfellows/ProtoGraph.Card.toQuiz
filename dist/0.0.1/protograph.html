@@ -6,43 +6,6 @@
     <title>toQuiz Card</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.protograph.pykih.com/Assets/semantic.min.css" media="screen">
     <link rel="stylesheet" type="text/css" href="card.min.css" media="screen">
-    <script type="text/javascript">
-      var siteId, origin, base_url;
-      // Setting variables from environment
-      origin = window.location.origin;
-      if (origin == 'https://s3.ap-south-1.amazonaws.com') {
-        let bucket_name = window.location.pathname.split('/')['1'];
-        base_url = origin + "/" + bucket_name;
-        switch(bucket_name){
-          case "cdn.protograph":
-            siteId = '1';
-            break;
-          case "staging.cdn.protograph":
-            siteId = '2';
-            break;
-        }
-      } else if (origin === 'https://dkqrqc7q64awx.cloudfront.net') {
-        siteId = '2';
-        base_url = origin;
-      } else {
-        siteId = '1';
-        base_url = origin;
-      }
-
-      if(siteId){
-        var _paq = _paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function() {
-          var u="//protograph.innocraft.cloud/";
-          _paq.push(['setTrackerUrl', u+'piwik.php']);
-          _paq.push(['setSiteId', siteId]);
-          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-          g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-        })();
-      }
-    </script>
     <style type="text/css">
       body {
         margin: 0px !important;
@@ -72,15 +35,13 @@
 
     let view_cast_id = findGetParameter('view_cast_id'),
       schema_id = findGetParameter('schema_id'),
-      mode = findGetParameter('mode');
-
-    if (siteId && view_cast_id) {
-      _paq.push(['trackEvent', 'toQuiz', 'page_view', view_cast_id]);
-    }
+      mode = findGetParameter('mode'),
+      base_url = findGetParameter('base_url') || "https://cdn.protograph.pykih.com",
+      schema_base_url = "https://cdn.protograph.pykih.com";;
 
     if(typeof (view_cast_id) !== 'undefined' && typeof(schema_id) !== 'undefined'){
       var  data_base_path = base_url + "/" + view_cast_id,
-        schema_base_path = base_url + "/" + schema_id;
+        schema_base_path = schema_base_url + "/" + schema_id;
 
       let options = {
         selector: document.querySelector('#protograph_toQuiz_root'),
@@ -88,6 +49,7 @@
         schema_url: schema_base_path + "/schema.json",
         configuration_url: data_base_path + "/view_cast.json",
         configuration_schema_url: 'configuration_schema.json',
+        site_config_url: 'site.json',
         onClickCallback: function () {
           let h = x.getData().height,
             w = x.getData().width;
