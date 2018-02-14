@@ -11,18 +11,12 @@
                     "title": "Introduction Slide",
                     "subTitle": "Did you know how inviting you make this slide directly determines how many readers will click on the Quiz?",
                     "properties": {
-                        "background_image": {
-                            "id": "/properties/data/properties/basic_datapoints/properties/background_image",
-                            "type": "object",
-                            "title": "",
-                            "properties": {
-                                "image": {
-                                    "id": "/properties/data/properties/cover_data/properties/logo_image",
-                                    "title": "Cover Image URL",
-                                    "type": "string",
-                                    "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
-                                }
-                            }
+                        "share_link": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/share_link",
+                            "type": "string",
+                            "title": "Link URL to share",
+                            "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)",
+                            "condition": {"element": "social_share", "value": true}
                         },
                         "quiz_title": {
                             "id": "/properties/data/properties/basic_datapoints/properties/quiz_title",
@@ -41,12 +35,18 @@
                             "type": "string",
                             "title": "Start Button Text"
                         },
-                        "share_link": {
-                            "id": "/properties/data/properties/basic_datapoints/properties/share_link",
-                            "type": "string",
-                            "title": "Link URL to share",
-                            "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)",
-                            "condition": {"element": "social_share", "value": true}
+                        "background_image": {
+                            "id": "/properties/data/properties/basic_datapoints/properties/background_image",
+                            "type": "object",
+                            "title": "",
+                            "properties": {
+                                "image": {
+                                    "id": "/properties/data/properties/basic_datapoints/background_image/properties/image",
+                                    "title": "Cover Image URL",
+                                    "type": "string",
+                                    "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
+                                }
+                            }
                         },
                         "share_msg": {
                             "id": "/properties/data/properties/basic_datapoints/properties/share_msg",
@@ -110,7 +110,7 @@
                                             "title": "",
                                             "properties": {
                                                 "image": {
-                                                    "id": "/properties/data/properties/cover_data/properties/logo_image",
+                                                    "id": "/properties/data/properties/questions/items/properties/options/items/properties/gif_image/properties/image",
                                                     "title": "Answer Image URL",
                                                     "type": "string",
                                                     "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
@@ -166,7 +166,7 @@
                                 "title": "",
                                 "properties": {
                                     "image": {
-                                        "id": "/properties/data/properties/cover_data/properties/logo_image",
+                                        "id": "/properties/data/properties/result_card_data/items/properties/link_image/properties/image",
                                         "title": "Cover Image URL of Related article",
                                         "type": "string",
                                         "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
