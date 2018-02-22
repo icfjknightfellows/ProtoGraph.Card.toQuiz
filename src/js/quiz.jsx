@@ -17,9 +17,6 @@ class Quiz extends React.Component {
         data: {},
         mandatory_config: {}
       },
-      schemaJSON: {},
-      optionalConfigJSON: {},
-      optionalConfigSchemaJSON: {},
       languageTexts: {},
       totalQuestions: 0,
       score: 0,
@@ -39,18 +36,6 @@ class Quiz extends React.Component {
     if (this.props.dataJSON) {
       stateVar.fetchingData = false;
       stateVar.dataJSON = this.props.dataJSON;
-    }
-
-    if (this.props.schemaJSON) {
-      stateVar.schemaJSON = this.props.schemaJSON;
-    }
-
-    if (this.props.optionalConfigJSON) {
-      stateVar.optionalConfigJSON = this.props.optionalConfigJSON;
-    }
-
-    if (this.props.optionalConfigSchemaJSON) {
-      stateVar.optionalConfigSchemaJSON = this.props.optionalConfigSchemaJSON;
     }
 
     if (this.props.totalQuestions) {
@@ -92,20 +77,15 @@ class Quiz extends React.Component {
     if (this.state.fetchingData){
       axios.all([
         axios.get(this.props.dataURL),
-        axios.get(this.props.schemaURL),
-        axios.get(this.props.configURL),
-        axios.get(this.props.configSchemaURL),
         axios.get(this.props.siteConfigURL)
-      ]).then(axios.spread((cardData, cardSchema, optionalConfig, optionalConfigSchema, site_configs) => {
+      ]).then(axios.spread((cardData, site_configs) => {
           let stateVar = {
             fetchingData: false,
             dataJSON: {
               data: cardData.data.data,
               mandatory_config: cardData.data.mandatory_config
             },
-            schemaJSON: cardSchema.data,
-            optionalConfigJSON: optionalConfig.data,
-            optionalConfigSchemaJSON: optionalConfigSchema.data,
+            optionalConfigJSON: {},
             siteConfigs: site_configs.data
           };
 
