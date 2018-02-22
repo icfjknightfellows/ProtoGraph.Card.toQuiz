@@ -403,9 +403,7 @@ class EditQuiz extends React.Component {
       return <Quiz
         mode='laptop'
         dataJSON={this.state.dataJSON}
-        schemaJSON={this.state.schemaJSON}
         optionalConfigJSON={this.state.optionalConfigJSON}
-        optionalConfigSchemaJSON={this.state.optionalConfigSchemaJSON}
         totalQuestions={this.state.totalQuestions}
         totalCards={this.state.totalCards}
         languageTexts={this.state.languageTexts}

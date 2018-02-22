@@ -32,7 +32,6 @@ class Quiz extends React.Component {
       creditLink: "https://protograph.pykih.com/cards/to-quiz"
     };
 
-
     if (this.props.dataJSON) {
       stateVar.fetchingData = false;
       stateVar.dataJSON = this.props.dataJSON;
@@ -58,6 +57,10 @@ class Quiz extends React.Component {
       stateVar.timerCountValue = this.props.timerCountValue;
     }
 
+    if (this.props.optionalConfigJSON) {
+      stateVar.optionalConfigJSON = this.props.optionalConfigJSON;
+    }
+
     this.state = stateVar;
   }
 
@@ -75,6 +78,14 @@ class Quiz extends React.Component {
 
   componentDidMount() {
     if (this.state.fetchingData){
+      let items_to_fetch = [
+        axios.get(this.props.dataURL)
+      ];
+
+      if (this.props.siteConfigURL) {
+        items_to_fetch.push(axios.get(this.props.siteConfigURL));
+      }
+
       axios.all([
         axios.get(this.props.dataURL),
         axios.get(this.props.siteConfigURL)
@@ -86,7 +97,7 @@ class Quiz extends React.Component {
               mandatory_config: cardData.data.mandatory_config
             },
             optionalConfigJSON: {},
-            siteConfigs: site_configs.data
+            siteConfigs: site_configs ? site_configs.data : this.state.siteConfigs
           };
 
           stateVar.dataJSON.mandatory_config.language = stateVar.siteConfigs.primary_language.toLowerCase();

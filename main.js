@@ -42,11 +42,8 @@ ProtoGraph.Card.toQuiz.prototype.render = function () {
   ReactDOM.render(
     <Quiz
       dataURL={this.options.data_url}
-      schemaURL={this.options.schema_url}
       configURL={this.options.configuration_url}
-      configSchemaURL={this.options.configuration_schema_url}
       siteConfigURL={this.options.site_config_url}
-      uiSchemaURL={this.options.ui_schema_url}
       baseURL={this.options.base_url}
       mode={this.mode}
       ref={(e) => {

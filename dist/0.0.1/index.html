@@ -34,32 +34,37 @@
     }
 
     let view_cast_id = findGetParameter('view_cast_id'),
-      schema_id = findGetParameter('schema_id'),
       mode = findGetParameter('mode'),
-      base_url = findGetParameter('base_url') || "https://cdn.protograph.pykih.com",
-      schema_base_url = "https://cdn.protograph.pykih.com";
+      base_url = findGetParameter('base_url') || "https://cdn.protograph.pykih.com";
 
     var ReceiverConsumer = Oasis.Consumer.extend({
       requests: {
-        receive: function(mode) {
+        receive: function(mode, options) {
           var that = this;
-          if(typeof (view_cast_id) !== 'undefined' && typeof(schema_id) !== 'undefined'){
+          if(typeof (view_cast_id) !== 'undefined'){
             var that = this,
-                data_base_path = base_url + "/" + view_cast_id;
+                data_base_path = base_url + "/" + view_cast_id,
+                params;
 
-            let options = {
+            params = {
               selector: document.querySelector('#protograph_toQuiz_root'),
               data_url: data_base_path + "/data.json",
-              site_config_url: base_url + '/header.json',
+              configuration_url: data_base_path + "/view_cast.json",
               onClickCallback: function () {
                 let h = x.getData().height,
                   w = x.getData().width;
-                that.send('resize_frame', {width: w, height: h})
+                that.send('resize_frame', { width: w, height: h })
               }
-            };
+            }
 
-            options.base_url = window.location.href.split("/index.html")[0];
-            x.init(options);
+            if (options && options.headerJSON) {
+              params['site_configs'] = options.headerJSON;
+            } else {
+              params['site_config_url'] = base_url + '/header.json'
+            }
+
+            params.base_url = window.location.href.split("/index.html")[0];
+            x.init(params);
             renderWithMode(mode);
           }
         }
