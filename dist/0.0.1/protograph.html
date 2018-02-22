@@ -42,12 +42,7 @@
       let options = {
         selector: document.querySelector('#protograph_toQuiz_root'),
         data_url: data_base_path + "/data.json",
-        site_config_url: base_url + '/header.json',
-        onClickCallback: function () {
-          let h = x.getData().height,
-            w = x.getData().width;
-          that.send('resize_frame', {width: w, height: h})
-        }
+        site_config_url: base_url + '/header.json'
       };
 
       options.base_url = window.location.href.split("/protograph.html")[0];

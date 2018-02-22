@@ -48,13 +48,7 @@
 
             params = {
               selector: document.querySelector('#protograph_toQuiz_root'),
-              data_url: data_base_path + "/data.json",
-              configuration_url: data_base_path + "/view_cast.json",
-              onClickCallback: function () {
-                let h = x.getData().height,
-                  w = x.getData().width;
-                that.send('resize_frame', { width: w, height: h })
-              }
+              data_url: data_base_path + "/data.json"
             }
 
             if (options && options.headerJSON) {
