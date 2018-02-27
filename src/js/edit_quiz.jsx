@@ -56,6 +56,7 @@ class EditQuiz extends React.Component {
           };
 
           stateVar.dataJSON.mandatory_config.language = stateVar.siteConfigs.primary_language.toLowerCase();
+          stateVar.dataJSON.data.section = stateVar.dataJSON.data.basic_datapoints.quiz_title;
           stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
           stateVar.totalCards = (stateVar.totalQuestions + 2);
           stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
@@ -315,6 +316,7 @@ class EditQuiz extends React.Component {
         this.setState((prevStep, prop) => {
           let dataJSON = prevStep.dataJSON;
           dataJSON.data.basic_datapoints = formData;
+          dataJSON.data.section = formData.quiz_title;
           return {
             updatingQuiz: true,
             dataJSON: dataJSON

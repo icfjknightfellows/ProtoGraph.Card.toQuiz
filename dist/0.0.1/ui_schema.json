@@ -20,6 +20,9 @@
     }
   },
   "data": {
+    "section": {
+      "ui:widget": "hidden"
+    },
     "basic_datapoints": {
       "share_link": {
         "ui:widget": "hidden"
