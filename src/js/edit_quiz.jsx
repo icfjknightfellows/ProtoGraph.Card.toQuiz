@@ -363,7 +363,9 @@ class EditQuiz extends React.Component {
         break;
       case 4:
         if (typeof this.props.onPublishCallback === "function") {
-          this.setState({ publishing: true });
+          let dataJSON = this.state.dataJSON;
+          dataJSON.data.section = dataJSON.data.basic_datapoints.quiz_title;
+          this.setState({ publishing: true, dataJSON: dataJSON });
           let publishCallback = this.props.onPublishCallback();
           publishCallback.then((message) => {
             this.setState({ publishing: false });
