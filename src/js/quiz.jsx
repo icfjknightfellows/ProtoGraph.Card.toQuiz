@@ -29,7 +29,8 @@ class Quiz extends React.Component {
       revisitingAnswers: false,
       isMobile: this.props.mode === 'mobile' ? true : false,
       creditMessage: "toQuiz",
-      creditLink: "https://protograph.pykih.com/cards/to-quiz"
+      creditLink: "https://protograph.pykih.com/cards/to-quiz",
+      siteConfigs: this.props.siteConfigs
     };
 
     if (this.props.dataJSON) {
@@ -86,10 +87,7 @@ class Quiz extends React.Component {
         items_to_fetch.push(axios.get(this.props.siteConfigURL));
       }
 
-      axios.all([
-        axios.get(this.props.dataURL),
-        axios.get(this.props.siteConfigURL)
-      ]).then(axios.spread((cardData, site_configs) => {
+      axios.all(items_to_fetch).then(axios.spread((cardData, site_configs) => {
           let stateVar = {
             fetchingData: false,
             dataJSON: {
