@@ -56,6 +56,7 @@ class EditQuiz extends React.Component {
           };
 
           stateVar.dataJSON.mandatory_config.language = stateVar.siteConfigs.primary_language.toLowerCase();
+          stateVar.dataJSON.data.section = stateVar.dataJSON.data.basic_datapoints.quiz_title;
           stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
           stateVar.totalCards = (stateVar.totalQuestions + 2);
           stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
@@ -315,6 +316,7 @@ class EditQuiz extends React.Component {
         this.setState((prevStep, prop) => {
           let dataJSON = prevStep.dataJSON;
           dataJSON.data.basic_datapoints = formData;
+          dataJSON.data.section = formData.quiz_title;
           return {
             updatingQuiz: true,
             dataJSON: dataJSON
@@ -361,7 +363,9 @@ class EditQuiz extends React.Component {
         break;
       case 4:
         if (typeof this.props.onPublishCallback === "function") {
-          this.setState({ publishing: true });
+          let dataJSON = this.state.dataJSON;
+          dataJSON.data.section = dataJSON.data.basic_datapoints.quiz_title;
+          this.setState({ publishing: true, dataJSON: dataJSON });
           let publishCallback = this.props.onPublishCallback();
           publishCallback.then((message) => {
             this.setState({ publishing: false });

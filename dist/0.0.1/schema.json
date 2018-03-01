@@ -6,6 +6,12 @@
         "data": {
             "id": "/properties/data",
             "properties": {
+                "section": {
+                    "id": "/properties/data/properties/section",
+                    "type": "string",
+                    "title": "Section",
+                    "default": ""
+                },
                 "basic_datapoints": {
                     "id": "/properties/data/properties/basic_datapoints",
                     "title": "Introduction Slide",
