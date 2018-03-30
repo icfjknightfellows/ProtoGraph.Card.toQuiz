@@ -20,17 +20,21 @@ class Quiz extends React.Component {
       languageTexts: {},
       totalQuestions: 0,
       score: 0,
+      opnum:0,
       rightCounter: 0,
       sliderValue: 0,
       timerCountValue: 10,
       timePerQuestion: 10,
       questionScore: 1,
+      qtop: true,
       timer: undefined,
       revisitingAnswers: false,
       isMobile: this.props.mode === 'mobile' ? true : false,
       creditMessage: "toQuiz",
+      currentQuestion: 1,
       creditLink: "https://protograph.pykih.com/cards/to-quiz",
-      siteConfigs: this.props.siteConfigs
+      siteConfigs: this.props.siteConfigs,
+      intro: true
     };
 
     if (this.props.dataJSON) {
@@ -764,49 +768,6 @@ class Quiz extends React.Component {
     }, 1000);
   }
 
-  renderIntroCard() {
-    const buttonStyle = {},
-      introFrontStyle = {};
-
-    const data = this.state.dataJSON.data,
-      introCardConfigs = {
-        background_image: data.basic_datapoints.background_image.image,
-        quiz_title: data.basic_datapoints.quiz_title,
-        introduction: data.basic_datapoints.introduction,
-        start_button_text: data.basic_datapoints.start_button_text,
-        start_button_color: this.state.optionalConfigJSON.start_button_color,
-        start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
-      };
-
-    introCardConfigs.start_button_color ? buttonStyle.backgroundColor = introCardConfigs.start_button_color : undefined;
-    introCardConfigs.start_button_text_color ? buttonStyle.color = introCardConfigs.start_button_text_color : undefined;
-
-    if(introCardConfigs.background_image) {
-      introFrontStyle.backgroundImage = "url(" + introCardConfigs.background_image + ")";
-    }
-
-    return (
-      <div className="protograph-toQuiz-intro-container">
-        <div
-          id={ this.props.mode === 'screenshot' ? "ProtoScreenshot" : undefined }
-          className={`${introCardConfigs.background_image || this.state.mode === 'laptop' ? 'protograph-toQuiz-intro-content protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-content'}`}>
-          <h1 className={`${introCardConfigs.background_image && this.state.isMobile ? 'ui header protograph-toQuiz-intro-header protograph-toQuiz-mobile-intro-header protograph-toQuiz-with-image' : 'ui header protograph-toQuiz-intro-header'}`}>
-            {introCardConfigs.quiz_title}
-          </h1>
-          <p className={`${introCardConfigs.background_image && this.state.isMobile ? 'protograph-toQuiz-intro-description protograph-toQuiz-mobile-intro-description protograph-toQuiz-with-image' : 'protograph-toQuiz-intro-description'}`}>
-            {introCardConfigs.introduction}
-          </p>
-          <div className="protograph-toQuiz-intro-button-div">
-            <button className="protograph-toQuiz-intro-button" onClick={(e) => this.startQuiz(e)} style={buttonStyle}>
-              <h3 className="ui header" style={buttonStyle}>{introCardConfigs.start_button_text}</h3>
-            </button>
-          </div>
-        </div>
-        <div className="protograph-toQuiz-intro-cover"></div>
-      </div>
-    );
-  }
-
   renderCorrectIndicator() {
     return (
       <div id="correct_indicator" className="protograph-toQuiz-correct-wrong-indicator protograph-toQuiz-correct-background">
@@ -842,88 +803,6 @@ class Quiz extends React.Component {
         </div>
       </div>
     );
-  }
-
-  renderMainContainerContent(cards) {
-    const events = {
-      resetQuiz: ((e) => this.resetQuiz(e)),
-      revisitAnswers: ((e) => this.revisitAnswers(e)),
-      socialShare: ((e) => this.socialShare(e))
-    },
-    data = this.state.dataJSON.data,
-    introCardConfigs = {
-      background_image: data.basic_datapoints.background_image.image,
-      quiz_title: data.basic_datapoints.quiz_title,
-      introduction: data.basic_datapoints.introduction,
-      start_button_text: data.basic_datapoints.start_button_text,
-      start_button_color: this.state.optionalConfigJSON.start_button_color,
-      start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
-    },
-    cardConfigs = this.state.dataJSON.mandatory_config;
-    cardConfigs.share_msg = data.basic_datapoints.share_msg;
-    cardConfigs.share_link = data.basic_datapoints.share_link;
-
-    return (
-      <div id="protograph_toQuiz" className={`protograph-toQuiz-quiz-container ${this.state.isMobile ? 'protograph-toQuiz-mobile-quiz-container' : ''}`} style={{"fontFamily": this.state.languageTexts.font}}>
-        <div className={`protograph-toQuiz-quiz-content ${this.state.isMobile ? 'protograph-toQuiz-mobile-quiz-content' : ''}`}>
-          { (this.props.mode === 'laptop' || this.props.mode === 'edit')  && this.renderIntroCard() }
-          <div id="main_container" className={`protograph-toQuiz-main-container ${this.state.isMobile ? 'protograph-toQuiz-mobile-main-container' : ''}`}>
-            <div id="fb-root"></div>
-
-            { this.renderCorrectIndicator() }
-            { this.renderWrongIndicator() }
-            { this.renderTimeOutIndicator() }
-
-            <IntroductionCard
-              introCardConfigs={introCardConfigs}
-              startQuiz={((e) => this.startQuiz(e))}
-              totalQuestions={this.state.totalQuestions}
-              isMobile={this.state.isMobile}
-              languageTexts={this.state.languageTexts}
-              creditLink={this.state.creditLink}
-              creditMessage={this.state.creditMessage}
-            />
-
-            <div id="card_stack" className={`protograph-toQuiz-card-stack ${this.state.isMobile ? 'protograph-toQuiz-mobile-card-stack' : ''}`}>
-              {cards}
-              {
-                this.state.isMobile ? <div className='protograph-toQuiz-help-text protograph-toQuiz-mobile-help-text' id="help_text">{this.state.languageTexts.swipe}</div> : undefined
-              }
-            </div>
-
-            <ResultCard
-              introCardConfigs={introCardConfigs}
-              cardConfigs={this.state.dataJSON.mandatory_config}
-              resultCardConfigs={this.state.dataJSON.data.result_card_data}
-              totalQuestions={this.state.totalQuestions}
-              languageTexts={this.state.languageTexts}
-              score={this.state.score}
-              cardEvents={events}
-              baseURL={this.props.baseURL}
-              creditLink={this.state.creditLink}
-              creditMessage={this.state.creditMessage}
-            />
-
-            <div className="protograph-toQuiz-slider-container">
-              <div className="protograph-toQuiz-slider-hint">{this.state.languageTexts.slider_text}</div>
-              <span className="protograph-toQuiz-slider-card-no">5</span>
-              <input
-                className="protograph-toQuiz-card-slider"
-                name="card_slider"
-                type="range"
-                step="1"
-                min="0"
-                max={this.state.totalQuestions}
-                value={this.state.sliderValue}
-                onInput={((e) => { this.slideCallback(e.target.value); })}
-                onMouseDown={!this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
-                onTouchStart={this.state.isMobile ? ((e) => this.sliderMousedownCallback(e)) : undefined}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
   }
 
   renderQuiz() {
@@ -996,7 +875,244 @@ class Quiz extends React.Component {
       return this.renderMainContainerContent(qCards)
     }
   }
+  handleOptionClick(e){
+    if(e.target.getAttribute('data-correct') === "true"){
+      this.flashCorrectIndicator()
+    }else{
+      this.flashWrongIndicator()
+    }
+    let target = e.target;
+    setTimeout(()=>{
+      this.setState({
+        qtop:false,
+        opnum: target.getAttribute('data-opnum')
+      })
+    }, 1000)
+  }
 
+  handleNextClick(e){
+    this.setState({
+      currentQuestion: this.state.currentQuestion+1,
+      qtop: true,
+      opnum: 0
+    })
+  }
+  renderAnswerCard(i, answer){
+    return(
+      <div className="answer-card" key={`answer-${i+1}`} id={`answer-${i+1}`} style={{left:300*(i-this.state.currentQuestion+1)}}>
+        <div className="quiz-answer">
+          {answer.option}
+        </div>
+        {answer.gif_image && <div className="quiz-answer-image">
+          <img style={{height:"100%",width:"100%"}} src={answer.gif_image.image} />
+        </div>}
+        <p>
+          {answer.fact}
+        </p>
+      </div>
+    )
+  }
+  renderQuestionCard(q,i){
+    return(
+      <div className="question-card" style={{left:300*(i-this.state.currentQuestion+1)}} key={i}>
+        <div className="quiz-question">
+          {q.question}
+        </div>
+        <div className="quiz-answer-options">
+          {
+            q.options.map((a,j)=>{
+              return(
+                <div className="single-option" data-opnum={j} data-correct={a.right_or_wrong} onClick={(e)=>{this.handleOptionClick(e)}} key={`${i}-${j}`}>
+                  {a.option}
+                </div>
+              )
+            })
+          }
+        </div>
+      </div>
+    )
+  }
+  renderIntro(){
+    return(
+      <div className="first-view view">
+        <div className="proto-col-3 view-in-desktop">
+          <div className="tag-area"></div>
+          <div className="cover-content">
+            <div className="title">{this.state.dataJSON.data.basic_datapoints.quiz_title}</div>
+            <div className="description">{this.state.dataJSON.data.basic_datapoints.introduction}</div>
+            <div className="call-to-action-button" onClick={()=>{document.getElementsByClassName('toquizcard')[0].classList.add('flipped');this.setState({intro:false})}}>{this.state.dataJSON.data.basic_datapoints.start_button_text}</div>
+          </div>
+        </div>
+        <div className="proto-col-4">
+          <div className="cover-image">
+            <img src={this.state.dataJSON.data.basic_datapoints.background_image.image} style={{height:"100%", width:"100%"}}/>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  renderQuestions(){
+    let percent = this.state.currentQuestion / this.state.totalQuestions;
+    percent = percent * 100 + "%";
+    return(
+      <div className="second-view view">
+        <div className="proto-col-3 view-in-desktop" style={{opacity:'0.3'}}>
+          <div className="tag-area"></div>
+          <div className="cover-content">
+            <div className="title">{this.state.dataJSON.data.basic_datapoints.quiz_title}</div>
+            <div className="description">{this.state.dataJSON.data.basic_datapoints.introduction}</div>
+          </div>
+        </div>
+        <div className="proto-col-4">
+          <div className="progress-line">
+            <div className="progress-start-lable">{this.state.currentQuestion}</div>
+            <div className="progress-container">
+              <div className="progress-after" style={{height: percent}}></div>
+              <div className="progress"></div>
+            </div>
+          </div>
+          <div className="main-content">
+            <div className="card-tabs">
+              <div className={`single-tab ${this.state.qtop ? 'active' : 'inactive'}`}>QUESTION</div>
+              <div className={`single-tab ${!this.state.qtop ? 'active' : 'inactive'}`}>ANSWER</div>
+            </div>
+            {
+              this.state.qtop && !this.state.intro ? 
+              <div className="quiz-cards">
+                {
+                  this.state.dataJSON.data.questions.map((q,i)=>{
+                    if(i >= this.state.currentQuestion - 2 && i <= this.state.currentQuestion){
+                      return(
+                        this.renderQuestionCard(q,i)
+                      )
+                    }else{
+                      return null
+                    }
+                  }) 
+                }
+              </div>
+              :
+              <div className="quiz-cards">
+                {
+                  this.state.dataJSON.data.questions.map((q,i)=>{
+                    if(i >= this.state.currentQuestion - 2 && i <= this.state.currentQuestion){
+                      let answer;
+                      if(i === this.state.currentQuestion - 1){
+                        answer = q.options[this.state.opnum];
+                      }else{
+                        answer =  q.options[0];
+                      }
+                      return(
+                        this.renderAnswerCard(i, answer)
+                      );
+                    }else{
+                      return null;
+                    }
+                  })
+                }
+              </div>
+            }
+            {!this.state.qtop && <div className="next-button" onClick={(e)=>{
+              this.handleNextClick(e)
+            }}>NEXT</div>}
+          </div>
+          {this.renderWrongIndicator()}
+          {this.renderCorrectIndicator()}
+        </div>
+      </div>
+    )
+  }
+  renderLaptop(){
+
+    if (this.state.fetchingData) {
+      return (
+        <div className={`protograph-toQuiz-quiz-container ${this.state.isMobile ? 'protograph-toQuiz-mobile-quiz-container' : ''}`} style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
+          <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
+            <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
+              Fetching Questions ...
+            </span>
+          </div>
+        </div>
+      )
+    } else {
+      return(
+        <div className="toquizcard parent-card-desktop">
+          {this.renderIntro()}
+          {this.renderQuestions()}
+        </div>
+      )
+    }
+  }
+  renderMobile() {
+    if (this.state.fetchingData) {
+      return (
+        <div className='protograph-toQuiz-quiz-container protograph-toQuiz-mobile-quiz-container' style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
+          <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
+            <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
+              Fetching Questions ...
+            </span>
+          </div>
+        </div>
+      )
+    } else {
+
+      let styles = {},
+        x = 147, //(this.state.totalQuestions * 20) - 20,
+        y = 0 - 320,
+        z = 1 + 0.08,
+        questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],
+        qCards;
+
+      qCards = questionsData.map((card, i) => {
+        const style = {},
+          events = {};
+
+        style.zIndex = this.state.totalQuestions - i;
+        style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
+
+        if(i < 2) {
+          style.opacity = 1;
+        } else {
+          style.opacity = 0;
+        }
+
+        x = x - 13;
+        y = y - 320;
+        z = z + 0.08;
+
+        events.optionClick = ((e) => this.optionClicked(e));
+        if (this.state.isMobile) {
+          events.onTouchStart = ((e) => Touch.swipeStart(e));
+          events.onTouchMove = ((e) => Touch.swipeMove(e));
+          events.onTouchEnd = ((e) => this.touchEndHandler(e));
+          events.nextCard = ((e) => {this.swipeCallback('up'); e.stopPropagation();});
+        } else {
+          events.nextCard = ((e) => this.swipeCallback('up'));
+        }
+
+        return (
+          <QuestionCard
+            key={i}
+            cardNo={i}
+            questionNo={this.formatNumber(i + 1)}
+            cardStyle={style}
+            cardData={this.state.dataJSON.data.questions[i]}
+            cardEvents={events}
+            cardConfigs={this.state.dataJSON.mandatory_config}
+            languageTexts={this.state.languageTexts}
+            totalQuestions={this.formatNumber(this.state.totalQuestions)}
+            isMobile={this.state.isMobile}
+            timerValue={this.calculateTime(this.state.timerCountValue)}
+            baseURL={this.props.baseURL}
+            creditLink={this.state.creditLink}
+            creditMessage={this.state.creditMessage}
+          />
+        )
+      });
+
+      return this.renderMainContainerContent(qCards)
+    }
+  }
   renderScreenshot() {
     if (this.state.fetchingData) {
       return (
@@ -1035,10 +1151,10 @@ class Quiz extends React.Component {
   render() {
     switch(this.props.mode) {
       case 'laptop':
-        return this.renderQuiz();
+        return this.renderLaptop();
         break;
       case 'mobile':
-        return this.renderQuiz();
+        return this.renderMobile();
         break;
       case 'tablet':
         return this.renderQuiz();
