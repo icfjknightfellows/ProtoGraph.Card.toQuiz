@@ -212,7 +212,7 @@ p{
 
 .quiz-answer-options{
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   width: 230px;
 }
 
@@ -235,6 +235,7 @@ p{
 .quiz-cards .quiz-answer{
   font-size: 14px;
   color: #333;
+  margin-top: 12px;
   font-family: "bitter";
   box-sizing: border-box;
   line-height: 21px;
@@ -252,6 +253,7 @@ p{
   color: #333;
   line-height: 19px;
   font-family: "cabin";
+  margin-top: 12px;
 }
 .protograph-toQuiz-quiz-container {
   position: relative;
@@ -626,7 +628,7 @@ p{
 }
 .progress-container{
   position: relative;
-  height:80%;
+  height:82.5%;
 }
 .progress-after {
   width:2px;
@@ -1198,7 +1200,16 @@ p{
   background: #168BE5;
   margin-top: -5px;
 }
-
+.font-white{
+  color: white !important;
+}
+.proto-black-overlay{
+  background-color: rgba(0,0,0,0.4535);
+  height:100%;
+  width:100%;
+  position: absolute;
+  top: 0;
+}
 .protograph-toQuiz-card-slider:focus {
   outline: none;
 }

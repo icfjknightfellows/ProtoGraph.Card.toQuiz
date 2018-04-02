@@ -906,7 +906,7 @@ class Quiz extends React.Component {
         {answer.gif_image && <div className="quiz-answer-image">
           <img style={{height:"100%",width:"100%"}} src={answer.gif_image.image} />
         </div>}
-        <p>
+        <p className="quiz-answer-fact">
           {answer.fact}
         </p>
       </div>
@@ -933,94 +933,177 @@ class Quiz extends React.Component {
     )
   }
   renderIntro(){
-    return(
-      <div className="first-view view">
-        <div className="proto-col-3 view-in-desktop">
-          <div className="tag-area"></div>
-          <div className="cover-content">
-            <div className="title">{this.state.dataJSON.data.basic_datapoints.quiz_title}</div>
-            <div className="description">{this.state.dataJSON.data.basic_datapoints.introduction}</div>
-            <div className="call-to-action-button" onClick={()=>{document.getElementsByClassName('toquizcard')[0].classList.add('flipped');this.setState({intro:false})}}>{this.state.dataJSON.data.basic_datapoints.start_button_text}</div>
+    if(this.props.mode === 'laptop'){
+      return(
+        <div className="first-view view">
+          <div className="proto-col-3 view-in-desktop">
+            <div className="tag-area"></div>
+            <div className="cover-content">
+              <div className="title">{this.state.dataJSON.data.basic_datapoints.quiz_title}</div>
+              <div className="description">{this.state.dataJSON.data.basic_datapoints.introduction}</div>
+              <div className="call-to-action-button" onClick={()=>{document.getElementsByClassName('toquizcard')[0].classList.add('flipped');this.setState({intro:false})}}>{this.state.dataJSON.data.basic_datapoints.start_button_text}</div>
+            </div>
+          </div>
+          <div className="proto-col-4">
+            <div className="cover-image">
+              <img src={this.state.dataJSON.data.basic_datapoints.background_image.image} style={{width:"100%"}}/>
+            </div>
           </div>
         </div>
-        <div className="proto-col-4">
-          <div className="cover-image">
-            <img src={this.state.dataJSON.data.basic_datapoints.background_image.image} style={{height:"100%", width:"100%"}}/>
+      )
+    }else{
+      return(
+        <div className="first-view view" style={{width: 300}}>
+          <div className="proto-col-4">
+            <div className="tag-area"></div>
+            <div className="proto-black-overlay"></div>
+            <div className="cover-content">
+              <div className="title font-white">{this.state.dataJSON.data.basic_datapoints.quiz_title}</div>
+              <div className="description font-white">{this.state.dataJSON.data.basic_datapoints.introduction}</div>
+              <div className="call-to-action-button" onClick={()=>{document.getElementsByClassName('toquizcard')[0].classList.add('flipped');this.setState({intro:false})}}>{this.state.dataJSON.data.basic_datapoints.start_button_text}</div>
+            </div>
+            <div className="cover-image">
+              <img src={this.state.dataJSON.data.basic_datapoints.background_image.image} style={{width:"100%"}}/>
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
   renderQuestions(){
     let percent = this.state.currentQuestion / this.state.totalQuestions;
     percent = percent * 100 + "%";
-    return(
-      <div className="second-view view">
-        <div className="proto-col-3 view-in-desktop" style={{opacity:'0.3'}}>
-          <div className="tag-area"></div>
-          <div className="cover-content">
-            <div className="title">{this.state.dataJSON.data.basic_datapoints.quiz_title}</div>
-            <div className="description">{this.state.dataJSON.data.basic_datapoints.introduction}</div>
-          </div>
-        </div>
-        <div className="proto-col-4">
-          <div className="progress-line">
-            <div className="progress-start-lable">{this.state.currentQuestion}</div>
-            <div className="progress-container">
-              <div className="progress-after" style={{height: percent}}></div>
-              <div className="progress"></div>
+    if(this.props.mode === 'laptop'){
+      return(
+        <div className="second-view view">
+          <div className="proto-col-3 view-in-desktop" style={{opacity:'0.3'}}>
+            <div className="tag-area"></div>
+            <div className="cover-content">
+              <div className="title">{this.state.dataJSON.data.basic_datapoints.quiz_title}</div>
+              <div className="description">{this.state.dataJSON.data.basic_datapoints.introduction}</div>
             </div>
           </div>
-          <div className="main-content">
-            <div className="card-tabs">
-              <div className={`single-tab ${this.state.qtop ? 'active' : 'inactive'}`}>QUESTION</div>
-              <div className={`single-tab ${!this.state.qtop ? 'active' : 'inactive'}`}>ANSWER</div>
-            </div>
-            {
-              this.state.qtop && !this.state.intro ? 
-              <div className="quiz-cards">
-                {
-                  this.state.dataJSON.data.questions.map((q,i)=>{
-                    if(i >= this.state.currentQuestion - 2 && i <= this.state.currentQuestion){
-                      return(
-                        this.renderQuestionCard(q,i)
-                      )
-                    }else{
-                      return null
-                    }
-                  }) 
-                }
+          <div className="proto-col-4">
+            <div className="progress-line">
+              <div className="progress-start-lable">{this.state.currentQuestion}</div>
+              <div className="progress-container">
+                <div className="progress-after" style={{height: percent}}></div>
+                <div className="progress"></div>
               </div>
-              :
-              <div className="quiz-cards">
-                {
-                  this.state.dataJSON.data.questions.map((q,i)=>{
-                    if(i >= this.state.currentQuestion - 2 && i <= this.state.currentQuestion){
-                      let answer;
-                      if(i === this.state.currentQuestion - 1){
-                        answer = q.options[this.state.opnum];
+            </div>
+            <div className="main-content">
+              <div className="card-tabs">
+                <div className={`single-tab ${this.state.qtop ? 'active' : 'inactive'}`}>QUESTION</div>
+                <div className={`single-tab ${!this.state.qtop ? 'active' : 'inactive'}`}>ANSWER</div>
+              </div>
+              {
+                this.state.qtop && !this.state.intro ? 
+                <div className="quiz-cards">
+                  {
+                    this.state.dataJSON.data.questions.map((q,i)=>{
+                      if(i >= this.state.currentQuestion - 2 && i <= this.state.currentQuestion){
+                        return(
+                          this.renderQuestionCard(q,i)
+                        )
                       }else{
-                        answer =  q.options[0];
+                        return null
                       }
-                      return(
-                        this.renderAnswerCard(i, answer)
-                      );
-                    }else{
-                      return null;
-                    }
-                  })
-                }
-              </div>
-            }
-            {!this.state.qtop && <div className="next-button" onClick={(e)=>{
-              this.handleNextClick(e)
-            }}>NEXT</div>}
+                    }) 
+                  }
+                </div>
+                :
+                <div className="quiz-cards">
+                  {
+                    this.state.dataJSON.data.questions.map((q,i)=>{
+                      if(i >= this.state.currentQuestion - 2 && i <= this.state.currentQuestion){
+                        let answer;
+                        if(i === this.state.currentQuestion - 1){
+                          answer = q.options[this.state.opnum];
+                        }else{
+                          answer =  q.options[0];
+                        }
+                        return(
+                          this.renderAnswerCard(i, answer)
+                        );
+                      }else{
+                        return null;
+                      }
+                    })
+                  }
+                </div>
+              }
+              {!this.state.qtop && <div className="next-button" onClick={(e)=>{
+                this.handleNextClick(e)
+              }}>NEXT</div>}
+            </div>
+            {this.renderWrongIndicator()}
+            {this.renderCorrectIndicator()}
           </div>
-          {this.renderWrongIndicator()}
-          {this.renderCorrectIndicator()}
         </div>
-      </div>
-    )
+      )
+    }else{
+      return(
+        <div className="second-view view" style={{width: 300}}>
+          <div className="proto-col-4">
+            <div className="progress-line">
+              <div className="progress-start-lable">{this.state.currentQuestion}</div>
+              <div className="progress-container">
+                <div className="progress-after" style={{height: percent}}></div>
+                <div className="progress"></div>
+              </div>
+            </div>
+            <div className="main-content">
+              <div className="card-tabs">
+                <div className={`single-tab ${this.state.qtop ? 'active' : 'inactive'}`}>QUESTION</div>
+                <div className={`single-tab ${!this.state.qtop ? 'active' : 'inactive'}`}>ANSWER</div>
+              </div>
+              {
+                this.state.qtop && !this.state.intro ? 
+                <div className="quiz-cards">
+                  {
+                    this.state.dataJSON.data.questions.map((q,i)=>{
+                      if(i >= this.state.currentQuestion - 2 && i <= this.state.currentQuestion){
+                        return(
+                          this.renderQuestionCard(q,i)
+                        )
+                      }else{
+                        return null
+                      }
+                    }) 
+                  }
+                </div>
+                :
+                <div className="quiz-cards">
+                  {
+                    this.state.dataJSON.data.questions.map((q,i)=>{
+                      if(i >= this.state.currentQuestion - 2 && i <= this.state.currentQuestion){
+                        let answer;
+                        if(i === this.state.currentQuestion - 1){
+                          answer = q.options[this.state.opnum];
+                        }else{
+                          answer =  q.options[0];
+                        }
+                        return(
+                          this.renderAnswerCard(i, answer)
+                        );
+                      }else{
+                        return null;
+                      }
+                    })
+                  }
+                </div>
+              }
+              {!this.state.qtop && <div className="next-button" onClick={(e)=>{
+                this.handleNextClick(e)
+              }}>NEXT</div>}
+            </div>
+            {this.renderWrongIndicator()}
+            {this.renderCorrectIndicator()}
+          </div>
+        </div>
+      )
+    }
+    
   }
   renderLaptop(){
 
@@ -1044,76 +1127,7 @@ class Quiz extends React.Component {
     }
   }
   renderMobile() {
-    if (this.state.fetchingData) {
-      return (
-        <div className='protograph-toQuiz-quiz-container protograph-toQuiz-mobile-quiz-container' style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
-          <div className="protograph-toQuiz-loading-card" style={{position: 'absolute', width: '100%', height: '100%', backgroundColor: 'white', opacity:1, zIndex: 500}}>
-            <span className="protograph-toQuiz-loading-text" style={{position:'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)', textAlign: 'center'}}>
-              Fetching Questions ...
-            </span>
-          </div>
-        </div>
-      )
-    } else {
-
-      let styles = {},
-        x = 147, //(this.state.totalQuestions * 20) - 20,
-        y = 0 - 320,
-        z = 1 + 0.08,
-        questionsData = this.state.dataJSON.data.questions ? this.state.dataJSON.data.questions : [],
-        qCards;
-
-      qCards = questionsData.map((card, i) => {
-        const style = {},
-          events = {};
-
-        style.zIndex = this.state.totalQuestions - i;
-        style.transform = `matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0.0005, 0, ${x}, ${y}, ${z})`;
-
-        if(i < 2) {
-          style.opacity = 1;
-        } else {
-          style.opacity = 0;
-        }
-
-        x = x - 13;
-        y = y - 320;
-        z = z + 0.08;
-
-        events.optionClick = ((e) => this.optionClicked(e));
-        if (this.state.isMobile) {
-          events.onTouchStart = ((e) => Touch.swipeStart(e));
-          events.onTouchMove = ((e) => Touch.swipeMove(e));
-          events.onTouchEnd = ((e) => this.touchEndHandler(e));
-          events.nextCard = ((e) => {this.swipeCallback('up'); e.stopPropagation();});
-        } else {
-          events.nextCard = ((e) => this.swipeCallback('up'));
-        }
-
-        return (
-          <QuestionCard
-            key={i}
-            cardNo={i}
-            questionNo={this.formatNumber(i + 1)}
-            cardStyle={style}
-            cardData={this.state.dataJSON.data.questions[i]}
-            cardEvents={events}
-            cardConfigs={this.state.dataJSON.mandatory_config}
-            languageTexts={this.state.languageTexts}
-            totalQuestions={this.formatNumber(this.state.totalQuestions)}
-            isMobile={this.state.isMobile}
-            timerValue={this.calculateTime(this.state.timerCountValue)}
-            baseURL={this.props.baseURL}
-            creditLink={this.state.creditLink}
-            creditMessage={this.state.creditMessage}
-          />
-        )
-      });
-
-      return this.renderMainContainerContent(qCards)
-    }
-  }
-  renderScreenshot() {
+    
     if (this.state.fetchingData) {
       return (
         <div className={`protograph-toQuiz-quiz-container ${this.state.isMobile ? 'protograph-toQuiz-mobile-quiz-container' : ''}`} style={{"fontFamily": "'Helvetica Neue', sans-serif, aerial"}}>
@@ -1125,24 +1139,10 @@ class Quiz extends React.Component {
         </div>
       )
     } else {
-      const data = this.state.dataJSON.data,
-      introCardConfigs = {
-        background_image: data.basic_datapoints.background_image.image,
-        quiz_title: data.basic_datapoints.quiz_title,
-        introduction: data.basic_datapoints.introduction,
-        start_button_text: data.basic_datapoints.start_button_text,
-        start_button_color: this.state.optionalConfigJSON.start_button_color,
-        start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
-      };
-      return (
-        <div id="ProtoScreenshot" style={{"fontFamily": this.state.languageTexts.font}}>
-          <div style={{padding:10}}>
-            <h1 style={{paddingTop:15, paddingLeft: 15}}>{introCardConfigs.quiz_title}</h1>
-            <p style={{paddingLeft: 15}}>{introCardConfigs.introduction}</p>
-            <button className="protograph-toQuiz-intro-button" style={{marginLeft: 15}}>
-              <h3 className="ui header" style={{color: 'white'}}>{introCardConfigs.start_button_text}</h3>
-            </button>
-          </div>
+      return(
+        <div className="toquizcard parent-card-desktop">
+          {this.renderIntro()}
+          {this.renderQuestions()}
         </div>
       )
     }
