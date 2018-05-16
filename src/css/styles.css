@@ -231,12 +231,10 @@ p{
 }
 
 .protograph-toQuiz-question-number {
-  /*font-size: 0.7em;*/
-  color: #a8a8a8;
-  padding: 15px 15px 5px !important;
-  /*font-family: sans-serif;*/
-  margin-top: 15px;
-  margin-left: 15px;
+  color: #a8a8a8 !important;
+  padding: 15px 15px 5px!important;
+  margin-top: 0px !important;
+  margin-left: 0px !important;
 }
 
 .protograph-toQuiz-current-question {
@@ -854,6 +852,7 @@ p{
 
 .protograph-toQuiz-mobile-quiz-content {
   width: 100%;
+  padding: 0px;
 }
 
 .protograph-toQuiz-mobile-quiz-container {

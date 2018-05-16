@@ -22,7 +22,10 @@
                             "type": "string",
                             "title": "Link URL to share",
                             "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)",
-                            "condition": {"element": "social_share", "value": true}
+                            "condition": {
+                                "element": "social_share",
+                                "value": true
+                            }
                         },
                         "quiz_title": {
                             "id": "/properties/data/properties/basic_datapoints/properties/quiz_title",
@@ -58,7 +61,10 @@
                             "id": "/properties/data/properties/basic_datapoints/properties/share_msg",
                             "type": "string",
                             "title": "Messsage to be shared",
-                            "condition": {"element": "social_share", "value": true}
+                            "condition": {
+                                "element": "social_share",
+                                "value": true
+                            }
                         }
                     },
                     "required": [
@@ -74,7 +80,7 @@
                         "id": "/properties/data/properties/questions/items",
                         "title": "Question",
                         "hideTitle": true,
-                        "separator":"#",
+                        "separator": "#",
                         "properties": {
                             "question": {
                                 "default": "This is a sample question?",
@@ -88,7 +94,7 @@
                                 "items": {
                                     "id": "/properties/data/properties/questions/items/properties/options/items",
                                     "title": "Option",
-                                    "separator":"#",
+                                    "separator": "#",
                                     "hideTitle": true,
                                     "properties": {
                                         "option": {
@@ -102,8 +108,14 @@
                                             "title": "Is this the correct option?",
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/right_or_wrong",
                                             "type": "boolean",
-                                            "enumNames":["Yes","No"],
-                                            "condition": { "element": "quiz_type", "value": "scoring" }
+                                            "enumNames": [
+                                                "Yes",
+                                                "No"
+                                            ],
+                                            "condition": {
+                                                "element": "quiz_type",
+                                                "value": "scoring"
+                                            }
                                         },
                                         "fact": {
                                             "id": "/properties/data/properties/questions/items/properties/options/items/properties/fact",
@@ -122,17 +134,28 @@
                                                     "pattern": "((?:https?\\:\/\/|www\\.)(?:[-a-z0-9]+\\.)*[-a-z0-9]+.*)"
                                                 }
                                             },
-                                            "condition": [{"element": "quiz_type", "value": "general", "conjunction": "or" }, {"element": "flip_card", "value": true, "conjunction": "or" }]
+                                            "condition": [
+                                                {
+                                                    "element": "quiz_type",
+                                                    "value": "general",
+                                                    "conjunction": "or"
+                                                },
+                                                {
+                                                    "element": "flip_card",
+                                                    "value": true,
+                                                    "conjunction": "or"
+                                                }
+                                            ]
                                         }
                                     },
                                     "required": [
                                         "option"
                                     ],
-                                    "minItems" : 1,
+                                    "minItems": 1,
                                     "addButtonText": "Add a new option",
                                     "type": "object"
                                 },
-                                "minItems" : 1,
+                                "minItems": 1,
                                 "type": "array"
                             }
                         },
@@ -140,11 +163,11 @@
                             "question",
                             "options"
                         ],
-                        "minItems" : 1,
+                        "minItems": 1,
                         "addButtonText": "Add a new question",
                         "type": "object"
                     },
-                    "minItems" : 1,
+                    "minItems": 1,
                     "type": "array"
                 },
                 "result_card_data": {
@@ -182,15 +205,14 @@
                         },
                         "required": [
                             "related_article_links",
-                            "message",
                             "link_image",
                             "link_description"
                         ],
                         "addButtonText": "Add a new link",
-                        "maxItems":2,
+                        "maxItems": 2,
                         "type": "object"
                     },
-                    "maxItems":2,
+                    "maxItems": 2,
                     "type": "array"
                 }
             },
@@ -232,7 +254,7 @@
                         "English",
                         "Hindi"
                     ],
-                    "default":"English",
+                    "default": "English",
                     "title": "Language"
                 },
                 "flip_card": {
@@ -240,7 +262,10 @@
                     "type": "boolean",
                     "title": "Should the card flip after every answer?",
                     "default": true,
-                    "condition": {"element": "quiz_type", "value": "scoring"}
+                    "condition": {
+                        "element": "quiz_type",
+                        "value": "scoring"
+                    }
                 },
                 "revisit_answers": {
                     "id": "/properties/mandatory_config/properties/revisit_answers",
@@ -258,13 +283,19 @@
                     "id": "/properties/mandatory_config/properties/timer",
                     "type": "boolean",
                     "title": "Should the Quiz be timer based?",
-                    "condition": {"element": "quiz_type", "value": "scoring"}
+                    "condition": {
+                        "element": "quiz_type",
+                        "value": "scoring"
+                    }
                 },
                 "time_per_question": {
                     "id": "/properties/mandatory_config/properties/time_per_question",
                     "type": "integer",
                     "default": 10,
-                    "condition": {"element": "timer", "value": true},
+                    "condition": {
+                        "element": "timer",
+                        "value": true
+                    },
                     "title": "Time user shoud spend on each question. (in seconds)"
                 }
             },

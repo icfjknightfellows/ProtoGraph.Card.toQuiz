@@ -303,6 +303,7 @@ class EditQuiz extends React.Component {
             formData.timer = true;
           } else {
             formData.quiz_type = formData.quiz_type_form;
+            formData.timer = false;
           }
 
           dataJSON.mandatory_config = formData;

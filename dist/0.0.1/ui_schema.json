@@ -32,7 +32,7 @@
       },
       "background_image": {
         "ui:help": "Use Image Bank to create a 2:3 aspect ratio image.",
-        "ui:emptyValue":" "
+        "ui:emptyValue": " "
       }
     },
     "questions": {
@@ -42,17 +42,17 @@
             "right_or_wrong": {
               "ui:widget": "radio"
             },
-            "gif_image":{
-              "ui:help":"Use Image Bank to create a 2:1 aspect ratio image."
+            "gif_image": {
+              "ui:help": "Use Image Bank to create a 2:1 aspect ratio image."
             }
           }
         }
       }
     },
-    "result_card_data":{
-      "items":{
-        "link_image":{
-          "ui:help":"Use Image Bank to create a 3:2 aspect ratio image."
+    "result_card_data": {
+      "items": {
+        "link_image": {
+          "ui:help": "Use Image Bank to create a 3:2 aspect ratio image."
         }
       }
     }

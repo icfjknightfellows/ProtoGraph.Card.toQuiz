@@ -1,366 +1,49 @@
 {
-  "data": {
-    "section": "Quiz of the Week",
+  "data":{
     "basic_datapoints": {
       "background_image": {
-        "image": "https://s3.ap-south-1.amazonaws.com/cdn.protograph/Assets/4thAug2017-QuizOfTheWeek.png"
+        "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
       },
-      "quiz_title": "Quiz of the Week",
-      "introduction": "Several developments — major and small — which may shape the future course occurred this week. Test your knowledge and get your weekly dose of trivia.",
-      "start_button_text": "Take our quiz",
-      "share_link": "https://pykih.com",
-      "share_msg": "I found this quiz really informative. Would you like to try it?"
+      "quiz_title": "What is this quiz about?",
+      "introduction": "Reasons why the reader should take the quiz. This is optional so you can delete this text and continue.",
+      "start_button_text":"Take our quiz",
+      "share_link":"https://pykih.com",
+      "share_msg":"I found this quiz really informative. Would you like to try it?"
     },
-    "questions": [
+    "questions":[
       {
-        "question": "What is the current repo rate?",
-        "question_no": "1",
-        "options": [
+        "question":"When you go to a doctor with a headache, backache or other small problems, how does he examine you?",
+        "options":[
           {
-            "option": "6.25%",
+            "option":"Gives time",
             "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/03/rbi-reserve-bank-of-india-logo-770x433.jpg"
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
             },
-            "fact": "Wrong answer. The current repo rate is 6%.",
-            "right_or_wrong": false
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":true
           },
           {
-            "option": "6%",
+            "option":"Does not give time",
             "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/03/rbi-reserve-bank-of-india-logo-770x433.jpg"
+              "image": "https://storage.googleapis.com/g2gcs-hosting-quizjs-v2-148d020fd5/src/images/IndianDoctor.png"
             },
-            "fact": "Correct answer.",
-            "right_or_wrong": true
-          },
-          {
-            "option": "6.50%",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/03/rbi-reserve-bank-of-india-logo-770x433.jpg"
-            },
-            "fact": "Wrong answer. The current repo rate is 6%.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "6.75%",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/03/rbi-reserve-bank-of-india-logo-770x433.jpg"
-            },
-            "fact": "Wrong answer. The current repo rate is 6%.",
-            "right_or_wrong": false
-          }
-        ]
-      },
-      {
-        "question": "A merger between two ecommerce firms was called off. Name them.",
-        "question_no": "2",
-        "options": [
-          {
-            "option": "Flipkart and Snapdeal\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/05/2017-04-04T050831Z_1_LYNXMPED33077_RTROPTP_3_SNAPDEAL-MANAGEMENT-1-770x433.jpg"
-            },
-            "fact": "Correct answer. ",
-            "right_or_wrong": true
-          },
-          {
-            "option": "Amazon and Paytm\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/05/2017-04-04T050831Z_1_LYNXMPED33077_RTROPTP_3_SNAPDEAL-MANAGEMENT-1-770x433.jpg"
-            },
-            "fact": "Wrong answer. Snapdeal terminated talks for a deal with Flipkart.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Snapdeal and Amazon\r\n\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/05/2017-04-04T050831Z_1_LYNXMPED33077_RTROPTP_3_SNAPDEAL-MANAGEMENT-1-770x433.jpg"
-            },
-            "fact": "Wrong answer. Snapdeal terminated talks for a deal with Flipkart.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Flipkart and Paytm\r\n\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/05/2017-04-04T050831Z_1_LYNXMPED33077_RTROPTP_3_SNAPDEAL-MANAGEMENT-1-770x433.jpg"
-            },
-            "fact": "Wrong answer. Snapdeal terminated talks for a deal with Flipkart.",
-            "right_or_wrong": false
-          }
-        ]
-      },
-      {
-        "question": "Rail passengers can book Tatkal tickets on IRCTC and pay later. ",
-        "question_no": "3",
-        "options": [
-          {
-            "option": "TRUE",
-            "fact": "Correct answer.",
-            "right_or_wrong": true
-          },
-          {
-            "option": "FALSE",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/04/railways-770x433.jpg"
-            },
-            "fact": "Wrong answer. Passengers can book Tatkal tickets on IRCTC and pay later under its ‘book now, pay later’ feature.",
-            "right_or_wrong": false
-          }
-        ]
-      },
-      {
-        "question": "A Niti Aayog official resigned this week. Name him.",
-        "question_no": "4",
-        "options": [
-          {
-            "option": "Arvind Subramanian\r\n",
-            "fact": "Wrong answer. Arvind Panagariya resigned as the Vice Chairman of NITI Aayog.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Arvind Panagariya\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Arvind-Panagariya-770x433.jpg"
-            },
-            "fact": "Correct answer. ",
-            "right_or_wrong": true
-          },
-          {
-            "option": "Amitabh Kant\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Arvind-Panagariya-770x433.jpg"
-            },
-            "fact": "Wrong answer. Arvind Panagariya resigned as the Vice Chairman of NITI Aayog.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Bibek Debroy\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Arvind-Panagariya-770x433.jpg"
-            },
-            "fact": "Wrong answer. Arvind Panagariya resigned as the Vice Chairman of NITI Aayog.",
-            "right_or_wrong": false
-          }
-        ]
-      },
-      {
-        "question": "US President Donald Trump sacked _____ as the White House communications director.",
-        "question_no": "5",
-        "options": [
-          {
-            "option": "Anthony Scaramucci \r\n\r\n\r\n",
-            "fact": "Correct answer.",
-            "right_or_wrong": true
-          },
-          {
-            "option": "Reince Priebus\r\n\r\n",
-            "fact": "Wrong answer. US President Donald Trump sacked Anthony Scaramucci as the White House communications director.",
-            "right_or_wrong": false
-          }
-        ]
-      },
-      {
-        "question": "What is the revised deadline to file income tax return?",
-        "question_no": "6",
-        "options": [
-          {
-            "option": "August 6",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Filing-your-income-tax-returns-770x433.jpg"
-            },
-            "fact": "Wrong answer. The revised deadline to file income tax return is August 5.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "August 31",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Filing-your-income-tax-returns-770x433.jpg"
-            },
-            "fact": "Wrong answer. The revised deadline to file income tax return is August 5.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "August 15",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Filing-your-income-tax-returns-770x433.jpg"
-            },
-            "fact": "Wrong answer. The revised deadline to file income tax return is August 5.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "August 5",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/07/Filing-your-income-tax-returns-770x433.jpg"
-            },
-            "fact": "Correct answer.",
-            "right_or_wrong": true
-          }
-        ]
-      },
-      {
-        "question": "India’s first bullet train will connect these two cities. ",
-        "question_no": "7",
-        "options": [
-          {
-            "option": "Mumbai-Delhi\r\n",
-            "gif_image": {
-              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/f/5/RTSKS22.jpg"
-            },
-            "fact": "Wrong answer. India’s first bullet train will connect Mumbai and Ahmedabad.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Delhi-Gujarat\r\n\r\n",
-            "gif_image": {
-              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/f/5/RTSKS22.jpg"
-            },
-            "fact": "Wrong answer. India’s first bullet train will connect Mumbai and Ahmedabad.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Mumbai-Ahmedabad\r\n",
-            "gif_image": {
-              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/f/5/RTSKS22.jpg"
-            },
-            "fact": "Correct answer.",
-            "right_or_wrong": true
-          },
-          {
-            "option": "Kolkata-Delhi",
-            "gif_image": {
-              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/f/5/RTSKS22.jpg"
-            },
-            "fact": "Wrong answer. India’s first bullet train will connect Mumbai and Ahmedabad.",
-            "right_or_wrong": false
-          }
-        ]
-      },
-      {
-        "question": "By when can you link Aadhaar with PAN card?",
-        "question_no": "8",
-        "options": [
-          {
-            "option": "August 6",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
-            },
-            "fact": "Wrong answer. The deadline to file Aadhaar with PAN card is August 31.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "August 31",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
-            },
-            "fact": "Correct answer.",
-            "right_or_wrong": true
-          },
-          {
-            "option": "August 15",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
-            },
-            "fact": "Wrong answer. The deadline to file Aadhaar with PAN card is August 31.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "August 5",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/Aadhaar_Logo-e1498722360783-770x396.png"
-            },
-            "fact": "Wrong answer. The deadline to file Aadhaar with PAN card is August 31.",
-            "right_or_wrong": false
-          }
-        ]
-      },
-      {
-        "question": "Which footballer is set to join Paris Saint-Germain for a record transfer fee of €222 million?",
-        "question_no": "9",
-        "options": [
-          {
-            "option": "Lionel Messi\r\n",
-            "gif_image": {
-              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/d/d/RTX3CJC8.jpg"
-            },
-            "fact": "Wrong answer. Neymer is set to join Paris Saint-Germain for a record transfer fee of 222 million euros.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Cristiano Ronaldo\r\n",
-            "gif_image": {
-              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/d/d/RTX3CJC8.jpg"
-            },
-            "fact": "Wrong answer. Neymer is set to join Paris Saint-Germain for a record transfer fee of 222 million euros.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Neymar da Silva Santos Júnior",
-            "gif_image": {
-              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/d/d/RTX3CJC8.jpg"
-            },
-            "fact": "Correct answer. ",
-            "right_or_wrong": true
-          },
-          {
-            "option": "Sunil Chhetri\r\n\r\n",
-            "gif_image": {
-              "image": "http://pictures.reuters.com/Doc/RTR/Media/TR3_UNWATERMARKED/7/2/d/d/RTX3CJC8.jpg"
-            },
-            "fact": "Wrong answer. Neymer is set to join Paris Saint-Germain for a record transfer fee of 222 million euros.",
-            "right_or_wrong": false
-          }
-        ]
-      },
-      {
-        "question": "The final candidates for the vice presidential election 2017 are ___.",
-        "question_no": "10",
-        "options": [
-          {
-            "option": "Venkaiah Naidu and Gopalkrishna Gandhi\r\n\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/UK-election.jpg"
-            },
-            "fact": "Correct answer.",
-            "right_or_wrong": true
-          },
-          {
-            "option": "Venkaiah Naidu and Meira Kumar",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/UK-election.jpg"
-            },
-            "fact": "Wrong answer. Venkaiah Naidu and Gopalkrishna Gandhi are the final candidates for the election.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Meira Kumar and Gopalkrishna Gandhi\r\n",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/UK-election.jpg"
-            },
-            "fact": "Wrong answer. Venkaiah Naidu and Gopalkrishna Gandhi are the final candidates for the election.",
-            "right_or_wrong": false
-          },
-          {
-            "option": "Gopalkrishna Gandhi and Hamid Ansari",
-            "gif_image": {
-              "image": "http://static-news.moneycontrol.com/static-mcnews/2017/06/UK-election.jpg"
-            },
-            "fact": "Wrong answer. Venkaiah Naidu and Gopalkrishna Gandhi are the final candidates for the election.",
-            "right_or_wrong": false
+            "fact":"In general, the doctor gives medicine on hearing the problem. Instead the doctor should give time to the patient, since the beginning of many big diseases is very small ailments.",
+            "right_or_wrong":false
           }
         ]
       }
     ],
-    "result_card_data": []
+    "result_card_data":[
+    ]
   },
-  "mandatory_config": {
-    "quiz_type_form": "scoring_and_timer",
+  "mandatory_config":{
     "language": "english",
+    "quiz_type": "general",
+    "quiz_type_form": "general",
+    "timer": false,
+    "time_per_question": 10,
     "flip_card": true,
-    "revisit_answers": true,
     "social_share": false,
-    "timer": true,
-    "time_per_question": 300,
-    "quiz_type": "scoring",
-    "share_msg": "I found this quiz really informative. Would you like to try it?",
-    "share_link": "https://pykih.com"
+    "revisit_answers": true
   }
 }
