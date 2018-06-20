@@ -1,5 +1,17 @@
 {
   "data": {
+    "mandatory_config": {
+      "quiz_type_form": "scoring_and_timer",
+      "language": "english",
+      "flip_card": true,
+      "revisit_answers": true,
+      "social_share": false,
+      "timer": true,
+      "time_per_question": 300,
+      "quiz_type": "scoring",
+      "share_msg": "I found this quiz really informative. Would you like to try it?",
+      "share_link": "https://pykih.com"
+    },
     "basic_datapoints": {
       "background_image": {
         "image": "https://s3.ap-south-1.amazonaws.com/cdn.protograph/Assets/4thAug2017-QuizOfTheWeek.png"
@@ -368,17 +380,5 @@
         }
       }
     ]
-  },
-  "mandatory_config": {
-    "quiz_type_form": "scoring_and_timer",
-    "language": "english",
-    "flip_card": true,
-    "revisit_answers": true,
-    "social_share": false,
-    "timer": true,
-    "time_per_question": 300,
-    "quiz_type": "scoring",
-    "share_msg": "I found this quiz really informative. Would you like to try it?",
-    "share_link": "https://pykih.com"
   }
 }

@@ -99,8 +99,7 @@ class Quiz extends React.Component {
           let stateVar = {
             fetchingData: false,
             dataJSON: {
-              data: cardData.data.data,
-              mandatory_config: cardData.data.mandatory_config
+              data: cardData.data.data
             },
             schemaJSON: cardSchema.data,
             optionalConfigJSON: optionalConfig.data,
@@ -109,11 +108,11 @@ class Quiz extends React.Component {
 
           stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
           stateVar.totalCards = (stateVar.totalQuestions + 2);
-          stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
+          stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.data.mandatory_config.language);
 
-          if (stateVar.dataJSON.mandatory_config.time_per_question) {
-            stateVar.timePerQuestion = stateVar.dataJSON.mandatory_config.time_per_question;
-            stateVar.timerCountValue = stateVar.dataJSON.mandatory_config.time_per_question;
+          if (stateVar.dataJSON.data.mandatory_config.time_per_question) {
+            stateVar.timePerQuestion = stateVar.dataJSON.data.mandatory_config.time_per_question;
+            stateVar.timerCountValue = stateVar.dataJSON.data.mandatory_config.time_per_question;
           }
           this.setState(stateVar);
         }));
@@ -210,7 +209,7 @@ class Quiz extends React.Component {
       introFront = document.querySelector(".protograph-toQuiz-intro-front"),
       firstQCard = document.querySelector(".protograph-toQuiz-question-card[data-order='0']"),
       totalQuestions = this.state.totalQuestions,
-      config = this.state.dataJSON.mandatory_config;
+      config = this.state.dataJSON.data.mandatory_config;
 
     introFront.style.display = "none";
     document.querySelector(".protograph-toQuiz-intro-back").style.display = "block";
@@ -266,7 +265,7 @@ class Quiz extends React.Component {
 
   optionClicked(e) {
     let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
-      config = this.state.dataJSON.mandatory_config,
+      config = this.state.dataJSON.data.mandatory_config,
       totalQuestions = this.state.totalQuestions,
       cardData = this.state.dataJSON.data.questions[+qCard.getAttribute('data-order')],
       option = cardData.options[+e.target.getAttribute('data-option-id')];
@@ -308,7 +307,7 @@ class Quiz extends React.Component {
     let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
       parent = qCard.querySelector(".protograph-toQuiz-content"),
       orderId = qCard.getAttribute("data-order"),
-      config = this.state.dataJSON.mandatory_config;
+      config = this.state.dataJSON.data.mandatory_config;
 
     option = option || {};
 
@@ -401,7 +400,7 @@ class Quiz extends React.Component {
       orderId = +qCard.getAttribute("data-order"),
       mainContainerWidth = document.querySelector(".protograph-toQuiz-main-container").offsetWidth,
       nextCard = document.querySelector(".protograph-toQuiz-question-card[data-order='" + (orderId + 1) + "']"),
-      config = this.state.dataJSON.mandatory_config,
+      config = this.state.dataJSON.data.mandatory_config,
       totalQuestions = this.state.totalQuestions,
       backDiv;
 
@@ -501,7 +500,7 @@ class Quiz extends React.Component {
     let qCard = document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active"),
       allQuestions = document.querySelectorAll(".protograph-toQuiz-question-card"),
       totalQuestions = this.state.totalQuestions,
-      config = this.state.dataJSON.mandatory_config,
+      config = this.state.dataJSON.data.mandatory_config,
       i;
 
     if(qCard) {
@@ -694,7 +693,7 @@ class Quiz extends React.Component {
       if(counter === 0) {
         this.clearTimer();
         this.flashTimeUpIndicator();
-        if(!this.state.dataJSON.mandatory_config.flip_card) {
+        if(!this.state.dataJSON.data.mandatory_config.flip_card) {
           document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active .protograph-toQuiz-front .protograph-toQuiz-timer").style.display = "none";
         }
         document.querySelector(".protograph-toQuiz-question-card.protograph-toQuiz-active .protograph-toQuiz-timeout-msg").style.display = "block";
@@ -864,7 +863,7 @@ class Quiz extends React.Component {
       start_button_color: this.state.optionalConfigJSON.start_button_color,
       start_button_text_color: this.state.optionalConfigJSON.start_button_text_color
     },
-    cardConfigs = this.state.dataJSON.mandatory_config;
+    cardConfigs = this.state.dataJSON.data.mandatory_config;
     cardConfigs.share_msg = data.basic_datapoints.share_msg;
     cardConfigs.share_link = data.basic_datapoints.share_link;
 
@@ -898,7 +897,7 @@ class Quiz extends React.Component {
 
             <ResultCard
               introCardConfigs={introCardConfigs}
-              cardConfigs={this.state.dataJSON.mandatory_config}
+              cardConfigs={this.state.dataJSON.data.mandatory_config}
               resultCardConfigs={this.state.dataJSON.data.result_card_data}
               totalQuestions={this.state.totalQuestions}
               languageTexts={this.state.languageTexts}
@@ -986,7 +985,7 @@ class Quiz extends React.Component {
             cardStyle={style}
             cardData={this.state.dataJSON.data.questions[i]}
             cardEvents={events}
-            cardConfigs={this.state.dataJSON.mandatory_config}
+            cardConfigs={this.state.dataJSON.data.mandatory_config}
             languageTexts={this.state.languageTexts}
             totalQuestions={this.formatNumber(this.state.totalQuestions)}
             isMobile={this.state.isMobile}

@@ -55,11 +55,11 @@ class EditQuiz extends React.Component {
 
           stateVar.totalQuestions = stateVar.dataJSON.data.questions.length;
           stateVar.totalCards = (stateVar.totalQuestions + 2);
-          stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.mandatory_config.language);
+          stateVar.languageTexts = this.getLanguageTexts(stateVar.dataJSON.data.mandatory_config.language);
 
-          if (stateVar.dataJSON.mandatory_config.time_per_question) {
-            stateVar.timePerQuestion = stateVar.dataJSON.mandatory_config.time_per_question;
-            stateVar.timerCountValue = stateVar.dataJSON.mandatory_config.time_per_question;
+          if (stateVar.dataJSON.data.mandatory_config.time_per_question) {
+            stateVar.timePerQuestion = stateVar.dataJSON.data.mandatory_config.time_per_question;
+            stateVar.timerCountValue = stateVar.dataJSON.data.mandatory_config.time_per_question;
           }
 
           this.setState(stateVar);
@@ -145,67 +145,68 @@ class EditQuiz extends React.Component {
   }
 
   getSchemaJSON() {
-    switch(this.state.step){
-      case 1:
-        return this.state.schemaJSON.properties.mandatory_config;
-        break;
-      case 2:
-        return this.state.schemaJSON.properties.data.properties.basic_datapoints;
-        break;
-      case 3:
-        return this.state.schemaJSON.properties.data.properties.questions;
-        break;
-      case 4:
-        return this.state.schemaJSON.properties.data.properties.result_card_data;
-        break;
-      case 5:
-        return this.state.optionalConfigSchemaJSON;
-        break;
-    }
+    return this.state.schemaJSON.properties.data;
+    // switch(this.state.step){
+    //   case 1:
+    //     return this.state.schemaJSON.properties.mandatory_config;
+    //     break;
+    //   case 2:
+    //     return this.state.schemaJSON.properties.data.properties.basic_datapoints;
+    //     break;
+    //   case 3:
+    //     return this.state.schemaJSON.properties.data.properties.questions;
+    //     break;
+    //   case 4:
+    //     return this.state.schemaJSON.properties.data.properties.result_card_data;
+    //     break;
+    //   case 5:
+    //     return this.state.optionalConfigSchemaJSON;
+    //     break;
+    // }
   }
 
   getFormData() {
-    switch(this.state.step) {
-      case 1:
-        return this.state.dataJSON.mandatory_config;
-        break;
-      case 2:
-        return this.state.dataJSON.data.basic_datapoints;
-        break;
-      case 3:
-        return this.state.dataJSON.data.questions;
-        break;
-      case 4:
-        return this.state.resultCardData;
-        break;
-      case 5:
-        return this.state.optionalConfigJSON;
-        break;
-    }
+    return this.state.dataJSON.data
+    // switch(this.state.step) {
+    //   case 1:
+    //     return this.state.dataJSON.mandatory_config;
+    //     break;
+    //   case 2:
+    //     return this.state.dataJSON.data.basic_datapoints;
+    //     break;
+    //   case 3:
+    //     return this.state.dataJSON.data.questions;
+    //     break;
+    //   case 4:
+    //     return this.state.resultCardData;
+    //     break;
+    //   case 5:
+    //     return this.state.optionalConfigJSON;
+    //     break;
+    // }
   }
 
   getUISchemaJSON() {
-    switch(this.state.step) {
-      case 1:
-        return this.state.uiSchemaJSON.mandatory_config;
-        break;
-      case 2:
-        return this.state.uiSchemaJSON.data.basic_datapoints;
-        break;
-      case 3:
-        return this.state.uiSchemaJSON.data.questions;
-        break;
-      default:
-        return {};
-        break;
-    }
+    return this.state.uiSchemaJSON.data
+    // switch(this.state.step) {
+    //   case 1:
+    //     return this.state.uiSchemaJSON.mandatory_config;
+    //     break;
+    //   case 2:
+    //     return this.state.uiSchemaJSON.data.basic_datapoints;
+    //     break;
+    //   case 3:
+    //     return this.state.uiSchemaJSON.data.questions;
+    //     break;
+    //   default:
+    //     return {};
+    //     break;
+    // }
   }
 
   transformErrors(errors) {
     switch(this.state.step) {
-      case 2:
-      case 3:
-      case 4:
+      case 1:
         return errors.map(error => {
           if (error.name === "pattern") {
             error.message = "Invalid image URL."
@@ -234,17 +235,18 @@ class EditQuiz extends React.Component {
   }
 
   showButtonText() {
-    switch(this.state.step) {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-        return 'Next';
-        break;
-      case 5:
-        return 'Publish';
-        break;
-    }
+    return 'Publish';
+    // switch(this.state.step) {
+    //   case 1:
+    //   case 2:
+    //   case 3:
+    //   case 4:
+    //     return 'Next';
+    //     break;
+    //   case 5:
+    //     return 'Publish';
+    //     break;
+    // }
   }
 
   onPrevHandler() {
@@ -277,7 +279,7 @@ class EditQuiz extends React.Component {
   }
 
   formValidator(formData, errors) {
-    if (this.state.dataJSON.mandatory_config.quiz_type === "scoring") {
+    if (this.state.dataJSON.data.mandatory_config.quiz_type === "scoring") {
       switch(this.state.step) {
         case 3:
           formData.forEach((e, i) => {
@@ -295,95 +297,121 @@ class EditQuiz extends React.Component {
   }
 
   onChangeHandler({formData}) {
-    switch (this.state.step) {
-      case 1:
-        this.setState((prevStep, prop) => {
-          let dataJSON = prevStep.dataJSON;
+    this.setState((prevStep, prop) => {
+      let resultCardData = formData,
+        dataJSON = prevStep.dataJSON;
+      dataJSON.data.result_card_data = resultCardData && resultCardData.length ? resultCardData : [];
+      if (formData.quiz_type_form === 'scoring_and_timer') {
+        formData.quiz_type = "scoring";
+        formData.timer = true;
+      } else {
+        formData.quiz_type = formData.quiz_type_form;
+      }
+      dataJSON.data = formData;
+      return {
+        updatingQuiz: true,
+        renderOverlay: true,
+        dataJSON: dataJSON,
+        totalQuestions: dataJSON.data.questions.length,
+        resultCardData: resultCardData
+      }
+    });
+    // switch (this.state.step) {
+    //   case 1:
+    //     this.setState((prevStep, prop) => {
+    //       let dataJSON = prevStep.dataJSON;
 
-          if (formData.quiz_type_form === 'scoring_and_timer') {
-            formData.quiz_type = "scoring";
-            formData.timer = true;
-          } else {
-            formData.quiz_type = formData.quiz_type_form;
-          }
+    //       if (formData.quiz_type_form === 'scoring_and_timer') {
+    //         formData.quiz_type = "scoring";
+    //         formData.timer = true;
+    //       } else {
+    //         formData.quiz_type = formData.quiz_type_form;
+    //       }
 
-          dataJSON.mandatory_config = formData;
-          return {
-            updatingQuiz: true,
-            dataJSON: dataJSON
-          }
-        });
-        break;
-      case 2:
-        this.setState((prevStep, prop) => {
-          let dataJSON = prevStep.dataJSON;
-          dataJSON.data.basic_datapoints = formData;
-          return {
-            updatingQuiz: true,
-            dataJSON: dataJSON
-          }
-        });
-        break;
-      case 3:
-        this.setState((prevStep, prop) => {
-          let dataJSON = prevStep.dataJSON;
-          dataJSON.data.questions = formData;
-          return {
-            renderOverlay: true,
-            updatingQuiz: true,
-            dataJSON: dataJSON,
-            totalQuestions: dataJSON.data.questions.length
-          }
-        });
-        break;
-      case 4:
-        this.setState((prevStep, prop) => {
-          let resultCardData = formData,
-            dataJSON = prevStep.dataJSON;
-          dataJSON.data.result_card_data = resultCardData && resultCardData.length ? resultCardData : [];
-          return {
-            updatingQuiz: true,
-            dataJSON: dataJSON,
-            resultCardData: resultCardData
-          }
-        });
-        break;
-      case 5:
-        this.setState((prevStep, prop) => {
-          return {
-            optionalConfigJSON: formData
-          }
-        });
-        break;
-    }
+    //       dataJSON.mandatory_config = formData;
+    //       return {
+    //         updatingQuiz: true,
+    //         dataJSON: dataJSON
+    //       }
+    //     });
+    //     break;
+    //   case 2:
+    //     this.setState((prevStep, prop) => {
+    //       let dataJSON = prevStep.dataJSON;
+    //       dataJSON.data.basic_datapoints = formData;
+    //       return {
+    //         updatingQuiz: true,
+    //         dataJSON: dataJSON
+    //       }
+    //     });
+    //     break;
+    //   case 3:
+    //     this.setState((prevStep, prop) => {
+    //       let dataJSON = prevStep.dataJSON;
+    //       dataJSON.data.questions = formData;
+    //       return {
+    //         renderOverlay: true,
+    //         updatingQuiz: true,
+    //         dataJSON: dataJSON,
+    //         totalQuestions: dataJSON.data.questions.length
+    //       }
+    //     });
+    //     break;
+    //   case 4:
+    //     this.setState((prevStep, prop) => {
+    //       let resultCardData = formData,
+    //         dataJSON = prevStep.dataJSON;
+    //       dataJSON.data.result_card_data = resultCardData && resultCardData.length ? resultCardData : [];
+    //       return {
+    //         updatingQuiz: true,
+    //         dataJSON: dataJSON,
+    //         resultCardData: resultCardData
+    //       }
+    //     });
+    //     break;
+    //   case 5:
+    //     this.setState((prevStep, prop) => {
+    //       return {
+    //         optionalConfigJSON: formData
+    //       }
+    //     });
+    //     break;
+    // }
   }
 
   onSubmitHandler({formData}) {
-    switch(this.state.step) {
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-        this.setState((prevStep, prop) => {
-          return {
-            step: prevStep.step + 1
-          }
-        });
-        break;
-      case 5:
-        if (typeof this.props.onPublishCallback === "function") {
-          this.setState({ publishing: true });
-          let publishCallback = this.props.onPublishCallback();
-          publishCallback.then((message) => {
-            this.setState({ publishing: false });
-          });
-        }
-        break;
+    if (typeof this.props.onPublishCallback === "function") {
+      this.setState({ publishing: true });
+      let publishCallback = this.props.onPublishCallback();
+      publishCallback.then((message) => {
+        this.setState({ publishing: false });
+      });
     }
+    // switch(this.state.step) {
+    //   case 1:
+    //   case 2:
+    //   case 3:
+    //   case 4:
+    //     this.setState((prevStep, prop) => {
+    //       return {
+    //         step: prevStep.step + 1
+    //       }
+    //     });
+    //     break;
+    //   case 5:
+    //     if (typeof this.props.onPublishCallback === "function") {
+    //       this.setState({ publishing: true });
+    //       let publishCallback = this.props.onPublishCallback();
+    //       publishCallback.then((message) => {
+    //         this.setState({ publishing: false });
+    //       });
+    //     }
+    //     break;
+    // }
   }
 
   getReferenceFormData() {
-    return JSON.parse(JSON.stringify(this.state.dataJSON.mandatory_config));
+    return JSON.parse(JSON.stringify(this.state.dataJSON.data.mandatory_config));
   }
 
   componentWillUpdate(prevProps, prevState) {
@@ -504,7 +532,7 @@ class EditQuiz extends React.Component {
                   formData = {this.getFormData()}
                   uiSchema={this.getUISchemaJSON()}
                   validate={this.formValidator}
-                  liveValidate={this.state.step === 3 && this.state.dataJSON.mandatory_config.quiz_type === "scoring" ? true : false}
+                  liveValidate={this.state.step === 3 && this.state.dataJSON.data.mandatory_config.quiz_type === "scoring" ? true : false}
                   ref={(e) => {this.Form = e;}}
                   transformErrors={this.transformErrors}
                 >
